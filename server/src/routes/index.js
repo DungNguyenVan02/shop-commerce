@@ -1,5 +1,5 @@
 const userRouter = require("./User");
-const { notFound, errHandler } = require("../middlewares/errorHandle");
+const { notFound, errHandler } = require("../app/middlewares/errorHandle");
 
 function routes(app) {
 	app.use("/api/user", userRouter);
