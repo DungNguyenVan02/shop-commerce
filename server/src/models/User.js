@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema(
 	{
@@ -55,7 +56,7 @@ const userSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
-userSchema.pre("save", async function () {
+userSchema.pre("save", async function (next) {
 	if (!this.isModified("passWord")) {
 		next();
 	}
@@ -65,13 +66,18 @@ userSchema.pre("save", async function () {
 
 userSchema.methods = {
 	isCorrectPassword: async function (passWord) {
-		return await bcrypt.compare(
-			passWord,
-			// +process.env.KEY_SALT,
-			this.passWord
-		);
+		return await bcrypt.compare(passWord, this.passWord);
+	},
+	createPassWordChangeToken: function () {
+		const resetToken = crypto.randomBytes(64).toString("hex");
+		this.passWordResetToken = crypto
+			.createHash("sha256")
+			.update(resetToken)
+			.digest("hex");
+		this.passWordResetExpires = Date.now() + 15 * 60 * 1000;
+		return resetToken;
 	},
 };
 
 //Export the model
-module.exports = mongoose.model("Users", userSchema);
+module.exports = mongoose.model("User", userSchema);
