@@ -37,10 +37,55 @@ class ProductControllers {
 
 	// [GET] /allproducts
 	getAllProduct = asyncHandler(async (req, res) => {
-		const products = await Products.find();
-		return res.status(200).json({
-			success: products ? true : false,
-			productsData: products ? products : "Cannot get products",
+		const queries = { ...req.query };
+		// Tách trường đặc biệt trên query
+		const excludeFields = ["page", "sort", "limit", "fields"];
+		// format lại các operators cho đúng cú pháp mongoose
+		excludeFields.forEach((field) => delete queries[field]);
+
+		let queryString = JSON.stringify(queries);
+		queryString = queryString.replace(
+			/\b(gte|gt|lte|lt)\b/g,
+			(matchedEl) => {
+				return `$${matchedEl}`;
+			}
+		);
+		const formatQuery = JSON.parse(queryString);
+
+		// Filtering
+		if (queries?.name) {
+			formatQuery.name = { $regex: queries.name, $options: "i" };
+		}
+		let queryCommand = Products.find(formatQuery);
+
+		// Sorting
+		if (req.query.sort) {
+			const sortBy = req.query.sort.split(",").join(" ");
+			queryCommand = queryCommand.sort(sortBy);
+		}
+
+		// Fields limiting
+		if (req.query.fields) {
+			const fields = req.query.fields.split(",").join(" ");
+			queryCommand = queryCommand.select(fields);
+		}
+		// Pagination
+		// limit: số object lấy về trong 1 lần gọi api
+		// skip: số trang muốn bỏ qua
+		const page = +req.query.page || 1;
+		const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+		const skip = (page - 1) * limit;
+		queryCommand.skip(skip).limit(limit);
+
+		// execute query
+		queryCommand.exec(async (err, response) => {
+			if (err) throw new Error(err.message);
+			const counts = await Products.find(formatQuery).countDocuments();
+			return res.status(200).json({
+				success: response ? true : false,
+				counts,
+				products: response ? response : "Cannot get products",
+			});
 		});
 	});
 
@@ -72,6 +117,59 @@ class ProductControllers {
 			deletedProduct: deletedProduct
 				? deletedProduct
 				: "Cannot delete product",
+		});
+	});
+
+	// [PUT] /ratings
+	ratings = asyncHandler(async (req, res) => {
+		const { _id } = req.user;
+		const { star, comment, pid } = req.body;
+		if (!star || !pid) {
+			throw new Error("Missing inputs");
+		}
+
+		const productRating = await Products.findById(pid);
+		const alreadyRating = await productRating.ratings.find(
+			(el) => el.postedBy.toString() === _id
+		);
+		if (alreadyRating) {
+			// update star && comments
+			await Products.updateOne(
+				{
+					ratings: { $elemMatch: alreadyRating },
+				},
+				{
+					$set: {
+						"ratings.$.star": star,
+						"ratings.$.comment": comment,
+					},
+				},
+				{ new: true }
+			);
+		} else {
+			// Add star && comments
+			await Products.findByIdAndUpdate(
+				pid,
+				{
+					$push: { ratings: { star, comment, postedBy: _id } },
+				},
+				{ new: true }
+			);
+		}
+
+		// Tính trung bình số sao sản phẩm
+		const sumRating = productRating.ratings.length;
+		const sumStars = productRating.ratings.reduce(
+			(total, element) => total + parseInt(element.star),
+			0
+		);
+		productRating.totalRatings =
+			Math.round((sumStars * 10) / sumRating) / 10;
+		await productRating.save();
+
+		return res.status(200).json({
+			status: true,
+			productRating,
 		});
 	});
 }

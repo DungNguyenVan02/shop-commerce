@@ -1,5 +1,5 @@
 const mongoose = require("mongoose"); // Erase if already required
-
+mongoose.set("strictQuery", false);
 // Declare the Schema of the Mongo model
 var productSchema = new mongoose.Schema(
 	{
@@ -51,7 +51,7 @@ var productSchema = new mongoose.Schema(
 			{
 				star: { type: Number },
 				postedBy: { type: mongoose.Types.ObjectId, ref: "User" },
-				Comment: { type: String },
+				comment: { type: String },
 			},
 		],
 		totalRatings: {
