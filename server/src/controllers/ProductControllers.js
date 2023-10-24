@@ -1,4 +1,4 @@
-const Products = require("../models/Product");
+const Product = require("../models/Product");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 
@@ -14,7 +14,7 @@ class ProductControllers {
 			req.body.slug = slugify(name);
 		}
 
-		const newProduct = await Products.create(req.body);
+		const newProduct = await Product.create(req.body);
 
 		return res.status(200).json({
 			success: newProduct ? true : false,
@@ -27,7 +27,7 @@ class ProductControllers {
 	// [GET] /:pid
 	getProduct = asyncHandler(async (req, res) => {
 		const { pid } = req.params;
-		const product = await Products.findById(pid);
+		const product = await Product.findById(pid);
 
 		return res.status(200).json({
 			success: product ? true : false,
@@ -56,7 +56,7 @@ class ProductControllers {
 		if (queries?.name) {
 			formatQuery.name = { $regex: queries.name, $options: "i" };
 		}
-		let queryCommand = Products.find(formatQuery);
+		let queryCommand = Product.find(formatQuery);
 
 		// Sorting
 		if (req.query.sort) {
@@ -80,7 +80,7 @@ class ProductControllers {
 		// execute query
 		queryCommand.exec(async (err, response) => {
 			if (err) throw new Error(err.message);
-			const counts = await Products.find(formatQuery).countDocuments();
+			const counts = await Product.find(formatQuery).countDocuments();
 			return res.status(200).json({
 				success: response ? true : false,
 				counts,
@@ -96,7 +96,7 @@ class ProductControllers {
 		if (name) {
 			req.body.slug = slugify(name);
 		}
-		const updatedProduct = await Products.findByIdAndUpdate(pid, req.body, {
+		const updatedProduct = await Product.findByIdAndUpdate(pid, req.body, {
 			new: true,
 		});
 
@@ -111,7 +111,7 @@ class ProductControllers {
 	// [DELETE] /:pid
 	deleteProduct = asyncHandler(async (req, res) => {
 		const { pid } = req.params;
-		const deletedProduct = await Products.findByIdAndDelete(pid);
+		const deletedProduct = await Product.findByIdAndDelete(pid);
 		return res.status(200).json({
 			success: deletedProduct ? true : false,
 			deletedProduct: deletedProduct
@@ -128,13 +128,13 @@ class ProductControllers {
 			throw new Error("Missing inputs");
 		}
 
-		const productRating = await Products.findById(pid);
+		const productRating = await Product.findById(pid);
 		const alreadyRating = await productRating.ratings.find(
 			(el) => el.postedBy.toString() === _id
 		);
 		if (alreadyRating) {
 			// update star && comments
-			await Products.updateOne(
+			await Product.updateOne(
 				{
 					ratings: { $elemMatch: alreadyRating },
 				},
@@ -148,7 +148,7 @@ class ProductControllers {
 			);
 		} else {
 			// Add star && comments
-			await Products.findByIdAndUpdate(
+			await Product.findByIdAndUpdate(
 				pid,
 				{
 					$push: { ratings: { star, comment, postedBy: _id } },
@@ -170,6 +170,25 @@ class ProductControllers {
 		return res.status(200).json({
 			status: true,
 			productRating,
+		});
+	});
+
+	// [PUT]  /upload-images/:pid
+	uploadImageProduct = asyncHandler(async (req, res) => {
+		const { pid } = req.params;
+		if (!req.files) throw new Error("Missing inputs");
+		const response = await Product.findByIdAndUpdate(
+			pid,
+			{
+				$push: { images: { $each: req.files.map((el) => el.path) } },
+			},
+			{ new: true }
+		);
+		return res.status(200).json({
+			success: response ? true : false,
+			updatedProduct: response
+				? response
+				: "Cannot upload images product",
 		});
 	});
 }

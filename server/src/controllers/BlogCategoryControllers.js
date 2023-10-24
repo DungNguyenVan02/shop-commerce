@@ -9,7 +9,7 @@ class BlogCategoryControllers {
 			success: response ? true : false,
 			getAllBlogCategory: response
 				? response
-				: "blog category product empty!",
+				: "Blog category product empty!",
 		});
 	});
 	// [POST] /
