@@ -7,11 +7,11 @@ const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
 const router = express.Router();
 
 router.put("/ratings", verifyAccessToken, productControllers.ratings);
+router.get("/", verifyAccessToken, productControllers.getAllProduct);
 
 router.use(verifyAccessToken, isAdmin);
 
 router.post("/", productControllers.createProduct);
-router.get("/", productControllers.getAllProduct);
 router.put("/:pid", productControllers.updateProduct);
 router.delete("/:pid", productControllers.deleteProduct);
 router.get("/:pid", productControllers.getProduct);

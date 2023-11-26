@@ -7,19 +7,24 @@ const router = express.Router();
 router.post("/register", userControllers.register);
 router.post("/login", userControllers.login);
 router.post("/logout", userControllers.logout);
-router.get("/current", verifyAccessToken, userControllers.getCurrent);
 router.post("/refreshtoken", userControllers.refreshAccessToken);
 router.get("/forgotpassword", userControllers.forgotPassword);
 router.put("/resetpassword", userControllers.resetPassWord);
 
-router.get("/", verifyAccessToken, isAdmin, userControllers.getUsers);
-router.delete("/", verifyAccessToken, isAdmin, userControllers.deleteUser);
+router.put("/address", verifyAccessToken, userControllers.updateAddress);
+router.put("/address/:adr", verifyAccessToken, userControllers.deleteAddress);
+router.get("/current", verifyAccessToken, userControllers.getCurrent);
+router.put("/current", verifyAccessToken, userControllers.updateUser);
+router.put("/cart", verifyAccessToken, userControllers.updateCart);
+
 router.put(
 	"/:uid",
 	verifyAccessToken,
 	isAdmin,
 	userControllers.updateUserByAdmin
 );
-router.put("/current", verifyAccessToken, userControllers.updateUser);
+
+router.get("/", verifyAccessToken, isAdmin, userControllers.getUsers);
+router.delete("/", verifyAccessToken, isAdmin, userControllers.deleteUser);
 
 module.exports = router;

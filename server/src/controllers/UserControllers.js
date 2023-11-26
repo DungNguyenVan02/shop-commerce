@@ -1,4 +1,4 @@
-const Users = require("../models/User");
+const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
 const {
 	generateAccessToken,
@@ -19,11 +19,11 @@ class UserControllers {
 			});
 		}
 
-		const user = await Users.findOne({ email });
+		const user = await User.findOne({ email });
 		if (user) {
 			throw new Error("Email has existed!");
 		} else {
-			const newUser = await Users.create(req.body);
+			const newUser = await User.create(req.body);
 			return res.status(200).json({
 				success: newUser ? true : false,
 				mes: newUser
@@ -43,7 +43,7 @@ class UserControllers {
 			});
 		}
 
-		const response = await Users.findOne({ email });
+		const response = await User.findOne({ email });
 		if (response && (await response.isCorrectPassword(passWord))) {
 			const { passWord, role, refreshToken, ...userData } =
 				response.toObject();
@@ -51,7 +51,7 @@ class UserControllers {
 			const accessToken = generateAccessToken(response._id, role);
 			const newRefreshToken = generateRefreshToken(response._id);
 			// save refresh token in database
-			await Users.findByIdAndUpdate(
+			await User.findByIdAndUpdate(
 				response._id,
 				{ newRefreshToken },
 				{ new: true }
@@ -80,7 +80,7 @@ class UserControllers {
 			throw new Error("Invalid refresh token in cookies");
 		}
 		// Xóa refresh token ở db
-		await Users.findOneAndUpdate(
+		await User.findOneAndUpdate(
 			{ refreshToken: cookie.refreshToken },
 			{ refreshToken: "" },
 			{ new: true }
@@ -97,7 +97,7 @@ class UserControllers {
 
 	getCurrent = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const user = await Users.findById(_id).select(
+		const user = await User.findById(_id).select(
 			"-refreshToken -passWord -role"
 		);
 		return res.status(200).json({
@@ -115,7 +115,7 @@ class UserControllers {
 		}
 		const rs = await jwt.verify(cookie.refreshToken, process.env.KEY_JWT);
 
-		const response = await Users.findOne({
+		const response = await User.findOne({
 			_id: rs._id,
 			refreshToken: cookie.refreshToken,
 		});
@@ -141,7 +141,7 @@ class UserControllers {
 		if (!email) {
 			throw new Error("Invalid email");
 		}
-		const user = await Users.findOne({ email });
+		const user = await User.findOne({ email });
 		if (!user) {
 			throw new Error("User not found");
 		}
@@ -173,7 +173,7 @@ class UserControllers {
 			.createHash("sha256")
 			.update(token)
 			.digest("hex");
-		const user = await Users.findOne({
+		const user = await User.findOne({
 			passWordResetToken,
 			passWordResetExpires: { $gt: Date.now() },
 		});
@@ -195,7 +195,7 @@ class UserControllers {
 
 	// [GET] /
 	getUsers = asyncHandler(async (req, res) => {
-		const response = await Users.find().select(
+		const response = await User.find().select(
 			"-refreshToken -passWord -role"
 		);
 		return res.status(200).json({
@@ -209,7 +209,7 @@ class UserControllers {
 		if (!_id) {
 			throw new Error("Missing inputs");
 		}
-		const response = await Users.findByIdAndDelete(_id);
+		const response = await User.findByIdAndDelete(_id);
 		return res.status(200).json({
 			success: response ? true : false,
 			deletedUser: response
@@ -224,7 +224,7 @@ class UserControllers {
 		if (!_id || Object.keys(req.body).length === 0) {
 			throw new Error("Missing inputs");
 		}
-		const response = await Users.findByIdAndUpdate(_id, req.body, {
+		const response = await User.findByIdAndUpdate(_id, req.body, {
 			new: true,
 		}).select("-refreshToken -passWord -role");
 		return res.status(200).json({
@@ -243,13 +243,107 @@ class UserControllers {
 		if (!uid || Object.keys(req.body).length === 0) {
 			throw new Error("Missing inputs");
 		}
-		const response = await Users.findByIdAndUpdate(uid, req.body, {
+		const response = await User.findByIdAndUpdate(uid, req.body, {
 			new: true,
 		}).select("-refreshToken -passWord -role");
 		return res.status(200).json({
 			success: response ? true : false,
 			updatedUser: response ? response : "some thing went wrong",
 		});
+	});
+
+	// [PUT] /address
+	updateAddress = asyncHandler(async (req, res) => {
+		const { _id } = req.user;
+
+		if (!req.body.address) {
+			throw new Error("Missing inputs");
+		}
+
+		const response = await User.findByIdAndUpdate(
+			_id,
+			{ $push: { address: req.body.address } },
+			{
+				new: true,
+			}
+		).select("-refreshToken -passWord -role");
+		return res.status(200).json({
+			success: response ? true : false,
+			updatedUser: response ? response : "some thing went wrong",
+		});
+	});
+
+	// [PUT] /address/:adr
+	deleteAddress = asyncHandler(async (req, res) => {
+		const { _id } = req.user;
+		const { adr } = req.params;
+
+		if (!adr) {
+			throw new Error("Missing inputs");
+		}
+
+		const response = await User.findByIdAndUpdate(
+			_id,
+			{ $pull: { address: adr } },
+			{
+				new: true,
+			}
+		).select("-refreshToken -passWord -role");
+		return res.status(200).json({
+			success: response ? true : false,
+			updatedUser: response ? response : "some thing went wrong",
+		});
+	});
+
+	// [PUT] /cart
+	updateCart = asyncHandler(async (req, res) => {
+		const { _id } = req.user;
+		const { pid, quantity, color } = req.body;
+		if (!pid || !quantity || !color) throw new Error("Missing inputs");
+		const cartUser = await User.findById(_id).select("cart");
+		const alreadyProduct = cartUser?.cart?.find(
+			(el) => el.product.toString() === pid
+		);
+		if (alreadyProduct) {
+			if (alreadyProduct.color === color) {
+				const response = await User.updateOne(
+					{ cart: { $elemMatch: alreadyProduct } },
+					{ $set: { "cart.$.quantity": quantity } },
+					{ new: true }
+				);
+
+				return res.status(200).json({
+					success: response ? true : false,
+					updatedUser: response ? response : "some thing went wrong",
+				});
+			} else {
+				const response = await User.findByIdAndUpdate(
+					_id,
+					{
+						$push: { cart: { product: pid, quantity, color } },
+					},
+					{ new: true }
+				);
+
+				return res.status(200).json({
+					success: response ? true : false,
+					updatedUser: response ? response : "some thing went wrong",
+				});
+			}
+		} else {
+			const response = await User.findByIdAndUpdate(
+				_id,
+				{
+					$push: { cart: { product: pid, quantity, color } },
+				},
+				{ new: true }
+			);
+
+			return res.status(200).json({
+				success: response ? true : false,
+				updatedUser: response ? response : "some thing went wrong",
+			});
+		}
 	});
 }
 

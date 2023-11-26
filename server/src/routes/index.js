@@ -5,6 +5,8 @@ const blogCategoryRouter = require("./BlogCategory");
 const blogRouter = require("./Blog");
 const brandRouter = require("./Brand");
 const couponRouter = require("./Coupon");
+const orderRouter = require("./Order");
+const insertDataRouter = require("./InsertData");
 
 const { notFound, errHandler } = require("../middlewares/errorHandle");
 
@@ -16,6 +18,8 @@ function routes(app) {
 	app.use("/api/blog", blogRouter);
 	app.use("/api/brand", brandRouter);
 	app.use("/api/coupon", couponRouter);
+	app.use("/api/order", orderRouter);
+	app.use("/api/insert", insertDataRouter);
 
 	// handle error
 	app.use(notFound);
