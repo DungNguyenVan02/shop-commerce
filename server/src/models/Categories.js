@@ -9,6 +9,13 @@ const categorySchema = new mongoose.Schema(
 			unique: true,
 			index: true,
 		},
+		slug: {
+			type: String,
+			required: true,
+			unique: true,
+			trim: true,
+			lowercase: true,
+		},
 		brand: {
 			type: Array,
 			required: true,

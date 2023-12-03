@@ -38,9 +38,13 @@ var productSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
-		sole: {
+		sold: {
 			type: Number,
 			default: 0,
+		},
+		thumb: {
+			type: String,
+			required: true,
 		},
 		images: {
 			type: Array,

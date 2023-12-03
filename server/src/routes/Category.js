@@ -5,7 +5,7 @@ const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
 
 const router = express.Router();
 
-router.get("/", verifyAccessToken, categoryControllers.getAllCategory);
+router.get("/", categoryControllers.getAllCategory);
 
 router.use(verifyAccessToken, isAdmin);
 router.post("/", categoryControllers.createCategory);

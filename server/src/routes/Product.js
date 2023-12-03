@@ -7,7 +7,7 @@ const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
 const router = express.Router();
 
 router.put("/ratings", verifyAccessToken, productControllers.ratings);
-router.get("/", verifyAccessToken, productControllers.getAllProduct);
+router.get("/", productControllers.getAllProduct);
 
 router.use(verifyAccessToken, isAdmin);
 
