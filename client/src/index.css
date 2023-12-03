@@ -8,3 +8,69 @@ html {
 	font-family: "Inter", sans-serif;
 	font-family: "Poppins", sans-serif;
 }
+
+div.swiper-button-prev::after,
+div.swiper-button-next::after {
+	font-size: 26px;
+	font-weight: bold;
+	color: #bbb;
+}
+
+div.swiper-button-next:hover::after,
+div.swiper-button-prev:hover::after {
+	color: rgb(223, 47, 47);
+}
+
+div.swiper-pagination {
+	display: none;
+}
+
+.tagNew {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	right: -35px;
+	font-size: 10px;
+	font-weight: 600;
+	width: 70px;
+	height: 25px;
+	background-color: #ffb400;
+	color: #fff;
+}
+
+.tagNew::before {
+	position: absolute;
+	content: "";
+	top: 17px;
+	right: -8px;
+	z-index: -1;
+	border: solid 8px;
+	border-color: transparent transparent transparent #605600;
+}
+
+.tagTrending {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	right: -35px;
+	font-size: 10px;
+	font-weight: 600;
+	width: 70px;
+	height: 25px;
+	background-color: #003cff;
+	color: #fff;
+}
+
+.tagTrending::before {
+	position: absolute;
+	content: "";
+	top: 17px;
+	right: -8px;
+	z-index: -1;
+	border: solid 8px;
+	border-color: transparent transparent transparent #165270;
+}

@@ -1,17 +1,25 @@
-import Banner from "../../layouts/components/Banner";
+import DailySale from "../../components/DailySale";
+import Banner from "../../components/Banner";
 import Sidebar from "../../layouts/components/Sidebar";
+import BestSeller from "../../components/BestSeller";
 
 function Home() {
 	return (
 		<div className="w-full">
-			<div className="flex">
-				<div className="flex flex-col gap-5 max-w-[25%] w-full">
+			<div className="flex h-[484px]">
+				<div className="flex flex-col gap-5 max-w-[20%] w-full">
 					<Sidebar />
-					<h2>Best sale</h2>
 				</div>
-				<div className="flex flex-col gap-5 max-w-[75%] w-full pl-5">
+				<div className="flex flex-col gap-5 max-w-[80%] w-full h-full pl-5">
 					<Banner />
-					<h2>Best sale</h2>
+				</div>
+			</div>
+			<div className="flex mt-6 h-[484px]">
+				<div className="flex flex-col gap-5 max-w-[20%] w-full">
+					<DailySale />
+				</div>
+				<div className="flex flex-col gap-5 max-w-[80%] w-full pl-5">
+					<BestSeller />
 				</div>
 			</div>
 		</div>

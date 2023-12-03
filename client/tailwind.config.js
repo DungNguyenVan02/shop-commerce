@@ -14,6 +14,7 @@ module.exports = {
 			},
 			colors: {
 				main: "#ee3131",
+				star: "#f1b400",
 			},
 		},
 	},

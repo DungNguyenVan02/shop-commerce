@@ -1,7 +1,10 @@
 const routes = {
 	home: "/",
-	product: "/product",
+	products: "/products",
 	login: "/login",
+	blogs: "/blogs",
+	services: "/services",
+	FAQs: "/FAQs",
 };
 
 export default routes;
