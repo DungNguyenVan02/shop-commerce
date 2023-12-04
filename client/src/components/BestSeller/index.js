@@ -43,7 +43,7 @@ function BestSeller() {
 		const rs = section.find((el) => el.id === id);
 		return rs?.data?.map((item) => (
 			<SwiperSlide key={item._id}>
-				<Product data={item} active={active} />
+				<Product data={item} pid={item._id} active={active} />
 			</SwiperSlide>
 		));
 	};
@@ -74,7 +74,7 @@ function BestSeller() {
 					centeredSlides={true}
 					loop={true}
 					autoplay={{
-						delay: 1500,
+						delay: 3500,
 						disableOnInteraction: false,
 					}}
 					pagination={{
@@ -82,10 +82,42 @@ function BestSeller() {
 					}}
 					speed={600}
 					navigation={true}
+					breakpoints={{
+						0: {
+							slidesPerView: 1,
+							allowTouchMove: true,
+							navigation: false,
+							autoplay: {
+								delay: 4000,
+								disableOnInteraction: false,
+							},
+						},
+						500: {
+							slidesPerView: 2,
+							allowTouchMove: true,
+						},
+
+						1040: {
+							slidesPerView: 3,
+							allowTouchMove: true,
+						},
+					}}
 					className="mySwiper"
 				>
 					{handleShowSlider(active)}
 				</Swiper>
+			</div>
+			<div className="mt-4 flex gap-4">
+				<img
+					className="flex-1 object-cover cursor-pointer"
+					src="https://digital-world-2.myshopify.com/cdn/shop/files/banner2-home2_2000x_crop_center.png?v=1613166657"
+					alt="seller"
+				/>
+				<img
+					className="flex-1 object-cover cursor-pointer"
+					src="https://digital-world-2.myshopify.com/cdn/shop/files/banner1-home2_2000x_crop_center.png?v=1613166657"
+					alt="seller"
+				/>
 			</div>
 		</div>
 	);

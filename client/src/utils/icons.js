@@ -4,9 +4,11 @@ import {
 	FaLaptop,
 	FaCameraRetro,
 	FaList,
+	FaHeart,
+	FaRegEye,
 } from "react-icons/fa";
 
-import { BsSpeaker } from "react-icons/bs";
+import { BsSpeaker, BsList } from "react-icons/bs";
 
 import { FaCircleUser, FaHeadphonesSimple } from "react-icons/fa6";
 import { CiSearch, CiCamera } from "react-icons/ci";
@@ -23,6 +25,8 @@ const icons = {
 	FaCircleUser,
 	FaHeadphonesSimple,
 	FaList,
+	FaHeart,
+	FaRegEye,
 
 	CiSearch,
 
@@ -36,6 +40,8 @@ const icons = {
 	AiFillPrinter,
 
 	BsSpeaker,
+	BsList,
+
 	CiCamera,
 };
 

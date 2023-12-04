@@ -10,9 +10,7 @@ function DefaultLayout({ children }) {
 				<Navigation />
 			</div>
 			<div className="max-w-main w-full my-7 px-5">{children}</div>
-			<div className="w-full px-5">
-				<Footer />
-			</div>
+			<Footer />
 		</div>
 	);
 }
