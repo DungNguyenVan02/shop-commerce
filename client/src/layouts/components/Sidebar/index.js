@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { categoriesSelector } from "../../../redux/selector";
 function Sidebar() {
 	const { categories } = useSelector(categoriesSelector);
+
 	const {
 		FaList,
 		IoIosPhonePortrait,

@@ -9,6 +9,7 @@ html {
 	font-family: "Poppins", sans-serif;
 }
 
+/* Tag seller */
 div.swiper-button-prev::after,
 div.swiper-button-next::after {
 	font-size: 26px;

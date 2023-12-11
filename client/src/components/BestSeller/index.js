@@ -1,52 +1,49 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation, Autoplay } from "swiper";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-
 import { useEffect, useState } from "react";
 import { apiGetProducts } from "../../apis/products";
-import Product from "../Products";
+import Slider from "../Slider";
+import { useDispatch } from "react-redux";
+import { getNewProducts } from "../../redux/asyncActions";
+import { useSelector } from "react-redux";
+import { newProductSelector } from "../../redux/selector";
 
 function BestSeller() {
+	const dispatch = useDispatch();
 	const [bestSeller, setBestSeller] = useState(null);
-	const [newProduct, setNewProduct] = useState(null);
+	const [products, setProducts] = useState(null);
 	const [active, setActive] = useState(0);
 
 	const fetchProducts = async () => {
-		const response = await Promise.all([
-			apiGetProducts({ sort: "-sold" }),
-			apiGetProducts({ sort: "-createdAt" }),
-		]);
-		if (response[0]?.success) setBestSeller(response[0]?.products);
-		if (response[1]?.success) setNewProduct(response[1]?.products);
+		const response = await apiGetProducts({ sort: "-sold" });
+		if (response.success) {
+			setBestSeller(response.products);
+			setProducts(response.products);
+		}
 	};
+
+	const { newProduct } = useSelector(newProductSelector);
+
 	useEffect(() => {
 		fetchProducts();
+		dispatch(getNewProducts());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		if (active === 0) setProducts(bestSeller);
+		if (active === 1) setProducts(newProduct);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [active]);
 
 	const section = [
 		{
 			id: 0,
 			title: "BEST SELLER",
-			data: bestSeller,
 		},
 		{
 			id: 1,
 			title: "NEW ARRIVALS",
-			data: newProduct,
 		},
 	];
-	const handleShowSlider = (id) => {
-		const rs = section.find((el) => el.id === id);
-		return rs?.data?.map((item) => (
-			<SwiperSlide key={item._id}>
-				<Product data={item} pid={item._id} active={active} />
-			</SwiperSlide>
-		));
-	};
 
 	return (
 		<div>
@@ -67,45 +64,7 @@ function BestSeller() {
 				})}
 			</ul>
 			<div className="mt-4">
-				<Swiper
-					modules={[Navigation, Pagination, Autoplay]}
-					slidesPerView={3}
-					spaceBetween={20}
-					centeredSlides={true}
-					loop={true}
-					autoplay={{
-						delay: 3500,
-						disableOnInteraction: false,
-					}}
-					pagination={{
-						dynamicBullets: true,
-					}}
-					speed={600}
-					navigation={true}
-					breakpoints={{
-						0: {
-							slidesPerView: 1,
-							allowTouchMove: true,
-							navigation: false,
-							autoplay: {
-								delay: 4000,
-								disableOnInteraction: false,
-							},
-						},
-						500: {
-							slidesPerView: 2,
-							allowTouchMove: true,
-						},
-
-						1040: {
-							slidesPerView: 3,
-							allowTouchMove: true,
-						},
-					}}
-					className="mySwiper"
-				>
-					{handleShowSlider(active)}
-				</Swiper>
+				<Slider products={products} active={active} />
 			</div>
 			<div className="mt-4 flex gap-4">
 				<img

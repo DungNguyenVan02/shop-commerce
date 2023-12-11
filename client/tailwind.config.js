@@ -16,6 +16,7 @@ module.exports = {
 				main: "#ee3131",
 				star: "#f1b400",
 			},
+
 			keyframes: {
 				slideTop: {
 					"0%": {
@@ -27,10 +28,21 @@ module.exports = {
 						transform: "translateY(0);",
 					},
 				},
+				textGradient: {
+					"0%, 100%": {
+						"background-size": "200% 200%",
+						"background-position": "left center",
+					},
+					"50%": {
+						"background-size": "200% 200%",
+						"background-position": "right center",
+					},
+				},
 			},
 			animation: {
 				slideTop:
 					"slideTop 0.4s  cubic-bezier(0.250, 0.460, 0.450, 0.940) both;",
+				textGradient: "textGradient 3s ease infinite",
 			},
 		},
 	},

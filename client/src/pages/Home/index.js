@@ -1,8 +1,9 @@
-import DailySale from "../../components/DailySale";
+// import DailySale from "../../components/DailySale";
 import Banner from "../../components/Banner";
 import Sidebar from "../../layouts/components/Sidebar";
 import BestSeller from "../../components/BestSeller";
 import FeaturedProduct from "../../components/FeaturedProduct";
+import NewArrivals from "../../components/NewArrivals";
 
 function Home() {
 	return (
@@ -17,7 +18,7 @@ function Home() {
 			</div>
 			<div className="flex">
 				<div className="flex flex-col gap-5 max-w-[24%] w-full">
-					<DailySale />
+					{/* <DailySale /> */}
 				</div>
 				<div className="flex flex-col gap-5 max-w-[76%] w-full pl-5">
 					<BestSeller />
@@ -26,6 +27,7 @@ function Home() {
 			<div>
 				<FeaturedProduct />
 			</div>
+			<NewArrivals />
 		</div>
 	);
 }

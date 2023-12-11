@@ -1,16 +1,16 @@
 import { formatMoney, renderStar } from "../../utils/helper";
+import images from "../../assets/images";
+
 function CardProduct({ data }) {
 	return (
-		<div className="flex-auto w-1/3 px-[10px] mb-[10px]">
-			<div className="flex w-full items-center border">
-				<div className="w-[86px] h-[86px]">
-					<img
-						className="w-full object-cover"
-						src={data?.thumb}
-						alt={data?.name}
-					/>
-				</div>
-				<div className="gap-1 flex flex-col">
+		<div className="col g-l-4 g-m-6 g-c-12 cursor-pointer">
+			<div className="flex items-center border p-2 mb-4 gap-4">
+				<img
+					className="w-[86px] h-[86px] object-cover"
+					src={data?.thumb || images.defaultProduct}
+					alt={data?.name}
+				/>
+				<div className="flex flex-col">
 					<h3 className="capitalize text-[16px] line-clamp-1">
 						{data?.name}
 					</h3>
