@@ -5,7 +5,9 @@ const slugify = require("slugify");
 class CategoryControllers {
 	// [GET] /
 	getAllCategory = asyncHandler(async (req, res) => {
-		const response = await Categories.find().select("name _id brand slug");
+		const response = await Categories.find().select(
+			"name _id brand slug image"
+		);
 		return res.json({
 			success: response ? true : false,
 			getAllCategory: response ? response : "category product empty!",

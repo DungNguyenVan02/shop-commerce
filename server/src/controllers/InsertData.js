@@ -27,6 +27,7 @@ const fnCate = async (category) => {
 		name: category?.cate,
 		slug: slugify(category?.cate),
 		brand: category?.brand,
+		image: category?.image,
 	});
 };
 
