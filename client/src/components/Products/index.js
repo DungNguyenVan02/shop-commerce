@@ -27,7 +27,7 @@ function Product({ data, pid, active }) {
 				<img
 					src={data?.thumb || images.defaultProduct}
 					alt=""
-					className="w-full h-full object-contain"
+					className="max-w-[280px] h-full object-contain mx-auto"
 				/>
 				{active === 0 ? (
 					<span className="tagTrending">Trending</span>

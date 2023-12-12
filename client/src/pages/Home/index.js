@@ -4,6 +4,7 @@ import Sidebar from "../../layouts/components/Sidebar";
 import BestSeller from "../../components/BestSeller";
 import FeaturedProduct from "../../components/FeaturedProduct";
 import NewArrivals from "../../components/NewArrivals";
+import HotCollection from "../../components/HotCollection";
 
 function Home() {
 	return (
@@ -28,6 +29,7 @@ function Home() {
 				<FeaturedProduct />
 			</div>
 			<NewArrivals />
+			<HotCollection />
 		</div>
 	);
 }

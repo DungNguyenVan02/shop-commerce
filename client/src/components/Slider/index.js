@@ -21,7 +21,7 @@ function Slider({ products, active, show }) {
 			<Swiper
 				modules={[Navigation, Pagination, Autoplay]}
 				slidesPerView={show || 3}
-				spaceBetween={20}
+				spaceBetween={15}
 				centeredSlides={true}
 				loop={true}
 				autoplay={{
