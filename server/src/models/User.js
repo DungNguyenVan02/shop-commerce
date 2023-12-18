@@ -18,12 +18,12 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			unique: true,
 		},
-		mobile: {
-			type: String,
-			required: true,
+		phone: {
+			type: Number,
 			unique: true,
+			required: true,
 		},
-		passWord: {
+		password: {
 			type: String,
 			required: true,
 		},
@@ -50,13 +50,13 @@ const userSchema = new mongoose.Schema(
 		refreshToken: {
 			type: String,
 		},
-		passWordChangeAt: {
+		passwordChangeAt: {
 			type: String,
 		},
-		passWordResetToken: {
+		passwordResetToken: {
 			type: String,
 		},
-		passWordResetExpires: {
+		passwordResetExpires: {
 			type: String,
 		},
 	},
@@ -64,24 +64,24 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-	if (!this.isModified("passWord")) {
+	if (!this.isModified("password")) {
 		next();
 	}
 	const salt = bcrypt.genSaltSync(+process.env.KEY_SALT);
-	this.passWord = await bcrypt.hash(this.passWord, salt);
+	this.password = await bcrypt.hash(this.password, salt);
 });
 
 userSchema.methods = {
-	isCorrectPassword: async function (passWord) {
-		return await bcrypt.compare(passWord, this.passWord);
+	isCorrectPassword: async function (password) {
+		return await bcrypt.compare(password, this.password);
 	},
 	createPassWordChangeToken: function () {
 		const resetToken = crypto.randomBytes(64).toString("hex");
-		this.passWordResetToken = crypto
+		this.passwordResetToken = crypto
 			.createHash("sha256")
 			.update(resetToken)
 			.digest("hex");
-		this.passWordResetExpires = Date.now() + 15 * 60 * 1000;
+		this.passwordResetExpires = Date.now() + 15 * 60 * 1000;
 		return resetToken;
 	},
 };

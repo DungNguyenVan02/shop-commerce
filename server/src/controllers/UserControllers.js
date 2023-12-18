@@ -11,32 +11,32 @@ const crypto = require("crypto");
 class UserControllers {
 	// [POST] /register
 	register = asyncHandler(async (req, res, next) => {
-		const { firstName, lastName, email, passWord } = req.body;
-		if (!firstName || !lastName || !email || !passWord) {
+		const { firstName, lastName, phone, email, password } = req.body;
+		if (!firstName || !lastName || !phone || !email || !password) {
 			return res.status(403).json({
 				success: false,
 				mes: "Missing required fields",
 			});
 		}
 
-		const user = await User.findOne({ email });
+		const user = await User.findOne({ email, phone });
 		if (user) {
-			throw new Error("Email has existed!");
+			throw new Error("Email or phone has existed!");
 		} else {
 			const newUser = await User.create(req.body);
 			return res.status(200).json({
 				success: newUser ? true : false,
 				mes: newUser
-					? "Register is successfully!"
-					: "Something went wrong",
+					? "Register is successfully"
+					: "Something went wrong!",
 			});
 		}
 	});
 
 	// [POST] /login
 	login = asyncHandler(async (req, res, next) => {
-		const { email, passWord } = req.body;
-		if (!email || !passWord) {
+		const { email, password } = req.body;
+		if (!email || !password) {
 			return res.status(403).json({
 				success: false,
 				mes: "Missing required fields",
@@ -44,18 +44,21 @@ class UserControllers {
 		}
 
 		const response = await User.findOne({ email });
-		if (response && (await response.isCorrectPassword(passWord))) {
-			const { passWord, role, refreshToken, ...userData } =
+		if (response && (await response.isCorrectPassword(password))) {
+			const { password, role, refreshToken, ...userData } =
 				response.toObject();
+
 			// create access token and refresh token
 			const accessToken = generateAccessToken(response._id, role);
 			const newRefreshToken = generateRefreshToken(response._id);
+
 			// save refresh token in database
 			await User.findByIdAndUpdate(
 				response._id,
 				{ newRefreshToken },
 				{ new: true }
 			);
+
 			// save refresh token in cookie
 			res.cookie("refreshToken", newRefreshToken, {
 				httpOnly: true,
@@ -98,7 +101,7 @@ class UserControllers {
 	getCurrent = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
 		const user = await User.findById(_id).select(
-			"-refreshToken -passWord -role"
+			"-refreshToken -password -role"
 		);
 		return res.status(200).json({
 			success: user ? true : false,
@@ -165,27 +168,27 @@ class UserControllers {
 
 	// [PUT] /resetpassword
 	resetPassWord = asyncHandler(async (req, res, next) => {
-		const { passWord, token } = req.body;
-		if (!passWord || !token) {
+		const { password, token } = req.body;
+		if (!password || !token) {
 			throw new Error("Missing inputs");
 		}
-		const passWordResetToken = crypto
+		const passwordResetToken = crypto
 			.createHash("sha256")
 			.update(token)
 			.digest("hex");
 		const user = await User.findOne({
-			passWordResetToken,
-			passWordResetExpires: { $gt: Date.now() },
+			passwordResetToken,
+			passwordResetExpires: { $gt: Date.now() },
 		});
 
 		if (!user) {
 			throw new Error("Invalid reset token");
 		}
 
-		user.passWord = passWord;
-		user.passWordChangeAt = Date.now();
-		user.passWordResetToken = undefined;
-		user.passWordResetExpires = undefined;
+		user.password = password;
+		user.passwordChangeAt = Date.now();
+		user.passwordResetToken = undefined;
+		user.passwordResetExpires = undefined;
 		await user.save();
 		return res.status(200).json({
 			success: user ? true : false,
@@ -196,7 +199,7 @@ class UserControllers {
 	// [GET] /
 	getUsers = asyncHandler(async (req, res) => {
 		const response = await User.find().select(
-			"-refreshToken -passWord -role"
+			"-refreshToken -password -role"
 		);
 		return res.status(200).json({
 			success: response ? true : false,
@@ -226,7 +229,7 @@ class UserControllers {
 		}
 		const response = await User.findByIdAndUpdate(_id, req.body, {
 			new: true,
-		}).select("-refreshToken -passWord -role");
+		}).select("-refreshToken -password -role");
 		return res.status(200).json({
 			success: response ? true : false,
 			updatedUser: response ? response : "some thing went wrong",
@@ -245,7 +248,7 @@ class UserControllers {
 		}
 		const response = await User.findByIdAndUpdate(uid, req.body, {
 			new: true,
-		}).select("-refreshToken -passWord -role");
+		}).select("-refreshToken -password -role");
 		return res.status(200).json({
 			success: response ? true : false,
 			updatedUser: response ? response : "some thing went wrong",
@@ -266,7 +269,7 @@ class UserControllers {
 			{
 				new: true,
 			}
-		).select("-refreshToken -passWord -role");
+		).select("-refreshToken -password -role");
 		return res.status(200).json({
 			success: response ? true : false,
 			updatedUser: response ? response : "some thing went wrong",
@@ -288,7 +291,7 @@ class UserControllers {
 			{
 				new: true,
 			}
-		).select("-refreshToken -passWord -role");
+		).select("-refreshToken -password -role");
 		return res.status(200).json({
 			success: response ? true : false,
 			updatedUser: response ? response : "some thing went wrong",
