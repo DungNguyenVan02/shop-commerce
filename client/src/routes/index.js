@@ -1,5 +1,6 @@
 import routes from "../config/routes";
 import Blogs from "../pages/Blogs";
+import DetailProduct from "../pages/DetailProduct";
 import FAQs from "../pages/FAQs";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -17,6 +18,7 @@ const publicRoutes = [
 	{
 		path: routes.login,
 		component: Login,
+		headerNone: true,
 	},
 	{
 		path: routes.blogs,
@@ -29,6 +31,10 @@ const publicRoutes = [
 	{
 		path: routes.FAQs,
 		component: FAQs,
+	},
+	{
+		path: routes.detailProduct_pid_name,
+		component: DetailProduct,
 	},
 ];
 

@@ -3,11 +3,16 @@ import images from "../../assets/images";
 import SelectOptions from "../SelectOptions";
 import { formatMoney, renderStar } from "../../utils/helper";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import routes from "../../config/routes";
 function Product({ data, pid, active }) {
 	const [isShowOptions, setIsShowOptions] = useState(false);
 	const { FaHeart, BsList, FaRegEye } = icons;
 	return (
-		<div className="p-[15px] border border-[#ebebeb] cursor-pointer">
+		<Link
+			to={`${routes.detailProduct}/${data?._id}/${data?.name}`}
+			className="p-[15px] border border-[#ebebeb] cursor-pointer"
+		>
 			<div
 				className="w-full h-full mx-auto relative"
 				onMouseEnter={() =>
@@ -44,7 +49,7 @@ function Product({ data, pid, active }) {
 				<h3 className="line-clamp-1">{data?.name}</h3>
 				<span className="">{formatMoney(data?.price)}</span>
 			</div>
-		</div>
+		</Link>
 	);
 }
 

@@ -35,7 +35,10 @@ function HotCollection() {
 				<div className="row">
 					{hotCollection?.map((item) => {
 						return (
-							<div key={item._id} className="col g-l-4">
+							<div
+								key={item._id}
+								className="col g-l-4 g-m-6 g-c-16"
+							>
 								<div className="flex items-center border mt-4 p-5">
 									<img
 										src={

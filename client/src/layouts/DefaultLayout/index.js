@@ -5,10 +5,8 @@ import Navigation from "../components/Navigation";
 function DefaultLayout({ children }) {
 	return (
 		<div className="w-full flex items-center flex-col">
-			<div className="max-w-main w-full px-5">
-				<Header />
-				<Navigation />
-			</div>
+			<Header />
+			<Navigation />
 			<div className="max-w-main w-full my-7 px-5">{children}</div>
 			<Footer />
 		</div>

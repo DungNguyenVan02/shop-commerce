@@ -6,6 +6,13 @@ import {
 	FaList,
 	FaHeart,
 	FaRegEye,
+	FaPhoneAlt,
+	FaFacebookF,
+	FaTwitter,
+	FaPinterest,
+	FaLinkedinIn,
+	FaFlickr,
+	FaEyeSlash,
 } from "react-icons/fa";
 
 import { BsSpeaker, BsList } from "react-icons/bs";
@@ -16,10 +23,14 @@ import {
 	IoMdArrowDropdown,
 	IoIosPhonePortrait,
 	IoIosArrowForward,
+	IoIosMail,
+	IoLogoGoogleplus,
 } from "react-icons/io";
 import { SlScreenDesktop } from "react-icons/sl";
 import { AiFillPrinter } from "react-icons/ai";
 import { IoStar, IoStarOutline } from "react-icons/io5";
+
+import { GiPositionMarker } from "react-icons/gi";
 
 const icons = {
 	FaLaptop,
@@ -31,6 +42,14 @@ const icons = {
 	FaList,
 	FaHeart,
 	FaRegEye,
+	FaPhoneAlt,
+	FaEyeSlash,
+
+	FaLinkedinIn,
+	FaFacebookF,
+	FaTwitter,
+	FaPinterest,
+	FaFlickr,
 
 	CiSearch,
 
@@ -39,6 +58,8 @@ const icons = {
 	IoStar,
 	IoStarOutline,
 	IoIosArrowForward,
+	IoIosMail,
+	IoLogoGoogleplus,
 
 	SlScreenDesktop,
 
@@ -48,6 +69,8 @@ const icons = {
 	BsList,
 
 	CiCamera,
+
+	GiPositionMarker,
 };
 
 export default icons;

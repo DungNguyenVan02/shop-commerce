@@ -5,6 +5,9 @@ const routes = {
 	blogs: "/blogs",
 	services: "/services",
 	FAQs: "/FAQs",
+
+	detailProduct_pid_name: "/product/:pid/:name",
+	detailProduct: "/product",
 };
 
 export default routes;

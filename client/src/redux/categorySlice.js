@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as actions from "./asyncActions";
 const categorySlice = createSlice({
-	name: "app",
+	name: "category",
 	initialState: {
 		categories: null,
-		isLoading: false,
 	},
 	actions: {},
 	extraReducers: (builder) => {
