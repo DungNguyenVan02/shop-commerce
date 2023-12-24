@@ -1,16 +1,35 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Search from "../../../components/Search";
 import images from "../../../assets/images";
 import icons from "../../../utils/icons";
 import routes from "../../../config/routes";
 import { useSelector } from "react-redux";
-import { userSelector } from "../../../redux/selector";
+import { userSelector as selector } from "../../../redux/selector";
+import { getCurrentUser } from "../../../redux/asyncActions";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../redux/userSlice";
 
 function Header() {
-	const { FaShoppingCart, FaCircleUser } = icons;
-	const { isLogin, currentUser } = useSelector(userSelector);
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-	console.log(isLogin, currentUser);
+	const [isHover, setIsHover] = useState(false);
+	const { FaShoppingCart, FaCircleUser } = icons;
+	const { isLogin, currentUser } = useSelector(selector);
+
+	useEffect(() => {
+		if (isLogin) {
+			dispatch(getCurrentUser());
+		}
+	}, [isLogin, dispatch]);
+
+	const handleLogout = () => {
+		dispatch(logout());
+		navigate(routes.home);
+	};
+
 	return (
 		<header className="w-full flex flex-col items-center">
 			<div className="w-full h-[38px] bg-main">
@@ -18,35 +37,67 @@ function Header() {
 					<div>
 						<span>ORDER ONLINE OR CALL US (+1800) 000 8808</span>
 					</div>
-					<div>
-						<Link
-							to={routes.login}
-							className="cursor-pointer hover:opacity-70"
+					{isLogin ? (
+						<div
+							className="relative flex items-center gap-2 cursor-pointer opacity-85"
+							onMouseEnter={() => setIsHover(true)}
+							onMouseLeave={() => setIsHover(false)}
 						>
-							Sign In or Create Account
-						</Link>
-					</div>
+							<FaCircleUser size={24} />
+							<h2>{`${currentUser?.firstName} ${currentUser?.lastName}`}</h2>
+							{isHover && (
+								<ul
+									className="absolute top-[30px] w-[140px] right-0 py-2 bg-white
+							 text-gray-900 rounded-md shadow-md text-[14px] z-20 subArrow"
+								>
+									<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
+										My account
+									</li>
+									<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
+										My purchase
+									</li>
+									<li
+										onClick={handleLogout}
+										className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400"
+									>
+										Logout
+									</li>
+								</ul>
+							)}
+						</div>
+					) : (
+						<div className="flex gap-2">
+							<Link
+								to={routes.register}
+								className="cursor-pointer hover:opacity-70"
+							>
+								Sign up
+							</Link>
+							<span className="opacity-60">|</span>
+							<Link
+								to={routes.login}
+								className="cursor-pointer hover:opacity-70"
+							>
+								Login
+							</Link>
+						</div>
+					)}
 				</div>
 			</div>
-			<div className="max-w-main w-full px-5 h-[110px] flex justify-between items-center py-[35px] border-b">
+			<div className="max-w-main w-full px-5 h-[110px] flex justify-between items-center py-[35px] border-b gap-[60px]">
 				<Link to={routes.home}>
 					<img
-						className="w-[234px] object-contain"
+						className="w-[234px] object-contain flex-1"
 						src={images.logo}
 						alt="digital world"
 					/>
 				</Link>
 				<Search />
-				<div className="flex items-center gap-7">
-					<div className="relative cursor-pointer">
-						<FaShoppingCart size={24} />
-						<span className=" w-5 h-5 bg-main text-center text-white text-[14px] rounded-full absolute top-[-10px] left-3">
-							1
-						</span>
-					</div>
-					<div className="cursor-pointer">
-						<FaCircleUser size={24} />
-					</div>
+				<div className="relative cursor-pointer opacity-85">
+					<FaShoppingCart size={24} />
+					<span className=" w-5 h-5 bg-main text-center text-white text-[14px] rounded-full absolute top-[-10px] left-3">
+						1
+					</span>
 				</div>
 			</div>
 		</header>

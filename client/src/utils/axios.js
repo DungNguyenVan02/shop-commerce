@@ -7,6 +7,16 @@ const instance = axios.create({
 // Thêm một bộ đón chặn request
 instance.interceptors.request.use(
 	function (config) {
+		const token = JSON.parse(
+			window.localStorage.getItem("persist:shopDigital")
+		);
+
+		if (token) {
+			const accessToken = JSON.parse(token.token);
+			config.headers = { Authorization: "Bearer " + accessToken };
+			return config;
+		}
+
 		// Làm gì đó trước khi request dược gửi đi
 		return config;
 	},

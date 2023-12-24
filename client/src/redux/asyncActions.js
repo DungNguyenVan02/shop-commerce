@@ -22,3 +22,26 @@ export const getNewProducts = createAsyncThunk(
 		return response.products;
 	}
 );
+
+export const getCurrentUser = createAsyncThunk(
+	"user/current",
+	async (data, { rejectWithValue }) => {
+		const response = await apis.apiGetCurrentUser();
+		if (!response.success) {
+			return rejectWithValue(response);
+		}
+		return response.res;
+	}
+);
+
+export const logoutUser = createAsyncThunk(
+	"user/logout",
+	async (data, { rejectWithValue }) => {
+		const response = await apis.apiLogout();
+		console.log(response);
+		if (!response.success) {
+			return rejectWithValue(response);
+		}
+		return response;
+	}
+);

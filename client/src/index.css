@@ -95,3 +95,20 @@ div.swiper-pagination {
 	background-color: #fff;
 	left: -2px;
 }
+
+.subArrow::after {
+	position: absolute;
+	content: "";
+	top: -18px;
+	right: 34px;
+	border: solid 10px;
+	border-color: transparent transparent white transparent;
+}
+.subArrow::before {
+	position: absolute;
+	content: "";
+	top: -14px;
+	right: 0;
+	left: 0;
+	height: 20px;
+}
