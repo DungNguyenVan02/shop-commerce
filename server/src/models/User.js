@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
 			unique: true,
 		},
 		phone: {
-			type: Number,
+			type: String,
 			unique: true,
 			required: true,
 		},
@@ -58,6 +58,17 @@ const userSchema = new mongoose.Schema(
 		},
 		passwordResetExpires: {
 			type: String,
+		},
+		registerTokenExpires: {
+			type: Date,
+		},
+		codeVerified: {
+			type: String,
+			default: null,
+		},
+		isVerified: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	{ timestamps: true }

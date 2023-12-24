@@ -1,4 +1,3 @@
-const { response } = require("express");
 const Blog = require("../models/Blog");
 const asyncHandler = require("express-async-handler");
 
