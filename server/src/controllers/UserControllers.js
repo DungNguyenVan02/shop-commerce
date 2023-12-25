@@ -171,7 +171,7 @@ class UserControllers {
 				data: userData,
 			});
 		} else {
-			throw new Error("Invalid credentials");
+			throw new Error("Account or password is incorrect");
 		}
 	});
 
