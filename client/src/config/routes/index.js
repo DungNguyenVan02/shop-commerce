@@ -9,8 +9,7 @@ const routes = {
 
 	finalRegister: "/finalregister/:status",
 
-	detailProduct_pid_name: "/product/:pid/:name",
-	detailProduct: "/product",
+	detailProduct_category_pid_name: "/:category/:pid/:name",
 };
 
 export default routes;

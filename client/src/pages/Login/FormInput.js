@@ -11,18 +11,20 @@ import { schemasValidLogin } from "../../utils/schemasValid";
 import { Link } from "react-router-dom";
 import routes from "../../config/routes";
 import icons from "../../utils/icons";
+import { SpinnerAnimation } from "../../components/Animation";
 
 function FormInput() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [isShowPass, setIsShowPass] = useState(false);
+	const [isAnimation, setAnimation] = useState(false);
 	const { FaEyeSlash, FaRegEye } = icons;
 
 	const onSubmit = async (value, actions) => {
+		setAnimation(true);
 		actions.resetForm();
 		const response = await apiLogin(value);
 		if (response?.success) {
-			toast.info("Welcome to digital world!");
 			dispatch(
 				login({
 					isLogin: true,
@@ -30,9 +32,15 @@ function FormInput() {
 					token: response.accessToken,
 				})
 			);
-			navigate(routes.home);
+			setTimeout(() => {
+				toast.info("Welcome to digital world!");
+				console.log("test");
+				setAnimation(false);
+				navigate(routes.home);
+			}, 1500);
 		} else {
 			Swal.fire("Oops!", response.mes, "error");
+			setAnimation(false);
 		}
 	};
 
@@ -128,6 +136,7 @@ function FormInput() {
 					isDisabled={isSubmitting}
 					type="submit"
 					title="Log in"
+					rightAnimation={isAnimation && <SpinnerAnimation />}
 				/>
 			</div>
 			<div className="font-[300] text-sm pb-4">

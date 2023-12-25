@@ -9,7 +9,7 @@ import Blog from "../../components/Blog";
 
 function Home() {
 	return (
-		<div className="w-full flex flex-col gap-6">
+		<div className="max-w-main w-full my-7 mx-auto flex flex-col gap-6">
 			<div className="flex h-[486px]">
 				<div className="flex flex-col gap-5 max-w-[24%] w-full">
 					<Sidebar />

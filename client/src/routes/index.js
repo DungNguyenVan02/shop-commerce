@@ -40,7 +40,7 @@ const publicRoutes = [
 		component: FAQs,
 	},
 	{
-		path: routes.detailProduct_pid_name,
+		path: routes.detailProduct_category_pid_name,
 		component: DetailProduct,
 	},
 	{

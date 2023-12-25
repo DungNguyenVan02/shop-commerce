@@ -1,10 +1,12 @@
 import { memo } from "react";
 function Button({
 	leftICon,
+	leftAnimation,
 	rightICon,
+	rightAnimation,
 	handleClick,
 	title,
-	style,
+	styleCustom,
 	isDisabled,
 	type,
 }) {
@@ -13,8 +15,8 @@ function Button({
 			disabled={isDisabled}
 			type={type || "button"}
 			className={
-				style
-					? style
+				styleCustom
+					? styleCustom
 					: `px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-full hover:opacity-90 ${
 							isDisabled ? "opacity-40" : ""
 					  }`
@@ -23,9 +25,17 @@ function Button({
 				handleClick && handleClick();
 			}}
 		>
-			{leftICon}
-			<span>{title}</span>
-			{rightICon}
+			<span className="flex justify-center items-center relative">
+				{leftICon}
+				{leftAnimation}
+				<span>{title}</span>
+				{rightAnimation && (
+					<i className="absolute top-0 right-[36%] translate-x-[50%]">
+						{rightAnimation}
+					</i>
+				)}
+				{rightICon}
+			</span>
 		</button>
 	);
 }

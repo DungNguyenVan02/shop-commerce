@@ -45,16 +45,3 @@ export const formatTimes = (number) => {
 	const s = Math.floor((number % 3600) % 60);
 	return { h, m, s };
 };
-
-export const convertToDisplayName = (inputString) => {
-	// Tách các từ dựa trên chữ hoa
-	const words = inputString.match(/[A-Za-z][a-z]*/g);
-
-	// Chuyển mỗi từ thành chữ in hoa ở đầu
-	const result = words.map(function (word) {
-		return word.charAt(0).toUpperCase() + word.slice(1);
-	});
-
-	// Kết hợp các từ lại thành chuỗi mới
-	return result.join(" ");
-};

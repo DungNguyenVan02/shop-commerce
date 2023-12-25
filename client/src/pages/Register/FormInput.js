@@ -8,22 +8,33 @@ import { Link } from "react-router-dom";
 import routes from "../../config/routes";
 import icons from "../../utils/icons";
 import { useNavigate } from "react-router-dom";
+import { SpinnerAnimation } from "../../components/Animation";
 
 function FormInput() {
 	const navigate = useNavigate();
 	const [isConfirm, setIsConfirm] = useState(false);
+	const [isAnimate, setAnimate] = useState(false);
 	const [valueConfirm, setValueConfirm] = useState("");
 	const [isShowPass, setIsShowPass] = useState(false);
 	const [isShowConfirmPass, setIsShowConfirmPass] = useState(false);
 	const { FaEyeSlash, FaRegEye } = icons;
 
 	const onSubmit = async (value, actions) => {
+		setAnimate(true);
 		actions.resetForm();
 		const response = await apiRegister(value);
 		if (response?.success) {
-			setIsConfirm(true);
+			Swal.fire(
+				"Notifications",
+				"Please check your email and verify with us",
+				"success"
+			).then(() => {
+				setIsConfirm(true);
+				setAnimate(false);
+			});
 		} else {
 			Swal.fire("Oops!", response.mes, "error");
+			setAnimate(false);
 		}
 	};
 
@@ -257,6 +268,7 @@ function FormInput() {
 						isDisabled={isSubmitting}
 						type="submit"
 						title="Register"
+						rightAnimation={isAnimate && <SpinnerAnimation />}
 					/>
 					<div className="flex justify-center text-[14px]">
 						<p className="text-gray-400 mr-1">Have an account?</p>

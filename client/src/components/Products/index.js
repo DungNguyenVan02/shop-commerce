@@ -4,13 +4,12 @@ import SelectOptions from "../SelectOptions";
 import { formatMoney, renderStar } from "../../utils/helper";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import routes from "../../config/routes";
 function Product({ data, pid, active }) {
 	const [isShowOptions, setIsShowOptions] = useState(false);
 	const { FaHeart, BsList, FaRegEye } = icons;
 	return (
 		<Link
-			to={`${routes.detailProduct}/${data?._id}/${data?.name}`}
+			to={`${data?.category}/${data?._id}/${data?.name}`}
 			className="p-[15px] border border-[#ebebeb] cursor-pointer"
 		>
 			<div

@@ -7,7 +7,7 @@ function DefaultLayout({ children }) {
 		<div className="w-full flex items-center flex-col">
 			<Header />
 			<Navigation />
-			<div className="max-w-main w-full my-7 px-5">{children}</div>
+			<div className="w-full">{children}</div>
 			<Footer />
 		</div>
 	);
