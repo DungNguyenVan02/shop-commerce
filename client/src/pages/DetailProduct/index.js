@@ -1,26 +1,26 @@
 import { useParams } from "react-router-dom";
-import { apiGetProduct } from "../../apis";
-import { useEffect, useState } from "react";
+import { apiGetProduct, apiGetProducts } from "../../apis";
+import { useCallback, useEffect, useState } from "react";
 import icons from "../../utils/icons";
-import { Link } from "react-router-dom";
-import routes from "../../config/routes";
+
 import { formatMoney, renderStar } from "../../utils/helper";
 import Button from "../../components/Button";
 import ExtraInfo from "../../components/ExtraInfo";
+import { extraInfo } from "../../utils/contains";
+import images from "../../assets/images";
+import SliderSubProduct from "../../components/SliderSubProduct";
+import SelectQuantity from "../../components/SelectQuantity";
+import ProInforMation from "../../components/ProInforMation";
+import Slider from "../../components/Slider";
+import BreadcrumbHeader from "../../components/BreadcrumbHeader";
 
 function DetailProduct() {
 	const { pid, category, name } = useParams();
-	const {
-		IoIosArrowForward,
-		GoDotFill,
-		IoShieldCheckmark,
-		FaShippingFast,
-		IoGift,
-		IoArrowUndo,
-		FaPhoneAlt,
-	} = icons;
+	const { GoDotFill, FaCartPlus } = icons;
 
 	const [product, setProduct] = useState(null);
+	const [quantity, setQuantity] = useState(1);
+	const [relateProduct, setRelateProduct] = useState([]);
 
 	const fetchProductData = async () => {
 		const response = await apiGetProduct(pid);
@@ -29,48 +29,74 @@ function DetailProduct() {
 		}
 	};
 
+	console.log(product?.category);
+
+	const fetchRelateProductData = async () => {
+		const response = await apiGetProducts({ category });
+		if (response?.success) {
+			setRelateProduct(response?.products);
+		}
+	};
+
 	useEffect(() => {
-		if (pid) fetchProductData();
+		if (pid) {
+			fetchProductData();
+			fetchRelateProductData();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pid, name]);
 
+	const handleQuantity = useCallback(
+		(number) => {
+			if (+number > product?.quantity) {
+				setQuantity(product?.quantity);
+			} else {
+				setQuantity(+number);
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[quantity]
+	);
+
+	const handleChangeQuantity = useCallback(
+		(number) => {
+			if (number < 1) {
+				setQuantity(1);
+			} else if (number > product?.quantity) {
+				setQuantity(product?.quantity);
+			} else {
+				setQuantity(number);
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[quantity]
+	);
+
+	console.log(relateProduct);
+
 	return (
 		<div className="w-full">
-			<header className="h-[81px] bg-[#f7f7f7] w-full flex justify-center">
-				<div className="max-w-main w-full flex flex-col justify-center">
-					<h3 className="text-[18px] font-semibold text-[#151515]">
-						{name}
-					</h3>
-					<div className="flex gap-1 items-center text-[14px] font-[400] opacity-80">
-						<Link
-							to={routes.home}
-							className="cursor-pointer hover:text-main text-[#1c1d1d]"
-						>
-							Home
-						</Link>
-						<IoIosArrowForward />
-						<Link
-							to={`${routes.home}/${product?.category}`}
-							className="cursor-pointer hover:text-main text-[#1c1d1d]"
-						>
-							{category}
-						</Link>
-						<IoIosArrowForward />
-						<span className="text-[#505050]">{product?.name}</span>
-					</div>
-				</div>
-			</header>
+			<BreadcrumbHeader category={category} name={name} />
 			<div className="max-w-main w-full mx-auto my-[20px]">
 				<div className="grid wide">
 					<div className="row">
 						<div className="col g-l-5 g-m-5 g-c-12">
-							<img src={product?.thumb} alt={product?.name} />
+							<div className="w-[458px] h-[458px] object-contain border">
+								<img
+									className="w-full h-full object-cover"
+									src={
+										product?.thumb || images?.defaultProduct
+									}
+									alt={product?.name}
+								/>
+							</div>
+							<SliderSubProduct dataSrc={product?.images} />
 						</div>
 						<div className="col g-l-4 g-m-4 g-c-12 text-[#505050] text-[14px] ">
 							<h3 className="text-[30px] text-[#333333] font-semibold">
 								{formatMoney(product?.price)}
 							</h3>
-							<div className="flex items-center gap-2 my-[20px]">
+							<div className="flex items-center gap-5 my-5 mt-[10px]">
 								<span className="flex">
 									{renderStar(product?.totalRatings)?.map(
 										(star, i) => (
@@ -78,7 +104,14 @@ function DetailProduct() {
 										)
 									)}
 								</span>
-								<span>{product?.ratings.length} reviews</span>
+								<span className="w-[1px] h-full bg-red-300 text-transparent">
+									|
+								</span>
+								<span>{product?.ratings.length} Ratings</span>
+								<span className="w-[1px] h-full bg-red-300 text-transparent">
+									|
+								</span>
+								<span>{product?.sold} Sold</span>
 							</div>
 							<ul className="flex flex-col gap-[5px]">
 								{product?.description?.map((item) => (
@@ -91,47 +124,52 @@ function DetailProduct() {
 									</li>
 								))}
 							</ul>
-							<Button
-								title="ADD TO CART"
-								styleCustom="w-full h-[40px] bg-main text-white"
-							/>
+							<div className="flex items-center gap-2">
+								<span>Quantity</span>
+								<SelectQuantity
+									quantity={quantity}
+									handleQuantity={handleQuantity}
+									handleChangeQuantity={handleChangeQuantity}
+								/>
+								<span>
+									{product?.quantity} pieces available
+								</span>
+							</div>
+							<div className="flex gap-4">
+								<Button
+									title="ADD TO CART"
+									leftICon={<FaCartPlus />}
+									styleCustom="rounded-sm bg-red-300 border border-red-600 text-white hover:opacity-80 px-4 py3"
+								/>
+								<Button
+									title="BUY NOW"
+									styleCustom="rounded-sm bg-main text-white hover:opacity-80 px-4 py-3"
+								/>
+							</div>
 						</div>
 						<div className="col g-l-3 g-m-3 g-c-12 flex flex-col gap-3">
-							<ExtraInfo
-								icon={
-									<IoShieldCheckmark
-										size={22}
-										color="white"
+							{extraInfo.map((extra) => {
+								return (
+									<ExtraInfo
+										key={extra.id}
+										icon={extra.icon}
+										title={extra.title}
+										subTitle={extra.subTitle}
 									/>
-								}
-								title="Guarantee"
-								subTitle="Quality Checked"
-							/>
-							<ExtraInfo
-								icon={
-									<FaShippingFast size={22} color="white" />
-								}
-								title="Free Shipping"
-								subTitle="Free On All Products"
-							/>
-							<ExtraInfo
-								icon={<IoGift size={22} color="white" />}
-								title="Special Gift Cards"
-								subTitle="Special Gift Cards"
-							/>
-							<ExtraInfo
-								icon={<IoArrowUndo size={22} color="white" />}
-								title="Free Return"
-								subTitle="Within 7 Days"
-							/>
-							<ExtraInfo
-								icon={<FaPhoneAlt size={22} color="white" />}
-								title="Free Return"
-								subTitle="Within 7 Days"
-							/>
+								);
+							})}
 						</div>
 					</div>
 				</div>
+			</div>
+			<div className="max-w-main w-full mx-auto my-[20px]">
+				<ProInforMation description={product?.description} />
+			</div>
+			<div className="max-w-main w-full mx-auto my-[20px]">
+				<h3 className="text-[20px] mb-4 text-[#151515] uppercase font-bold border-b-2 border-main pb-[15px]">
+					YOU MAY ALSO LIKE
+				</h3>
+				<Slider products={relateProduct} show={4} />
 			</div>
 		</div>
 	);

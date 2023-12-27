@@ -14,6 +14,7 @@ import {
 	FaFlickr,
 	FaEyeSlash,
 	FaShippingFast,
+	FaCartPlus,
 } from "react-icons/fa";
 
 import { BsSpeaker, BsList } from "react-icons/bs";
@@ -53,6 +54,7 @@ const icons = {
 	FaPhoneAlt,
 	FaEyeSlash,
 	FaShippingFast,
+	FaCartPlus,
 
 	FaLinkedinIn,
 	FaFacebookF,

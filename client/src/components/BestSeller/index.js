@@ -64,7 +64,11 @@ function BestSeller() {
 				})}
 			</ul>
 			<div className="mt-4">
-				<Slider products={products} active={active} />
+				<Slider
+					products={products}
+					active={active}
+					defaultViewShow={3}
+				/>
 			</div>
 			<div className="mt-4 flex gap-4">
 				<img

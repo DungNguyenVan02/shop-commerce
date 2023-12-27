@@ -10,10 +10,10 @@ function Product({ data, pid, active }) {
 	return (
 		<Link
 			to={`${data?.category}/${data?._id}/${data?.name}`}
-			className="p-[15px] border border-[#ebebeb] cursor-pointer"
+			className="p-[15px] border border-gray-300 block"
 		>
 			<div
-				className="w-full h-full mx-auto relative"
+				className="w-full h-full mx-auto relative "
 				onMouseEnter={() =>
 					data._id === pid ? setIsShowOptions(true) : ""
 				}
@@ -31,7 +31,7 @@ function Product({ data, pid, active }) {
 				<img
 					src={data?.thumb || images.defaultProduct}
 					alt=""
-					className="max-w-[280px] h-full object-contain mx-auto"
+					className="max-w-[280px] w-full h-full object-contain mx-auto"
 				/>
 				{active === 0 ? (
 					<span className="tagTrending">Trending</span>

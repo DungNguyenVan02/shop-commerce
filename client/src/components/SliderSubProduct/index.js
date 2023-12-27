@@ -1,31 +1,18 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation, Autoplay } from "swiper";
+import { Pagination, Navigation } from "swiper";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import Product from "../Products";
-import { memo } from "react";
-
-function Slider({ products, active, show, defaultViewShow }) {
-	const handleShowSlider = () => {
-		return products?.map((item) => (
-			<SwiperSlide key={item._id}>
-				<Product data={item} pid={item._id} active={active} />
-			</SwiperSlide>
-		));
-	};
+import images from "../../assets/images";
+function SliderSubProduct({ dataSrc, show }) {
 	return (
-		<div>
+		<div className="flex mt-3 justify-between w-[458px]">
 			<Swiper
-				modules={[Navigation, Pagination, Autoplay]}
+				modules={[Navigation, Pagination]}
 				spaceBetween={15}
 				loop={true}
-				autoplay={{
-					delay: 3500,
-					disableOnInteraction: false,
-				}}
 				pagination={{
 					dynamicBullets: true,
 				}}
@@ -48,15 +35,23 @@ function Slider({ products, active, show, defaultViewShow }) {
 						allowTouchMove: true,
 					},
 					1040: {
-						slidesPerView: defaultViewShow || show,
+						slidesPerView: 3,
 					},
 				}}
 				className="mySwiper"
 			>
-				{handleShowSlider()}
+				{dataSrc?.map((link) => (
+					<SwiperSlide key={link}>
+						<img
+							className=" w-[143px] h-[143px] object-contain border p-3"
+							src={link || images.defaultImage}
+							alt="sub-product"
+						/>
+					</SwiperSlide>
+				))}
 			</Swiper>
 		</div>
 	);
 }
 
-export default memo(Slider);
+export default SliderSubProduct;

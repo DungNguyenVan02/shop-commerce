@@ -4,11 +4,18 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Poppins:wght@100;200;300;400;500;600&display=swap");
 
+* {
+	box-sizing: border-box;
+}
 html {
 	font-family: "Inter", sans-serif;
 	font-family: "Poppins", sans-serif;
 }
-
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 /* Tag seller */
 div.swiper-button-prev::after,
 div.swiper-button-next::after {
