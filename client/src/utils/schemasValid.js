@@ -37,3 +37,18 @@ export const schemasValidLogin = yup.object().shape({
 		.min(6, "Password must be at least 6 characters")
 		.required("Required field"),
 });
+
+export const schemasValidResetPassword = yup.object().shape({
+	password: yup
+		.string()
+		.min(6, "Password must be at least 6 characters")
+		.required("Required field"),
+	confirmPassword: yup
+		.string()
+		.oneOf([yup.ref("password"), null], "Password must match")
+		.required("Required field"),
+	codeVerify: yup
+		.string()
+		.min(5, "Code must be at least 5 characters")
+		.required("Required field"),
+});

@@ -39,7 +39,7 @@ function FormInput() {
 	};
 
 	const finalRegister = async () => {
-		const response = await apiFinalRegister(valueConfirm);
+		const response = await apiFinalRegister({ codeVerified: valueConfirm });
 		if (response?.success) {
 			Swal.fire("Congratulation", response.mes, "success").then(() => {
 				setIsConfirm(false);
@@ -282,7 +282,7 @@ function FormInput() {
 				</div>
 			</form>
 			{isConfirm && (
-				<div className="fixed top-0 right-0 bottom-0 left-0 bg-[rgba(40,30,30,0.4)] z-[51]">
+				<div className="fixed top-0 right-0 bottom-0 left-0 bg-[rgba(0,0,0,0.6)] z-[51]">
 					<div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white shadow-md min-w-[240px] p-[40px] flex flex-col items-center gap-4">
 						<h3>Please confirm code verify</h3>
 						<input

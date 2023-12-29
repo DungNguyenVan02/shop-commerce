@@ -2,12 +2,12 @@ import routes from "../config/routes";
 import Blogs from "../pages/Blogs";
 import DetailProduct from "../pages/DetailProduct";
 import FAQs from "../pages/FAQs";
-import FinalRegister from "../pages/FinalRegister";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import OurService from "../pages/OurService";
 import Products from "../pages/Products";
 import Register from "../pages/Register";
+import ResetPassword from "../pages/ResetPassword";
 const publicRoutes = [
 	{
 		path: routes.home,
@@ -27,6 +27,7 @@ const publicRoutes = [
 		component: Register,
 		headerNone: true,
 	},
+
 	{
 		path: routes.blogs,
 		component: Blogs,
@@ -44,8 +45,9 @@ const publicRoutes = [
 		component: DetailProduct,
 	},
 	{
-		path: routes.finalRegister,
-		component: FinalRegister,
+		path: routes.resetpassword_email,
+		component: ResetPassword,
+		headerNone: true,
 	},
 ];
 

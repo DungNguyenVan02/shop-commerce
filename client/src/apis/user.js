@@ -7,6 +7,22 @@ export const apiGetCurrentUser = () => {
 	});
 };
 
+export const apiForgotPassword = (data) => {
+	return axios({
+		url: `/user/forgotpassword`,
+		method: "POST",
+		data,
+	});
+};
+
+export const apiResetPassword = (data) => {
+	return axios({
+		url: `/user/resetpassword`,
+		method: "PUT",
+		data,
+	});
+};
+
 export const apiRegister = (data) => {
 	return axios({
 		url: "/user/register",
@@ -17,8 +33,9 @@ export const apiRegister = (data) => {
 
 export const apiFinalRegister = (codeVerified) => {
 	return axios({
-		url: `/user/completedregister/${codeVerified}`,
+		url: `/user/completedregister`,
 		method: "PUT",
+		data: codeVerified,
 	});
 };
 

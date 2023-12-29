@@ -83,3 +83,95 @@ export const tabs = [
 		tab: "Customer review",
 	},
 ];
+
+export const filterBys = [
+	{
+		id: 1,
+		title: "Price",
+		sub: [
+			{
+				id: 1,
+				title: "Under 3 million",
+			},
+			{
+				id: 2,
+				title: "From 3-7 million",
+			},
+			{
+				id: 3,
+				title: "From 7-10 million",
+			},
+			{
+				id: 4,
+				title: "From 10-15 million",
+			},
+			{
+				id: 5,
+				title: "Over 15 million",
+			},
+		],
+	},
+	{
+		id: 2,
+		title: "Internal",
+		sub: [
+			{
+				id: 1,
+				title: "16GB",
+			},
+			{
+				id: 2,
+				title: "32GB",
+			},
+			{
+				id: 3,
+				title: "64GB",
+			},
+			{
+				id: 4,
+				title: "128GB",
+			},
+			{
+				id: 5,
+				title: "256GB",
+			},
+			{
+				id: 6,
+				title: "512GB",
+			},
+			{
+				id: 7,
+				title: "1TGB",
+			},
+		],
+	},
+	{
+		id: 3,
+		title: "Capacity",
+		sub: [
+			{
+				id: 1,
+				title: "8GB",
+			},
+			{
+				id: 2,
+				title: "16GB",
+			},
+			{
+				id: 3,
+				title: "32GB",
+			},
+			{
+				id: 4,
+				title: "64GB",
+			},
+		],
+	},
+];
+
+export const sortBys = [
+	{
+		id: 1,
+		title: "A -> Z",
+	},
+];

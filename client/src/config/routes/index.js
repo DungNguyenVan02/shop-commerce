@@ -7,7 +7,8 @@ const routes = {
 	services: "/services",
 	FAQs: "/FAQs",
 
-	finalRegister: "/finalregister/:status",
+	resetpassword: "/resetpassword",
+	resetpassword_email: "/resetpassword/:email",
 
 	detailProduct_category_pid_name: "/:category/:pid/:name",
 };

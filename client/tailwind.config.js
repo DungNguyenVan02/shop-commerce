@@ -20,12 +20,13 @@ module.exports = {
 			keyframes: {
 				slideTop: {
 					"0%": {
-						"-webkit-transform": "translateY(40px);",
-						transform: "translateY(40px);",
+						"-webkit-transform": "translateY(0) translateX(-50%);",
+						transform: "translateY(0) translateX(-50%);",
 					},
 					"100%": {
-						"-webkit-transform": "translateY(0);",
-						transform: "translateY(0);",
+						"-webkit-transform":
+							"translateY(-50%) translateX(-50%);",
+						transform: "translateY(-50%) translateX(-50%);",
 					},
 				},
 				slideTopInput: {

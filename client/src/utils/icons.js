@@ -19,7 +19,7 @@ import {
 
 import { BsSpeaker, BsList } from "react-icons/bs";
 
-import { FaCircleUser, FaHeadphonesSimple } from "react-icons/fa6";
+import { FaCircleUser, FaHeadphonesSimple, FaAngleDown } from "react-icons/fa6";
 import { CiSearch, CiCamera } from "react-icons/ci";
 import {
 	IoMdArrowDropdown,
@@ -28,6 +28,7 @@ import {
 	IoIosMail,
 	IoLogoGoogleplus,
 } from "react-icons/io";
+import { IoCloseOutline } from "react-icons/io5";
 import { SlScreenDesktop } from "react-icons/sl";
 import { AiFillPrinter } from "react-icons/ai";
 import {
@@ -61,6 +62,7 @@ const icons = {
 	FaTwitter,
 	FaPinterest,
 	FaFlickr,
+	FaAngleDown,
 
 	CiSearch,
 
@@ -74,6 +76,8 @@ const icons = {
 	IoLogoGoogleplus,
 	IoGift,
 	IoArrowUndo,
+
+	IoCloseOutline,
 
 	SlScreenDesktop,
 

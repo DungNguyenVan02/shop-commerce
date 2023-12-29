@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../../components/Button";
 import { login } from "../../redux/userSlice";
 import { toast } from "react-toastify";
-import { apiLogin } from "../../apis";
+import { apiLogin, apiForgotPassword } from "../../apis";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,11 +17,29 @@ function FormInput() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [isShowPass, setIsShowPass] = useState(false);
-	const [isAnimation, setAnimation] = useState(false);
-	const { FaEyeSlash, FaRegEye } = icons;
+	const [isAnimation, setIsAnimation] = useState(false);
+	const [isForgotpassword, setIsForgotpassword] = useState(false);
+	const [emailForgotpassword, setEmailForgotpassword] = useState("");
+
+	const { FaEyeSlash, FaRegEye, IoCloseOutline } = icons;
+
+	const handleForgotPassword = async () => {
+		setIsAnimation(true);
+		const response = await apiForgotPassword({
+			email: emailForgotpassword,
+		});
+		if (response?.success) {
+			Swal.fire("Congratulation", response.mes, "success");
+			setIsAnimation(false);
+			navigate(`${routes.resetpassword}/${emailForgotpassword}`);
+		} else {
+			Swal.fire("Oops!", response.mes, "error");
+			setIsAnimation(false);
+		}
+	};
 
 	const onSubmit = async (value, actions) => {
-		setAnimation(true);
+		setIsAnimation(true);
 		actions.resetForm();
 		const response = await apiLogin(value);
 		if (response?.success) {
@@ -33,14 +51,13 @@ function FormInput() {
 				})
 			);
 			setTimeout(() => {
-				toast.info("Welcome to digital world!");
-				console.log("test");
-				setAnimation(false);
+				toast.info("Welcome to digital world!", { theme: "colored" });
+				setIsAnimation(false);
 				navigate(routes.home);
 			}, 1500);
 		} else {
 			Swal.fire("Oops!", response.mes, "error");
-			setAnimation(false);
+			setIsAnimation(false);
 		}
 	};
 
@@ -62,97 +79,137 @@ function FormInput() {
 	});
 
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className="bg-white rounded min-w-[400px] px-[30px] shadow shadow-blue-500/40"
-		>
-			<h3 className="py-[22px] text-[22px] font-semibold text-main text-center">
-				Log in
-			</h3>
-			<div className="flex flex-col gap-4 items-center py-[30px] pb-[16px] pt-0">
-				<div className="w-full relative">
-					<label
-						htmlFor="email"
-						className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
-					>
-						Email
-					</label>
-					<input
-						id="email"
-						type="email"
-						value={values.email}
-						onChange={handleChange}
-						onBlur={handleBlur}
-						className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
-							errors.email && touched.email ? "border-main" : ""
-						}`}
-						placeholder="Enter your email"
-					/>
-					{errors.email && touched.email && (
-						<p className="text-[12px] text-main my-1">
-							{errors.email}
-						</p>
-					)}
-				</div>
-				<div className="w-full relative">
-					<label
-						htmlFor="password"
-						className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
-					>
-						Password
-					</label>
-					<div className="relative">
+		<>
+			<form
+				onSubmit={handleSubmit}
+				className="bg-white rounded min-w-[400px] px-[30px] shadow shadow-blue-500/40"
+			>
+				<h3 className="py-[22px] text-[22px] font-semibold text-main text-center">
+					Log in
+				</h3>
+				<div className="flex flex-col gap-4 items-center py-[30px] pb-[16px] pt-0">
+					<div className="w-full relative">
+						<label
+							htmlFor="email"
+							className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
+						>
+							Email
+						</label>
 						<input
-							id="password"
-							type={isShowPass ? "text" : "password"}
-							value={values.password}
+							id="email"
+							type="email"
+							value={values.email}
 							onChange={handleChange}
 							onBlur={handleBlur}
 							className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
-								errors.password && touched.password
+								errors.email && touched.email
 									? "border-main"
 									: ""
 							}`}
-							placeholder="Enter your password"
+							placeholder="Enter your email"
 						/>
-						<i
-							className="absolute top-[50%] right-3 translate-y-[-50%] opacity-80 cursor-pointer"
-							onClick={() => setIsShowPass(!isShowPass)}
-						>
-							{isShowPass ? (
-								<FaRegEye size={17} />
-							) : (
-								<FaEyeSlash size={18} />
-							)}
-						</i>
+						{errors.email && touched.email && (
+							<p className="text-[12px] text-main my-1">
+								{errors.email}
+							</p>
+						)}
 					</div>
-					{errors.password && touched.password && (
-						<p className="text-[12px] text-main my-1">
-							{errors.password}
-						</p>
-					)}
+					<div className="w-full relative">
+						<label
+							htmlFor="password"
+							className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
+						>
+							Password
+						</label>
+						<div className="relative">
+							<input
+								id="password"
+								type={isShowPass ? "text" : "password"}
+								value={values.password}
+								onChange={handleChange}
+								onBlur={handleBlur}
+								className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
+									errors.password && touched.password
+										? "border-main"
+										: ""
+								}`}
+								placeholder="Enter your password"
+							/>
+							<i
+								className="absolute top-[50%] right-3 translate-y-[-50%] opacity-80 cursor-pointer"
+								onClick={() => setIsShowPass(!isShowPass)}
+							>
+								{isShowPass ? (
+									<FaRegEye size={17} />
+								) : (
+									<FaEyeSlash size={18} />
+								)}
+							</i>
+						</div>
+						{errors.password && touched.password && (
+							<p className="text-[12px] text-main my-1">
+								{errors.password}
+							</p>
+						)}
+					</div>
+					<Button
+						isDisabled={isSubmitting}
+						type="submit"
+						title="Log in"
+						rightAnimation={isAnimation && <SpinnerAnimation />}
+					/>
 				</div>
-				<Button
-					isDisabled={isSubmitting}
-					type="submit"
-					title="Log in"
-					rightAnimation={isAnimation && <SpinnerAnimation />}
-				/>
-			</div>
-			<div className="font-[300] text-sm pb-4">
-				<div className="flex justify-between">
-					<span className="cursor-pointer hover:text-main">
-						Forgot your password?
-					</span>
-					<Link
-						to={routes.register}
-						className="cursor-pointer hover:text-main"
+				<div className="font-[300] text-sm pb-4">
+					<div className="flex justify-between">
+						<span
+							className="cursor-pointer hover:text-main"
+							onClick={() => setIsForgotpassword(true)}
+						>
+							Forgot your password?
+						</span>
+						<Link
+							to={routes.register}
+							className="cursor-pointer hover:text-main"
+						>
+							Create Account
+						</Link>
+					</div>
+				</div>
+			</form>
+			{isForgotpassword && (
+				<div
+					className="fixed top-0 right-0 bottom-0 left-0 bg-[rgba(0,0,0,0.6)] z-[51] "
+					onClick={() => setIsForgotpassword(false)}
+				>
+					<div
+						onClick={(e) => e.stopPropagation()}
+						className="flex flex-col items-center gap-4 absolute top-[50%] left-[50%] translate-y-[0%] translate-x-[-50%] bg-white shadow-md min-w-[500px] p-[40px] animate-slideTop"
 					>
-						Create Account
-					</Link>
+						<i
+							onClick={() => setIsForgotpassword(false)}
+							className="absolute top-0 right-[2px] p-4 hover:opacity-70 cursor-pointer"
+						>
+							{<IoCloseOutline size={24} />}
+						</i>
+						<h3>Enter your email</h3>
+						<input
+							required
+							value={emailForgotpassword}
+							onChange={(e) =>
+								setEmailForgotpassword(e.target.value)
+							}
+							placeholder="Exp: email@gmail.com"
+							className="outline-none w-full border h-[34px] rounded-md px-4 placeholder:text-[14px]"
+						/>
+						<Button
+							title="Submit"
+							handleClick={handleForgotPassword}
+							rightAnimation={isAnimation && <SpinnerAnimation />}
+						/>
+					</div>
 				</div>
-			</div>
-		</form>
+			)}
+		</>
 	);
 }
 

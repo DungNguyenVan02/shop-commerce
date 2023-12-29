@@ -21,7 +21,8 @@ function Button({
 							isDisabled ? "opacity-40" : ""
 					  }`
 			}
-			onClick={() => {
+			onClick={(e) => {
+				e.stopPropagation();
 				handleClick && handleClick();
 			}}
 		>
