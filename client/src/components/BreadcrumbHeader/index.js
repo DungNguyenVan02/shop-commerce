@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import routes from "../../config/routes";
 import icons from "../../utils/icons";
-function BreadcrumbHeader({ name, category }) {
+function BreadcrumbHeader({ name, slug, category }) {
 	const { IoIosArrowForward } = icons;
 	return (
 		<header className="h-[81px] bg-[#f7f7f7] w-full flex justify-center">
@@ -18,7 +18,7 @@ function BreadcrumbHeader({ name, category }) {
 					</Link>
 					<IoIosArrowForward />
 					<Link
-						to={`/${category}`}
+						to={`/${slug}`}
 						className="cursor-pointer hover:text-main text-[#1c1d1d]"
 					>
 						{category}

@@ -57,6 +57,9 @@ module.exports = {
 				slideTopInput: "slideTopInput 0.2s linear forwards",
 				textGradient: "textGradient 3s ease infinite",
 			},
+			borderRadius: {
+				custom: "37% 63% 100% 0% / 33% 0% 100% 67% ",
+			},
 		},
 	},
 	plugins: [],

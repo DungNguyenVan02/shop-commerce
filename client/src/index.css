@@ -119,3 +119,10 @@ div.swiper-pagination {
 	left: 0;
 	height: 20px;
 }
+
+.product-child {
+	display: none;
+}
+.product-parent:hover .product-child {
+	display: flex;
+}

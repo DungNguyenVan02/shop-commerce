@@ -2,32 +2,20 @@ import icons from "../../utils/icons";
 import images from "../../assets/images";
 import SelectOptions from "../SelectOptions";
 import { formatMoney, renderStar } from "../../utils/helper";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-function Product({ data, pid, active }) {
-	const [isShowOptions, setIsShowOptions] = useState(false);
+function Product({ data, active }) {
 	const { FaHeart, BsList, FaRegEye } = icons;
 	return (
 		<Link
 			to={`${data?.category}/${data?._id}/${data?.name}`}
-			className="p-[15px] border border-gray-300 block"
+			className="p-[15px] border border-gray-300 block shadow-lg"
 		>
-			<div
-				className="w-full h-full mx-auto relative "
-				onMouseEnter={() =>
-					data._id === pid ? setIsShowOptions(true) : ""
-				}
-				onMouseLeave={() =>
-					data._id === pid ? setIsShowOptions(false) : ""
-				}
-			>
-				{isShowOptions && (
-					<div className="product-container-options absolute bottom-0 right-0 left-0 flex justify-center gap-4 py-1 animate-slideTop">
-						<SelectOptions icon={<FaHeart />} />
-						<SelectOptions icon={<BsList />} />
-						<SelectOptions icon={<FaRegEye />} />
-					</div>
-				)}
+			<div className="w-full h-full mx-auto relative product-parent">
+				<div className="product-child absolute bottom-0 left-[50%] justify-center gap-4 py-1 animate-slideTop">
+					<SelectOptions icon={<FaHeart />} />
+					<SelectOptions icon={<BsList />} />
+					<SelectOptions icon={<FaRegEye />} />
+				</div>
 				<img
 					src={data?.thumb || images.defaultProduct}
 					alt=""

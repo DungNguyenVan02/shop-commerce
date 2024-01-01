@@ -7,6 +7,7 @@ import { categoriesSelector } from "../../../redux/selector";
 function Sidebar() {
 	const { categories } = useSelector(categoriesSelector);
 
+	console.log(categories);
 	const {
 		FaList,
 		IoIosPhonePortrait,

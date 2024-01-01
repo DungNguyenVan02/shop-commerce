@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import images from "../../assets/images";
-function SliderSubProduct({ dataSrc, show }) {
+function SliderSubProduct({ dataSrc, handleClick }) {
 	return (
 		<div className="flex mt-3 justify-between w-[458px]">
 			<Swiper
@@ -46,6 +46,7 @@ function SliderSubProduct({ dataSrc, show }) {
 							className=" w-[143px] h-[143px] object-contain border p-3"
 							src={link || images.defaultImage}
 							alt="sub-product"
+							onClick={() => handleClick(link)}
 						/>
 					</SwiperSlide>
 				))}

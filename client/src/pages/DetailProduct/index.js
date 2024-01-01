@@ -3,7 +3,7 @@ import { apiGetProduct, apiGetProducts } from "../../apis";
 import { useCallback, useEffect, useState } from "react";
 import icons from "../../utils/icons";
 
-import { formatMoney, renderStar } from "../../utils/helper";
+import { createSlug, formatMoney, renderStar } from "../../utils/helper";
 import Button from "../../components/Button";
 import ExtraInfo from "../../components/ExtraInfo";
 import { extraInfo } from "../../utils/contains";
@@ -21,15 +21,19 @@ function DetailProduct() {
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
 	const [relateProduct, setRelateProduct] = useState([]);
+	const [thumbSrc, setThumbSrc] = useState("");
 
 	const fetchProductData = async () => {
 		const response = await apiGetProduct(pid);
 		if (response?.success) {
 			setProduct(response?.getProduct);
+			setThumbSrc(response?.getProduct?.thumb);
 		}
 	};
 
-	console.log(product?.category);
+	const handleChangeThumb = (src) => {
+		setThumbSrc(src);
+	};
 
 	const fetchRelateProductData = async () => {
 		const response = await apiGetProducts({ category });
@@ -76,21 +80,26 @@ function DetailProduct() {
 
 	return (
 		<div className="w-full">
-			<BreadcrumbHeader category={category} name={name} />
+			<BreadcrumbHeader
+				category={category}
+				slug={createSlug(category)}
+				name={name}
+			/>
 			<div className="max-w-main w-full mx-auto my-[20px]">
 				<div className="grid wide">
 					<div className="row">
 						<div className="col g-l-5 g-m-5 g-c-12">
 							<div className="w-[458px] h-[458px] object-contain border">
 								<img
-									className="w-full h-full object-cover"
-									src={
-										product?.thumb || images?.defaultProduct
-									}
+									className="w-full h-full object-contain"
+									src={thumbSrc || images?.defaultProduct}
 									alt={product?.name}
 								/>
 							</div>
-							<SliderSubProduct dataSrc={product?.images} />
+							<SliderSubProduct
+								dataSrc={product?.images}
+								handleClick={handleChangeThumb}
+							/>
 						</div>
 						<div className="col g-l-4 g-m-4 g-c-12 text-[#505050] text-[14px] ">
 							<h3 className="text-[30px] text-[#333333] font-semibold">

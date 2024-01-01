@@ -5,14 +5,14 @@ import { Pagination, Navigation, Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import Product from "../Products";
+import Product from "../Product";
 import { memo } from "react";
 
 function Slider({ products, active, show, defaultViewShow }) {
 	const handleShowSlider = () => {
 		return products?.map((item) => (
 			<SwiperSlide key={item._id}>
-				<Product data={item} pid={item._id} active={active} />
+				<Product data={item} active={active} />
 			</SwiperSlide>
 		));
 	};

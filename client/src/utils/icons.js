@@ -19,7 +19,12 @@ import {
 
 import { BsSpeaker, BsList } from "react-icons/bs";
 
-import { FaCircleUser, FaHeadphonesSimple, FaAngleDown } from "react-icons/fa6";
+import {
+	FaCircleUser,
+	FaHeadphonesSimple,
+	FaAngleDown,
+	FaCheck,
+} from "react-icons/fa6";
 import { CiSearch, CiCamera } from "react-icons/ci";
 import {
 	IoMdArrowDropdown,
@@ -63,6 +68,7 @@ const icons = {
 	FaPinterest,
 	FaFlickr,
 	FaAngleDown,
+	FaCheck,
 
 	CiSearch,
 

@@ -86,83 +86,83 @@ export const tabs = [
 
 export const filterBys = [
 	{
-		id: 1,
+		id: 0,
 		title: "Price",
 		sub: [
 			{
-				id: 1,
+				id: 0,
 				title: "Under 3 million",
 			},
 			{
-				id: 2,
+				id: 1,
 				title: "From 3-7 million",
 			},
 			{
-				id: 3,
+				id: 2,
 				title: "From 7-10 million",
 			},
 			{
-				id: 4,
+				id: 3,
 				title: "From 10-15 million",
 			},
 			{
-				id: 5,
+				id: 4,
 				title: "Over 15 million",
 			},
 		],
 	},
 	{
-		id: 2,
+		id: 1,
 		title: "Internal",
 		sub: [
 			{
-				id: 1,
+				id: 0,
 				title: "16GB",
 			},
 			{
-				id: 2,
+				id: 1,
 				title: "32GB",
 			},
 			{
-				id: 3,
+				id: 2,
 				title: "64GB",
 			},
 			{
-				id: 4,
+				id: 3,
 				title: "128GB",
 			},
 			{
-				id: 5,
+				id: 4,
 				title: "256GB",
 			},
 			{
-				id: 6,
+				id: 5,
 				title: "512GB",
 			},
 			{
-				id: 7,
+				id: 6,
 				title: "1TGB",
 			},
 		],
 	},
 	{
-		id: 3,
+		id: 2,
 		title: "Capacity",
 		sub: [
 			{
-				id: 1,
+				id: 0,
 				title: "8GB",
 			},
 			{
-				id: 2,
+				id: 1,
 				title: "16GB",
 			},
 			{
-				id: 3,
+				id: 2,
 				title: "32GB",
 			},
 			{
-				id: 4,
+				id: 3,
 				title: "64GB",
 			},
 		],
