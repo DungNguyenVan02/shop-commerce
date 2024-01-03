@@ -3,11 +3,16 @@ import images from "../../assets/images";
 import SelectOptions from "../SelectOptions";
 import { formatMoney, renderStar } from "../../utils/helper";
 import { Link } from "react-router-dom";
-function Product({ data, active }) {
+function Product({ data, active, productPage }) {
 	const { FaHeart, BsList, FaRegEye } = icons;
+
 	return (
 		<Link
-			to={`${data?.category}/${data?._id}/${data?.name}`}
+			to={`${
+				productPage
+					? "/" + data?.category?.toLowerCase()
+					: data?.category?.toLowerCase()
+			}/${data?._id}/${data?.name}`}
 			className="p-[15px] border border-gray-300 block shadow-lg"
 		>
 			<div className="w-full h-full mx-auto relative product-parent">

@@ -26,7 +26,7 @@ function Button({
 				handleClick && handleClick();
 			}}
 		>
-			<span className="flex justify-center items-center relative gap-2">
+			<span className="flex justify-center items-center relative gap-1">
 				{leftICon}
 				{leftAnimation}
 				<span>{title}</span>

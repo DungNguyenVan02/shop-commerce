@@ -113,57 +113,31 @@ export const filterBys = [
 	},
 	{
 		id: 1,
-		title: "Internal",
+		title: "Color",
 		sub: [
 			{
 				id: 0,
-				title: "16GB",
+				title: "Black",
 			},
 			{
 				id: 1,
-				title: "32GB",
+				title: "White",
 			},
 			{
 				id: 2,
-				title: "64GB",
+				title: "Gray",
 			},
 			{
 				id: 3,
-				title: "128GB",
+				title: "Pink",
 			},
 			{
 				id: 4,
-				title: "256GB",
+				title: "Blue",
 			},
 			{
 				id: 5,
-				title: "512GB",
-			},
-			{
-				id: 6,
-				title: "1TGB",
-			},
-		],
-	},
-	{
-		id: 2,
-		title: "Capacity",
-		sub: [
-			{
-				id: 0,
-				title: "8GB",
-			},
-			{
-				id: 1,
-				title: "16GB",
-			},
-			{
-				id: 2,
-				title: "32GB",
-			},
-			{
-				id: 3,
-				title: "64GB",
+				title: "Red",
 			},
 		],
 	},
@@ -172,6 +146,22 @@ export const filterBys = [
 export const sortBys = [
 	{
 		id: 1,
-		title: "A -> Z",
+		title: "Latest",
+		sort: "createdAt",
+	},
+	{
+		id: 2,
+		title: "Best Selling",
+		sort: "-sold",
+	},
+	{
+		id: 3,
+		title: "Price low to high",
+		sort: "price",
+	},
+	{
+		id: 4,
+		title: "Price high to low",
+		sort: "-price",
 	},
 ];

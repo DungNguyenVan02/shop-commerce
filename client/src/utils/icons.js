@@ -17,7 +17,7 @@ import {
 	FaCartPlus,
 } from "react-icons/fa";
 
-import { BsSpeaker, BsList } from "react-icons/bs";
+import { BsSpeaker, BsList, BsSortDown, BsSortDownAlt } from "react-icons/bs";
 
 import {
 	FaCircleUser,
@@ -91,6 +91,8 @@ const icons = {
 
 	BsSpeaker,
 	BsList,
+	BsSortDown,
+	BsSortDownAlt,
 
 	CiCamera,
 

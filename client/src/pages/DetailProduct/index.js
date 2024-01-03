@@ -76,8 +76,6 @@ function DetailProduct() {
 		[quantity]
 	);
 
-	console.log(relateProduct);
-
 	return (
 		<div className="w-full">
 			<BreadcrumbHeader

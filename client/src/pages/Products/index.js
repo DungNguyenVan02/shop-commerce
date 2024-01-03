@@ -10,16 +10,18 @@ function Products() {
 	const [products, setProducts] = useState([]);
 	const [searchParams] = useSearchParams();
 
-	console.log(searchParams);
-
 	const fetchProducts = async (queries) => {
-		const response = await apiGetProducts({ queries });
+		const response = await apiGetProducts(queries);
 		if (response?.success) setProducts(response.products);
 	};
 
 	useEffect(() => {
-		fetchProducts();
-	}, [category]);
+		const params = [];
+		for (let i of searchParams.entries()) params.push(i);
+		const queries = {};
+		for (let i of searchParams) queries[i[0]] = i[1];
+		fetchProducts(queries);
+	}, [category, searchParams]);
 
 	return (
 		<div>
@@ -42,6 +44,7 @@ function Products() {
 									<Product
 										data={product}
 										pid={product?._id}
+										productPage
 									/>
 								</div>
 							))}

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { createSearchParams, useNavigate, useParams } from "react-router-dom";
-import { filterBys } from "../../utils/contains";
+import { filterBys, sortBys } from "../../utils/contains";
 import Button from "../../components/Button";
 import icons from "../../utils/icons";
 
@@ -8,34 +8,34 @@ function FilterProduct() {
 	const navigate = useNavigate();
 	const { category } = useParams();
 	const { FaAngleDown, FaCheck } = icons;
-	const [selectedByPrice, setSelectedByPrice] = useState([]);
+	const [sort, setSort] = useState(null);
+	const [selectedByPrice, setSelectedByPrice] = useState("");
 	const [selectedByColor, setSelectedByColor] = useState([]);
 	const [isActiveFilter, setIsActiveFilter] = useState(null);
 
 	const handleSelected = (e, selected) => {
-		let selectedBys;
-		let setSelectedBys;
 		switch (selected) {
 			case "Price":
-				selectedBys = selectedByPrice;
-				setSelectedBys = setSelectedByPrice;
+				if (selectedByPrice === e.target.outerText) {
+					setSelectedByPrice("");
+				} else {
+					setSelectedByPrice(e.target.outerText);
+				}
 				break;
-
+			case "Color":
+				if (selectedByColor.includes(e?.target.outerText)) {
+					setSelectedByColor((prev) =>
+						prev.filter((item) => item !== e?.target.outerText)
+					);
+				} else {
+					setSelectedByColor((prev) => [
+						...prev,
+						e?.target.outerText,
+					]);
+				}
+				break;
 			default:
 				throw new Error("Something went wrong");
-		}
-
-		if (selectedBys.includes(e?.target.outerText)) {
-			setSelectedBys((prev) =>
-				prev.filter((item) => item !== e?.target.outerText)
-			);
-		} else {
-			setSelectedBys((prev) => {
-				if (selected === "Price") {
-					return e?.target.outerText;
-				}
-				return [...prev, e?.target.outerText];
-			});
 		}
 	};
 
@@ -46,19 +46,50 @@ function FilterProduct() {
 			setIsActiveFilter(id);
 		}
 	};
+
 	useEffect(() => {
+		const dataSelected = {};
+		const selectedByPriceArr = selectedByPrice.split(" ");
+		switch (selectedByPriceArr[0]) {
+			case "Under":
+				dataSelected["price[lte]"] = selectedByPriceArr[1] * 1000000;
+				break;
+			case "From":
+				const filterNumber = selectedByPriceArr[1].split("-");
+				dataSelected["price[gte]"] = filterNumber[0] * 1000000;
+				dataSelected["price[lte]"] = filterNumber[1] * 1000000;
+				break;
+			case "Over":
+				dataSelected["price[gte]"] = selectedByPriceArr[1] * 1000000;
+				break;
+			default:
+				break;
+		}
+
+		if (selectedByColor.length > 0) {
+			dataSelected.color = selectedByColor.join(",");
+		}
+
+		if (sort !== null) {
+			dataSelected.sort = sort.sort;
+		}
+
 		navigate({
 			pathname: `/${category}`,
-			search: createSearchParams({
-				price: selectedByPrice,
-			}).toString(),
+			search: createSearchParams(dataSelected).toString(),
 		});
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedByPrice]);
+	}, [selectedByPrice, selectedByColor, sort]);
 	return (
-		<div className="flex border p-5">
-			<div className="w-10/12">
-				<h3 className="mb-3 text-[14px]">Filter by</h3>
+		<div
+			className="flex flex-col gap-4 border p-5"
+			onClick={() => {
+				if (isActiveFilter !== null) setIsActiveFilter(null);
+			}}
+		>
+			<div>
+				<h3 className="mb-1 text-[16px] font-medium">Filter by</h3>
 				<ul className="flex gap-3">
 					{filterBys.map((item) => {
 						return (
@@ -92,6 +123,9 @@ function FilterProduct() {
 														className={`${
 															selectedByPrice.includes(
 																el.title
+															) ||
+															selectedByColor.includes(
+																el.title
 															)
 																? "bg-red-300 border-main border-solid"
 																: "border-transparent"
@@ -99,9 +133,12 @@ function FilterProduct() {
 													>
 														{el.title}
 													</span>
-													{selectedByPrice.includes(
+													{(selectedByPrice.includes(
 														el.title
-													) && (
+													) ||
+														selectedByColor.includes(
+															el.title
+														)) && (
 														<i className="absolute top-0 left-0 p-1 rounded-custom bg-main">
 															{
 																<FaCheck
@@ -121,11 +158,31 @@ function FilterProduct() {
 					})}
 				</ul>
 			</div>
-			<div className="w-2/12">
-				<h3 className="mb-3 text-[14px]">Sort by</h3>
+			<div>
+				<h3 className="mb-1 text-[16px] font-medium">Sort by</h3>
+				<div className="flex gap-4 ">
+					{sortBys.map((item) => (
+						<Button
+							styleCustom={`${
+								sort?.title === item.title
+									? "bg-red-300 border border-main"
+									: ""
+							} py-2 px-5 border border-main bg-main text-white text-[14px] rounded-sm`}
+							key={item.id}
+							title={item.title}
+							handleClick={() => {
+								if (item.title === sort?.title) {
+									setSort(null);
+								} else {
+									setSort(item);
+								}
+							}}
+						/>
+					))}
+				</div>
 			</div>
 		</div>
 	);
 }
 
-export default FilterProduct;
+export default memo(FilterProduct);
