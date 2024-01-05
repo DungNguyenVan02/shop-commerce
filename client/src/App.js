@@ -7,6 +7,7 @@ import DefaultLayout from "./layouts/DefaultLayout";
 import { getCategories } from "./redux/asyncActions";
 import { useDispatch } from "react-redux";
 import Footer from "./layouts/components/Footer";
+import Modal from "./components/Modal";
 
 function App() {
 	const dispatch = useDispatch();

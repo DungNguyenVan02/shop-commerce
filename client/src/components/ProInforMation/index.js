@@ -24,7 +24,7 @@ function ProInforMation({ description }) {
 					</li>
 				))}
 			</ul>
-			<div className="p-5 text-[14px] border rounded mt-4">
+			<div className="p-5 text-[14px] border rounded mt-4 shadow-md">
 				{active === 1 && (
 					<ul>
 						{description?.map((desc) => (

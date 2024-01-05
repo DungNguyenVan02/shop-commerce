@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
-import { categoriesSelector } from "../../redux/selector";
+import { appSelector } from "../../redux/selector";
 import { useEffect, useState } from "react";
 import images from "../../assets/images";
 import icons from "../../utils/icons";
 
 function HotCollection() {
 	const [hotCollection, setHotCollection] = useState([]);
-	const { categories } = useSelector(categoriesSelector);
+	const { categories } = useSelector(appSelector);
 	const { IoIosArrowForward } = icons;
 
 	const showHotCollection = [

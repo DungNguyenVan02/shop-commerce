@@ -13,6 +13,7 @@ import SelectQuantity from "../../components/SelectQuantity";
 import ProInforMation from "../../components/ProInforMation";
 import Slider from "../../components/Slider";
 import BreadcrumbHeader from "../../components/BreadcrumbHeader";
+import Ratings from "../../components/Ratings";
 
 function DetailProduct() {
 	const { pid, category, name } = useParams();
@@ -47,6 +48,7 @@ function DetailProduct() {
 			fetchProductData();
 			fetchRelateProductData();
 		}
+		window.scrollTo(0, 0);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pid, name]);
 
@@ -169,8 +171,11 @@ function DetailProduct() {
 					</div>
 				</div>
 			</div>
-			<div className="max-w-main w-full mx-auto my-[20px]">
+			<div className="max-w-main w-full mx-auto my-[20px] mb-0">
 				<ProInforMation description={product?.description} />
+			</div>
+			<div className="max-w-main w-full mx-auto">
+				<Ratings data={product} />
 			</div>
 			<div className="max-w-main w-full mx-auto my-[20px]">
 				<h3 className="text-[20px] mb-4 text-[#151515] uppercase font-bold border-b-2 border-main pb-[15px]">

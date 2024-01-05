@@ -3,11 +3,10 @@ import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
 import { createSlug } from "../../../utils/helper";
 import { useSelector } from "react-redux";
-import { categoriesSelector } from "../../../redux/selector";
+import { appSelector } from "../../../redux/selector";
 function Sidebar() {
-	const { categories } = useSelector(categoriesSelector);
+	const { categories } = useSelector(appSelector);
 
-	console.log(categories);
 	const {
 		FaList,
 		IoIosPhonePortrait,

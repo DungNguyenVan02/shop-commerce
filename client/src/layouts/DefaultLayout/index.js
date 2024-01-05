@@ -4,7 +4,7 @@ import Navigation from "../components/Navigation";
 
 function DefaultLayout({ children }) {
 	return (
-		<div className="w-full flex items-center flex-col">
+		<div className="w-full flex items-center flex-col relative">
 			<Header />
 			<Navigation />
 			<div className="w-full">{children}</div>

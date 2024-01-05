@@ -78,10 +78,6 @@ export const tabs = [
 			In preparation for your delivery, please remove existing furniture, pictures, mirrors, accessories, etc. to prevent damages. Also insure that the area where you would like your furniture placed is clear of any old furniture and any other items that may obstruct the passageway of the delivery team. Shopify Shop will deliver, assemble, and set-up your new furniture purchase and remove all packing materials from your home. Our delivery crews are not permitted to move your existing furniture or other household items. Delivery personnel will attempt to deliver the purchased items in a safe and controlled manner but will not attempt to place furniture if they feel it will result in damage to the product or your home. Delivery personnel are unable to remove doors, hoist furniture or carry furniture up more than 3 flights of stairs. An elevator must be available for deliveries to the 4th floor and above.
 		`,
 	},
-	{
-		id: 5,
-		tab: "Customer review",
-	},
 ];
 
 export const filterBys = [
@@ -163,5 +159,28 @@ export const sortBys = [
 		id: 4,
 		title: "Price high to low",
 		sort: "-price",
+	},
+];
+
+export const voteOptions = [
+	{
+		id: 1,
+		vote: "Terrible",
+	},
+	{
+		id: 2,
+		vote: "Poor",
+	},
+	{
+		id: 3,
+		vote: "Average",
+	},
+	{
+		id: 4,
+		vote: "Good",
+	},
+	{
+		id: 5,
+		vote: "Excellent",
 	},
 ];

@@ -1,4 +1,4 @@
-export const categoriesSelector = (state) => state.categories;
+export const appSelector = (state) => state.app;
 
 export const newProductSelector = (state) => state.products;
 

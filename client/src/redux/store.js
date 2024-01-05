@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import categorySlice from "./categorySlice";
+import appSlice from "./appSlice";
 import productSlice from "./productSlice";
 import userSlice from "./userSlice";
 import storage from "redux-persist/lib/storage";
@@ -26,7 +26,7 @@ const userConfig = {
 
 export const store = configureStore({
 	reducer: {
-		categories: categorySlice,
+		app: appSlice,
 		products: productSlice,
 		user: persistReducer(userConfig, userSlice),
 	},

@@ -1,11 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as actions from "./asyncActions";
-const categorySlice = createSlice({
-	name: "category",
+const appSlice = createSlice({
+	name: "app",
 	initialState: {
 		categories: null,
+		isLoading: false,
+		isShowModal: false,
 	},
-	actions: {},
+	reducers: {
+		showModal: (state, action) => {
+			state.isShowModal = action.payload.isShowModal;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(actions.getCategories.pending, (state) => {
@@ -16,10 +22,11 @@ const categorySlice = createSlice({
 				state.categories = action.payload;
 			})
 			.addCase(actions.getCategories.rejected, (state, action) => {
-				state.status = false;
 				state.errorMessage = action.payload.message;
 			});
 	},
 });
 
-export default categorySlice.reducer;
+export const { showModal } = appSlice.actions;
+
+export default appSlice.reducer;
