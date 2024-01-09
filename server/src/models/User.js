@@ -5,6 +5,9 @@ const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema(
 	{
+		image: {
+			type: String,
+		},
 		firstName: {
 			type: String,
 			required: true,
@@ -53,16 +56,17 @@ const userSchema = new mongoose.Schema(
 		passwordChangeAt: {
 			type: String,
 		},
-		passwordResetToken: {
-			type: String,
-		},
 		passwordResetExpires: {
-			type: String,
+			type: Date,
 		},
 		registerTokenExpires: {
 			type: Date,
 		},
 		codeVerified: {
+			type: String,
+			default: null,
+		},
+		codeForgotPassword: {
 			type: String,
 			default: null,
 		},
@@ -85,15 +89,6 @@ userSchema.pre("save", async function (next) {
 userSchema.methods = {
 	isCorrectPassword: async function (password) {
 		return await bcrypt.compare(password, this.password);
-	},
-	createPassWordChangeToken: function () {
-		const resetToken = crypto.randomBytes(64).toString("hex");
-		this.passwordResetToken = crypto
-			.createHash("sha256")
-			.update(resetToken)
-			.digest("hex");
-		this.passwordResetExpires = Date.now() + 15 * 60 * 1000;
-		return resetToken;
 	},
 };
 

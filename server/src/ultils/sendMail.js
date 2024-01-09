@@ -12,6 +12,7 @@ const sendMail = asyncHandler(async ({ email, html, subject }) => {
 			pass: process.env.EMAIL_APP_PASSWORD,
 		},
 	});
+
 	const info = await transporter.sendMail({
 		from: '"shop commerce"<shopcommerce@gmail.com>', // sender address
 		to: email, // list of receivers

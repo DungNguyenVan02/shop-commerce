@@ -27,7 +27,13 @@ class ProductControllers {
 	// [GET] /:pid
 	getProduct = asyncHandler(async (req, res) => {
 		const { pid } = req.params;
-		const product = await Product.findById(pid);
+		const product = await Product.findById(pid).populate({
+			path: "ratings",
+			populate: {
+				path: "postedBy",
+				select: "firstName lastName image",
+			},
+		});
 
 		return res.status(200).json({
 			success: product ? true : false,
@@ -51,12 +57,27 @@ class ProductControllers {
 			}
 		);
 		const formatQuery = JSON.parse(queryString);
+		let colorQueryObj = {};
 
 		// Filtering
 		if (queries?.name) {
 			formatQuery.name = { $regex: queries.name, $options: "i" };
 		}
-		let queryCommand = Product.find(formatQuery);
+		if (queries?.category) {
+			formatQuery.category = { $regex: queries.category, $options: "i" };
+		}
+		if (queries?.color) {
+			delete formatQuery.color;
+			const colorArr = queries.color?.split(",");
+			const colorQuery = colorArr.map((el) => ({
+				color: { $regex: el, $options: "i" },
+			}));
+			colorQueryObj = { $or: colorQuery };
+		}
+
+		const q = { ...colorQueryObj, ...formatQuery };
+
+		let queryCommand = Product.find(q);
 
 		// Sorting
 		if (req.query.sort) {
@@ -80,7 +101,7 @@ class ProductControllers {
 		// execute query
 		queryCommand.exec(async (err, response) => {
 			if (err) throw new Error(err.message);
-			const counts = await Product.find(formatQuery).countDocuments();
+			const counts = await Product.find(q).countDocuments();
 			return res.status(200).json({
 				success: response ? true : false,
 				counts,
@@ -123,13 +144,13 @@ class ProductControllers {
 	// [PUT] /ratings
 	ratings = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const { star, comment, pid } = req.body;
-		if (!star || !pid) {
+		const { star, comment, pid, date, time } = req.body;
+		if (!star || !pid || !comment) {
 			throw new Error("Missing inputs");
 		}
 
 		const productRating = await Product.findById(pid);
-		const alreadyRating = await productRating.ratings.find(
+		const alreadyRating = productRating.ratings.find(
 			(el) => el.postedBy.toString() === _id
 		);
 		if (alreadyRating) {
@@ -142,6 +163,8 @@ class ProductControllers {
 					$set: {
 						"ratings.$.star": star,
 						"ratings.$.comment": comment,
+						"ratings.$.date": date,
+						"ratings.$.time": time,
 					},
 				},
 				{ new: true }
@@ -151,25 +174,37 @@ class ProductControllers {
 			await Product.findByIdAndUpdate(
 				pid,
 				{
-					$push: { ratings: { star, comment, postedBy: _id } },
+					$push: {
+						ratings: {
+							star,
+							postedBy: _id,
+							comment,
+							date,
+							time,
+						},
+					},
 				},
 				{ new: true }
 			);
 		}
 
 		// Tính trung bình số sao sản phẩm
-		const sumRating = productRating.ratings.length;
-		const sumStars = productRating.ratings.reduce(
+		const productUpdateRate = await Product.findById(pid);
+		const sumRating = productUpdateRate.ratings.length;
+		const sumStars = productUpdateRate.ratings.reduce(
 			(total, element) => total + parseInt(element.star),
 			0
 		);
-		productRating.totalRatings =
-			Math.round((sumStars * 10) / sumRating) / 10;
-		await productRating.save();
+		productUpdateRate.totalRatings = (
+			(sumStars * 10) /
+			sumRating /
+			10
+		).toFixed(1);
+		await productUpdateRate.save();
 
 		return res.status(200).json({
-			status: true,
-			productRating,
+			success: true,
+			productUpdateRate,
 		});
 	});
 

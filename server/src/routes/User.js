@@ -5,14 +5,11 @@ const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
 const router = express.Router();
 
 router.post("/register", userControllers.register);
-router.put(
-	"/completedregister/:codeVerified",
-	userControllers.completedRegister
-);
+router.put("/completedregister", userControllers.completedRegister);
 router.post("/login", userControllers.login);
 router.post("/logout", userControllers.logout);
 router.post("/refreshtoken", userControllers.refreshAccessToken);
-router.get("/forgotpassword", userControllers.forgotPassword);
+router.post("/forgotpassword", userControllers.forgotPassword);
 router.put("/resetpassword", userControllers.resetPassWord);
 
 router.put("/address", verifyAccessToken, userControllers.updateAddress);

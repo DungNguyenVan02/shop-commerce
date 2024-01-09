@@ -61,11 +61,14 @@ class UserControllers {
 				codeVerified: { $ne: null },
 			});
 
-			const isExsitedCode = codeVerified.find(
+			let isExsitedCode = codeVerified.find(
 				(item) => item.codeVerified === codeRand
 			);
 			do {
 				codeRand = Math.floor(Math.random() * 90000) + 10000;
+				isExsitedCode = codeVerified.find(
+					(item) => item.codeVerified === codeRand
+				);
 			} while (isExsitedCode);
 
 			await User.create({
@@ -77,7 +80,7 @@ class UserControllers {
 
 			const html = `<h3>Your encryption authentication: </br><blockquote>${codeRand}</blockquote></h3>`;
 
-			await sendMail({
+			const rs = await sendMail({
 				email,
 				html,
 				subject: "Completed registration in the digital world",
@@ -86,16 +89,18 @@ class UserControllers {
 			scheduleAccountCleanup();
 
 			return res.json({
-				success: true,
-				codeVerified: codeVerified,
-				mes: "Please check your email to accept registration",
+				success: rs.response?.includes("OK") ? true : false,
+				codeVerified: rs.response?.includes("OK") ? codeVerified : "",
+				mes: rs.response?.includes("OK")
+					? "Please check your email to accept registration"
+					: "Something went wrong, please try again",
 			});
 		}
 	});
 
-	// [POST] /completedregister/:codeVerified
+	// [POST] /completedregister
 	completedRegister = asyncHandler(async (req, res) => {
-		const { codeVerified } = req.params;
+		const { codeVerified } = req.body;
 
 		const user = await User.findOne({
 			codeVerified: codeVerified,
@@ -239,7 +244,7 @@ class UserControllers {
 
 	// [GET] /forgotpassword?email=...
 	forgotPassword = asyncHandler(async (req, res, next) => {
-		const { email } = req.query;
+		const { email } = req.body;
 		if (!email) {
 			throw new Error("Invalid email");
 		}
@@ -248,10 +253,28 @@ class UserControllers {
 			throw new Error("User not found");
 		}
 
-		const resetToken = user.createPassWordChangeToken();
-		await user.save();
+		let codeRand;
 
-		const html = `Xin vui lòng click vào link dưới đây để lấy lại mật khẩu của bạn. Link này sẽ hết hạn sau 15 phút kể từ bây giờ <a href=${process.env.URL_SERVER}/api/user/reset-password/${resetToken}>click here</a>`;
+		codeRand = Math.floor(Math.random() * 90000) + 10000;
+
+		const passwordResetExpires = new Date();
+		passwordResetExpires.setMinutes(passwordResetExpires.getMinutes() + 15);
+
+		const codeForgotPassword = await User.find({
+			codeForgotPassword: { $ne: null },
+		});
+
+		let isExsitedCode = codeForgotPassword.find(
+			(item) => item.codeForgotPassword === codeRand
+		);
+		do {
+			codeRand = Math.floor(Math.random() * 90000) + 10000;
+			isExsitedCode = codeForgotPassword.find(
+				(item) => item.codeForgotPassword === codeRand
+			);
+		} while (isExsitedCode);
+
+		const html = `<h3>Your encryption authentication: </br><blockquote>${codeRand}</blockquote></h3>`;
 
 		const data = {
 			email,
@@ -259,25 +282,28 @@ class UserControllers {
 			subject: "Forgot password",
 		};
 
+		(user.codeForgotPassword = codeRand),
+			(user.passwordResetExpires = passwordResetExpires),
+			await user.save();
+
 		const rs = await sendMail(data);
 		return res.status(200).json({
 			success: true,
-			rs,
+			mes: rs.response?.includes("OK")
+				? "Please check your email"
+				: "Something went wrong! please try again",
 		});
 	});
 
 	// [PUT] /resetpassword
 	resetPassWord = asyncHandler(async (req, res, next) => {
-		const { password, token } = req.body;
-		if (!password || !token) {
+		const { password, codeForgotPassword } = req.body;
+		if (!password || !codeForgotPassword) {
 			throw new Error("Missing inputs");
 		}
-		const passwordResetToken = crypto
-			.createHash("sha256")
-			.update(token)
-			.digest("hex");
+
 		const user = await User.findOne({
-			passwordResetToken,
+			codeForgotPassword,
 			passwordResetExpires: { $gt: Date.now() },
 		});
 
@@ -287,7 +313,7 @@ class UserControllers {
 
 		user.password = password;
 		user.passwordChangeAt = Date.now();
-		user.passwordResetToken = undefined;
+		user.codeForgotPassword = undefined;
 		user.passwordResetExpires = undefined;
 		await user.save();
 		return res.status(200).json({
