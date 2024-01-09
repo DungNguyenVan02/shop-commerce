@@ -3,13 +3,13 @@ import images from "../../assets/images";
 import SelectOptions from "../SelectOptions";
 import { formatMoney, renderStar } from "../../utils/helper";
 import { Link } from "react-router-dom";
-function Product({ data, active, productPage }) {
+function Product({ data, active, productPage, productPageDetail }) {
 	const { FaHeart, BsList, FaRegEye } = icons;
 
 	return (
 		<Link
 			to={`${
-				productPage
+				productPage || productPageDetail
 					? "/" + data?.category?.toLowerCase()
 					: data?.category?.toLowerCase()
 			}/${data?._id}/${data?.name}`}

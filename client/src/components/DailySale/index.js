@@ -8,7 +8,7 @@ import moment from "moment";
 import { formatTimes } from "../../utils/helper";
 
 function DailySale() {
-	const { IoStar } = icons;
+	const { FaStar } = icons;
 	const idInterval = useRef();
 
 	const [dealDaily, setDealDaily] = useState(null);
@@ -74,7 +74,7 @@ function DailySale() {
 	return (
 		<div className="border p-5 h-full">
 			<div className="relative flex items-center justify-center text-[20px] font-semibold text-[#505050]">
-				<IoStar color="#d11" className="absolute left-0" />
+				<FaStar color="#d11" className="absolute left-0" />
 				<h3>DAILY DEALS</h3>
 			</div>
 			<img

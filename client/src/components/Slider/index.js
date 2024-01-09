@@ -8,11 +8,21 @@ import "swiper/css/navigation";
 import Product from "../Product";
 import { memo } from "react";
 
-function Slider({ products, active, show, defaultViewShow }) {
+function Slider({
+	products,
+	active,
+	show,
+	defaultViewShow,
+	productPageDetail,
+}) {
 	const handleShowSlider = () => {
 		return products?.map((item) => (
 			<SwiperSlide key={item._id}>
-				<Product data={item} active={active} />
+				<Product
+					data={item}
+					active={active}
+					productPageDetail={productPageDetail && productPageDetail}
+				/>
 			</SwiperSlide>
 		));
 	};

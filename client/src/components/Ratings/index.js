@@ -1,30 +1,43 @@
 import { memo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import VoteBar from "./VoteBar";
 import { renderStar } from "../../utils/helper";
-// import { apiRatingProduct } from "../../apis/products";
+import Swal from "sweetalert2";
 import Button from "../../components/Button";
-import VoteForm from "./VoteForm";
-import { useDispatch, useSelector } from "react-redux";
+import Comment from "./Comment";
 import { showModal } from "../../redux/appSlice";
 import { appSelector } from "../../redux/selector";
-import Modal from "../Modal";
+import { userSelector } from "../../redux/selector";
+import routes from "../../config/routes";
 
 function Ratings({ data }) {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const { isLogin } = useSelector(userSelector);
 	const { isShowModal } = useSelector(appSelector);
 
 	const handleReview = useCallback(() => {
-		dispatch(showModal({ isShowModal: true }));
+		if (isLogin) {
+			dispatch(showModal({ isShowModal: true }));
+		} else {
+			Swal.fire({
+				title: "Notification",
+				cancelButtonText: "Cancel",
+				confirmButtonText: "Go to login or register",
+				text: "Please log in to your account to rate.",
+				showCancelButton: true,
+			}).then((rs) => {
+				if (rs.isConfirmed) {
+					navigate(routes.login);
+				}
+			});
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isShowModal]);
 
 	return (
 		<div className="border p-3 rounded-md shadow-md">
-			{isShowModal && (
-				<Modal>
-					<VoteForm name={data?.name} />
-				</Modal>
-			)}
 			<h3 className="font-semibold mb-3">
 				Reviews & comments of {data?.name}
 			</h3>
@@ -54,14 +67,18 @@ function Ratings({ data }) {
 									<VoteBar
 										key={el}
 										number={el + 1}
-										ratingCount={25}
-										ratingTotal={50}
+										ratingCount={data?.ratings.length}
+										ratingTotal={
+											data?.ratings.filter(
+												(item) => item.star === el + 1
+											)?.length
+										}
 									/>
 								))}
 							</div>
 						</div>
-						<div className="col g-l-12 g-m-12 g-c-12">
-							<div className="flex flex-col items-center mt-5 gap-2">
+						<div className="col g-l-12 g-m-12 g-c-12 border-b">
+							<div className="flex flex-col items-center p-[20px] gap-2">
 								<h3 className="text-gray-400">
 									How do you rate this product?
 								</h3>
@@ -70,6 +87,15 @@ function Ratings({ data }) {
 									handleClick={handleReview}
 									styleCustom="px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-[200px] hover:opacity-90 "
 								/>
+							</div>
+						</div>
+						<div className="col g-l-12 g-m-12 g-c-12">
+							<div className="flex flex-col gap-3 mt-2">
+								{data?.ratings.map((item) => {
+									return (
+										<Comment key={item._id} data={item} />
+									);
+								})}
 							</div>
 						</div>
 					</div>

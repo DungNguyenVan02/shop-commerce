@@ -1,6 +1,6 @@
 import icons from "./icons";
 
-const { IoStar, IoStarOutline } = icons;
+const { FaStar, FaRegStar, FaRegStarHalfStroke } = icons;
 
 export const createSlug = (string) => {
 	return string
@@ -22,19 +22,34 @@ export const formatMoney = (money) => {
 export const renderStar = (number) => {
 	if (isNaN(number)) return;
 	const stars = [];
-	if (number === 0) {
-		for (let i = 5; i > +number; i--) {
-			stars.push(<IoStarOutline color="#f1b400" />);
-		}
-		return stars;
-	}
-	for (let i = 0; i < +number; i++) {
-		stars.push(<IoStar color="#f1b400" />);
-	}
-	for (let i = 5; i > +number; i--) {
-		stars.push(<IoStarOutline color="#f1b400" />);
-	}
 
+	const check = number.toString().split(".")[1];
+
+	if (+check === 5) {
+		for (let i = 0; i < Math.floor(number); i++) {
+			stars.push(<FaStar color="orange" />);
+		}
+
+		stars.push(<FaRegStarHalfStroke color="orange" />);
+
+		for (let i = 5; i > Math.round(number); i--) {
+			stars.push(<FaRegStar color="orange" />);
+		}
+	} else if (+check < 5 || +check > 5) {
+		for (let i = 0; i < Math.floor(number); i++) {
+			stars.push(<FaStar color="orange" />);
+		}
+		for (let i = 5; i > Math.floor(number); i--) {
+			stars.push(<FaRegStar color="orange" />);
+		}
+	} else {
+		for (let i = 0; i < Math.floor(number); i++) {
+			stars.push(<FaStar color="orange" />);
+		}
+		for (let i = 5; i > Math.floor(number); i--) {
+			stars.push(<FaRegStar color="orange" />);
+		}
+	}
 	return stars;
 };
 
@@ -44,4 +59,11 @@ export const formatTimes = (number) => {
 	const m = Math.floor((number % 3600) / 60);
 	const s = Math.floor((number % 3600) % 60);
 	return { h, m, s };
+};
+
+export const generateRange = (start, end) => {
+	const length = end + 1 - start;
+	return Array.from({ length }, (el, i) => {
+		return start + i;
+	});
 };

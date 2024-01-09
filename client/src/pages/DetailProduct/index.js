@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { apiGetProduct, apiGetProducts } from "../../apis";
+import { apiGetProduct, apiGetProducts, apiRatingProduct } from "../../apis";
 import { useCallback, useEffect, useState } from "react";
 import icons from "../../utils/icons";
 
@@ -14,15 +14,22 @@ import ProInforMation from "../../components/ProInforMation";
 import Slider from "../../components/Slider";
 import BreadcrumbHeader from "../../components/BreadcrumbHeader";
 import Ratings from "../../components/Ratings";
+import Modal from "../../components/Modal";
+import VoteForm from "../../components/Ratings/VoteForm";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { appSelector } from "../../redux/selector";
 
 function DetailProduct() {
 	const { pid, category, name } = useParams();
+	const { isShowModal } = useSelector(appSelector);
 	const { GoDotFill, FaCartPlus } = icons;
 
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState(1);
 	const [relateProduct, setRelateProduct] = useState([]);
 	const [thumbSrc, setThumbSrc] = useState("");
+	const [updateRating, setUpdateRating] = useState(false);
 
 	const fetchProductData = async () => {
 		const response = await apiGetProduct(pid);
@@ -52,6 +59,13 @@ function DetailProduct() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pid, name]);
 
+	useEffect(() => {
+		if (pid) {
+			fetchProductData();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [updateRating]);
+
 	const handleQuantity = useCallback(
 		(number) => {
 			if (+number > product?.quantity) {
@@ -78,8 +92,44 @@ function DetailProduct() {
 		[quantity]
 	);
 
+	const handleRating = useCallback(
+		async (dataRating) => {
+			const date = new Date();
+			if (!product?._id || !dataRating.comment) {
+				toast.warning(
+					"Please enter complete product review information",
+					{
+						position: "top-center",
+						theme: "colored",
+					}
+				);
+				return;
+			}
+			const payload = {
+				pid: product?._id,
+				star: dataRating.starVote || 5,
+				comment: dataRating.comment,
+				date: `${date.getDate()}/${
+					date.getMonth() + 1
+				}/${date.getFullYear()}`,
+				time: `${date.getHours()}:${date.getMinutes()}`,
+			};
+			const response = await apiRatingProduct(payload);
+			if (response.success) {
+				setUpdateRating(!updateRating);
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[isShowModal]
+	);
+
 	return (
 		<div className="w-full">
+			{isShowModal && (
+				<Modal>
+					<VoteForm name={product?.name} onRating={handleRating} />
+				</Modal>
+			)}
 			<BreadcrumbHeader
 				category={category}
 				slug={createSlug(category)}
@@ -181,7 +231,7 @@ function DetailProduct() {
 				<h3 className="text-[20px] mb-4 text-[#151515] uppercase font-bold border-b-2 border-main pb-[15px]">
 					YOU MAY ALSO LIKE
 				</h3>
-				<Slider products={relateProduct} show={4} />
+				<Slider products={relateProduct} productPageDetail show={4} />
 			</div>
 		</div>
 	);

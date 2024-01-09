@@ -20,6 +20,9 @@ import {
 import { BsSpeaker, BsList, BsSortDown, BsSortDownAlt } from "react-icons/bs";
 
 import {
+	FaStar,
+	FaRegStar,
+	FaRegStarHalfStroke,
 	FaCircleUser,
 	FaHeadphonesSimple,
 	FaAngleDown,
@@ -36,14 +39,8 @@ import {
 import { IoCloseOutline } from "react-icons/io5";
 import { SlScreenDesktop } from "react-icons/sl";
 import { AiFillPrinter } from "react-icons/ai";
-import {
-	IoStar,
-	IoStarOutline,
-	IoShieldCheckmark,
-	IoGift,
-	IoArrowUndo,
-} from "react-icons/io5";
-import { GoDotFill } from "react-icons/go";
+import { IoShieldCheckmark, IoGift, IoArrowUndo } from "react-icons/io5";
+import { GoDotFill, GoClock } from "react-icons/go";
 
 import { GiPositionMarker } from "react-icons/gi";
 
@@ -61,7 +58,9 @@ const icons = {
 	FaEyeSlash,
 	FaShippingFast,
 	FaCartPlus,
-
+	FaStar,
+	FaRegStar,
+	FaRegStarHalfStroke,
 	FaLinkedinIn,
 	FaFacebookF,
 	FaTwitter,
@@ -74,8 +73,6 @@ const icons = {
 
 	IoMdArrowDropdown,
 	IoIosPhonePortrait,
-	IoStar,
-	IoStarOutline,
 	IoShieldCheckmark,
 	IoIosArrowForward,
 	IoIosMail,
@@ -99,6 +96,7 @@ const icons = {
 	GiPositionMarker,
 
 	GoDotFill,
+	GoClock,
 };
 
 export default icons;

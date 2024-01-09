@@ -1,6 +1,7 @@
 const images = {
 	logo: require("./logo_digital.png"),
 	defaultProduct: require("./errImagesProduct.png"),
+	avatarDefault: require("./avatarDefault.png"),
 	reviewProduct: require("./reviewProduct.png"),
 	banner1Home: require("./banner1-home.png"),
 	banner2Home: require("./banner2-home.png"),

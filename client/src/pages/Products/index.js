@@ -5,6 +5,7 @@ import Product from "../../components/Product";
 import { apiGetProducts } from "../../apis/products";
 import { createSlug } from "../../utils/helper";
 import FilterProduct from "./FilterProduct";
+import Pagination from "../../components/Pagination";
 function Products() {
 	const { category } = useParams();
 	const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ function Products() {
 
 	const fetchProducts = async (queries) => {
 		const response = await apiGetProducts(queries);
-		if (response?.success) setProducts(response.products);
+		if (response?.success) setProducts(response);
 	};
 
 	useEffect(() => {
@@ -33,10 +34,10 @@ function Products() {
 			/>
 			<div className="max-w-main w-full mx-auto my-7">
 				<FilterProduct />
-				<div className="mt-[24px]">
+				<div className="my-[24px]">
 					<div className="grid wide">
 						<div className="row">
-							{products.map((product) => (
+							{products?.products?.map((product) => (
 								<div
 									key={product?._id}
 									className="col g-l-2-4 g-m-2-4 g-c-6 mb-3"
@@ -51,6 +52,7 @@ function Products() {
 						</div>
 					</div>
 				</div>
+				<Pagination totalProducts={products?.counts} />
 			</div>
 		</div>
 	);
