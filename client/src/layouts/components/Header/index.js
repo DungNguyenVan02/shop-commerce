@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Search from "../../../components/Search";
-import images from "../../../assets/images";
-import icons from "../../../utils/icons";
-import routes from "../../../config/routes";
+import Search from "~/components/Search";
+import images from "~/assets/images";
+import icons from "~/utils/icons";
+import routes from "~/config/routes";
 import { useSelector } from "react-redux";
-import { userSelector as selector } from "../../../redux/selector";
-import { getCurrentUser } from "../../../redux/asyncActions";
+import { userSelector as selector } from "~/redux/selector";
+import { getCurrentUser } from "~/redux/asyncActions";
 import { useDispatch } from "react-redux";
-import { logout } from "../../../redux/userSlice";
+import { logout } from "~/redux/userSlice";
 
 function Header() {
 	const navigate = useNavigate();

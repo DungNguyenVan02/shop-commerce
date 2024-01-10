@@ -1,13 +1,14 @@
 import usePagination from "../../components/hooks";
 import PaginationItem from "./PaginationItem";
+import { useSearchParams } from "react-router-dom";
 function Pagination({ totalProducts }) {
-	const pagination = usePagination(totalProducts, 1);
+	const [params] = useSearchParams();
+	console.log(params);
+	const pagination = usePagination(totalProducts, +params.get("page") || 1);
 	return (
-		<div className="flex justify-center gap-1">
-			{pagination?.map((page, i) => (
-				<PaginationItem key={i} current={+1}>
-					{page}
-				</PaginationItem>
+		<div className="flex justify-center">
+			{pagination?.map((pages, i) => (
+				<PaginationItem key={i}>{pages}</PaginationItem>
 			))}
 		</div>
 	);

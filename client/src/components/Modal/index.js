@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { showModal } from "../../redux/appSlice";
+import { showModal } from "~/redux/appSlice";
 function Modal({ children }) {
 	const dispatch = useDispatch();
 	return (

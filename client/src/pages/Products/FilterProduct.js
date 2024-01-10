@@ -1,8 +1,8 @@
 import { useEffect, useState, memo } from "react";
 import { createSearchParams, useNavigate, useParams } from "react-router-dom";
-import { filterBys, sortBys } from "../../utils/contains";
-import Button from "../../components/Button";
-import icons from "../../utils/icons";
+import { filterBys, sortBys } from "~/utils/contains";
+import Button from "~/components/Button";
+import icons from "~/utils/icons";
 
 function FilterProduct() {
 	const navigate = useNavigate();

@@ -1,9 +1,9 @@
 import { NavLink } from "react-router-dom";
 
-import icons from "../../../utils/icons";
-import { createSlug } from "../../../utils/helper";
+import icons from "~/utils/icons";
+import { createSlug } from "~/utils/helper";
 import { useSelector } from "react-redux";
-import { appSelector } from "../../../redux/selector";
+import { appSelector } from "~/redux/selector";
 function Sidebar() {
 	const { categories } = useSelector(appSelector);
 

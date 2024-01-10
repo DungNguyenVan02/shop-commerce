@@ -1,7 +1,7 @@
-import images from "../../assets/images";
-// import Button from "../../components/Button";
+import images from "~/assets/images";
+// import Button from "~/components/Button";
 import { Link } from "react-router-dom";
-import routes from "../../config/routes";
+import routes from "~/config/routes";
 import FormInput from "./FormInput";
 
 function Login() {

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import Button from "../../components/Button";
-import { apiResetPassword } from "../../apis";
+import Button from "~/components/Button";
+import { apiResetPassword } from "~/apis";
 import Swal from "sweetalert2";
 import { useFormik } from "formik";
-import { schemasValidResetPassword } from "../../utils/schemasValid";
+import { schemasValidResetPassword } from "~/utils/schemasValid";
 import { Link } from "react-router-dom";
-import routes from "../../config/routes";
-import icons from "../../utils/icons";
+import routes from "~/config/routes";
+import icons from "~/utils/icons";
 import { useNavigate } from "react-router-dom";
-import { SpinnerAnimation } from "../../components/Animation";
+import { SpinnerAnimation } from "~/components/Animation";
 import { useParams } from "react-router-dom";
 
 function FormInput() {

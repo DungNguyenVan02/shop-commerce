@@ -1,11 +1,11 @@
-// import DailySale from "../../components/DailySale";
-import Banner from "../../components/Banner";
-import Sidebar from "../../layouts/components/Sidebar";
-import BestSeller from "../../components/BestSeller";
-import FeaturedProduct from "../../components/FeaturedProduct";
-import NewArrivals from "../../components/NewArrivals";
-import HotCollection from "../../components/HotCollection";
-import Blog from "../../components/Blog";
+// import DailySale from "~/components/DailySale";
+import Banner from "~/components/Banner";
+import Sidebar from "~/layouts/components/Sidebar";
+import BestSeller from "~/components/BestSeller";
+import FeaturedProduct from "~/components/FeaturedProduct";
+import NewArrivals from "~/components/NewArrivals";
+import HotCollection from "~/components/HotCollection";
+import Blog from "~/components/Blog";
 
 function Home() {
 	return (

@@ -1,6 +1,6 @@
 import { renderStar } from "../../utils/helper";
 import images from "../../assets/images";
-import icons from "../../utils/icons";
+import icons from "~/utils/icons";
 function Comment({ data }) {
 	const { GoClock } = icons;
 

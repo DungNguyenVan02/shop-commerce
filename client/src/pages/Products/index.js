@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import BreadcrumbHeader from "../../components/BreadcrumbHeader";
+import BreadcrumbHeader from "~/components/BreadcrumbHeader";
 import { useParams, useSearchParams } from "react-router-dom";
-import Product from "../../components/Product";
-import { apiGetProducts } from "../../apis/products";
-import { createSlug } from "../../utils/helper";
+import Product from "~/components/Product";
+import { apiGetProducts } from "~/apis/products";
+import { createSlug } from "~/utils/helper";
 import FilterProduct from "./FilterProduct";
-import Pagination from "../../components/Pagination";
+import Pagination from "~/components/Pagination";
 function Products() {
 	const { category } = useParams();
 	const [products, setProducts] = useState([]);
@@ -22,6 +22,7 @@ function Products() {
 		const queries = {};
 		for (let i of searchParams) queries[i[0]] = i[1];
 		fetchProducts(queries);
+		window.scrollTo(0, 0);
 	}, [category, searchParams]);
 
 	return (
@@ -40,7 +41,7 @@ function Products() {
 							{products?.products?.map((product) => (
 								<div
 									key={product?._id}
-									className="col g-l-2-4 g-m-2-4 g-c-6 mb-3"
+									className="col g-l-2-4 g-m-2-4 g-c-6 mb-3 hover:translate-y-[-1px] transition-all"
 								>
 									<Product
 										data={product}

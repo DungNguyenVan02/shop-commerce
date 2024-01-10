@@ -2,12 +2,11 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { publicRoutes } from "./routes";
-import DefaultLayout from "./layouts/DefaultLayout";
-import { getCategories } from "./redux/asyncActions";
+import { publicRoutes } from "~/routes";
+import DefaultLayout from "~/layouts/DefaultLayout";
+import { getCategories } from "~/redux/asyncActions";
 import { useDispatch } from "react-redux";
-import Footer from "./layouts/components/Footer";
-import Modal from "./components/Modal";
+import Footer from "~/layouts/components/Footer";
 
 function App() {
 	const dispatch = useDispatch();

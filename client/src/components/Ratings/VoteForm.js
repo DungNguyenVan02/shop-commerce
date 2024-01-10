@@ -1,15 +1,15 @@
 import { memo, useEffect, useRef, useState } from "react";
-import images from "../../assets/images";
-import icons from "../../utils/icons";
+import images from "~/assets/images";
+import icons from "~/utils/icons";
 import { useDispatch } from "react-redux";
-import { voteOptions } from "../../utils/contains";
-import Button from "../../components/Button";
-import { showModal } from "../../redux/appSlice";
+import { voteOptions } from "~/utils/contains";
+import Button from "~/components/Button";
+import { showModal } from "~/redux/appSlice";
 
 function VoteForm({ name, onRating }) {
 	const dispatch = useDispatch();
 	const formModalRef = useRef();
-	const { FaStar, FaRegStar, IoCloseOutline } = icons;
+	const { FaStar, IoCloseOutline } = icons;
 	const [starHover, setStarHover] = useState(5);
 	const [starVote, setStarVote] = useState(null);
 	const [comment, setComment] = useState("");

@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import VoteBar from "./VoteBar";
 import { renderStar } from "../../utils/helper";
 import Swal from "sweetalert2";
-import Button from "../../components/Button";
+import Button from "~/components/Button";
 import Comment from "./Comment";
-import { showModal } from "../../redux/appSlice";
-import { appSelector } from "../../redux/selector";
-import { userSelector } from "../../redux/selector";
-import routes from "../../config/routes";
+import { showModal } from "~/redux/appSlice";
+import { appSelector } from "~/redux/selector";
+import { userSelector } from "~/redux/selector";
+import routes from "~/config/routes";
 
 function Ratings({ data }) {
 	const dispatch = useDispatch();

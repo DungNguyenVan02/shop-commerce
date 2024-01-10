@@ -36,13 +36,17 @@ import {
 	IoIosMail,
 	IoLogoGoogleplus,
 } from "react-icons/io";
-import { IoCloseOutline } from "react-icons/io5";
+import {
+	IoCloseOutline,
+	IoShieldCheckmark,
+	IoGift,
+	IoArrowUndo,
+} from "react-icons/io5";
 import { SlScreenDesktop } from "react-icons/sl";
 import { AiFillPrinter } from "react-icons/ai";
-import { IoShieldCheckmark, IoGift, IoArrowUndo } from "react-icons/io5";
 import { GoDotFill, GoClock } from "react-icons/go";
-
 import { GiPositionMarker } from "react-icons/gi";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
 const icons = {
 	FaLaptop,
@@ -97,6 +101,8 @@ const icons = {
 
 	GoDotFill,
 	GoClock,
+
+	HiOutlineDotsHorizontal,
 };
 
 export default icons;

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { apiGetProducts } from "../../apis/products";
-import Slider from "../Slider";
+import { apiGetProducts } from "~/apis/products";
+import Slider from "~/components/Slider";
 import { useDispatch } from "react-redux";
-import { getNewProducts } from "../../redux/asyncActions";
+import { getNewProducts } from "~/redux/asyncActions";
 import { useSelector } from "react-redux";
-import { newProductSelector } from "../../redux/selector";
+import { newProductSelector } from "~/redux/selector";
 
 function BestSeller() {
 	const dispatch = useDispatch();

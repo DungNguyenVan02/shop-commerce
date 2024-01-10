@@ -1,4 +1,4 @@
-import icons from "../../utils/icons";
+import icons from "~/utils/icons";
 
 function Search() {
 	const { CiSearch } = icons;

@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
-import { apiGetProducts } from "../../apis/products";
+import { apiGetProducts } from "~/apis/products";
 import CardProduct from "./CardProduct";
-import images from "../../assets/images";
+import images from "~/assets/images";
 
 function FeaturedProduct() {
 	const [products, setProducts] = useState(null);

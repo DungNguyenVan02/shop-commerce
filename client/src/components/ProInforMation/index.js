@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
-import { tabs } from "../../utils/contains";
-import icons from "../../utils/icons";
+import { tabs } from "~/utils/contains";
+import icons from "~/utils/icons";
 function ProInforMation({ description }) {
 	const [active, setActive] = useState(1);
 	const [content, setContent] = useState(null);

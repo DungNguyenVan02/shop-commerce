@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import routes from "../../config/routes";
-import icons from "../../utils/icons";
+import routes from "~/config/routes";
+import icons from "~/utils/icons";
 function BreadcrumbHeader({ name, slug, category }) {
 	const { IoIosArrowForward } = icons;
 	return (

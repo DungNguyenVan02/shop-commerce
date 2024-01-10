@@ -1,6 +1,6 @@
 import Slider from "../Slider";
 import { useSelector } from "react-redux";
-import { newProductSelector } from "../../redux/selector";
+import { newProductSelector } from "~/redux/selector";
 
 function NewArrivals() {
 	const { newProduct } = useSelector(newProductSelector);

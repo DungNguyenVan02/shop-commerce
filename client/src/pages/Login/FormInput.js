@@ -1,17 +1,17 @@
 import { useState } from "react";
-import Button from "../../components/Button";
-import { login } from "../../redux/userSlice";
+import Button from "~/components/Button";
+import { login } from "~/redux/userSlice";
 import { toast } from "react-toastify";
-import { apiLogin, apiForgotPassword } from "../../apis";
+import { apiLogin, apiForgotPassword } from "~/apis";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { schemasValidLogin } from "../../utils/schemasValid";
+import { schemasValidLogin } from "~/utils/schemasValid";
 import { Link } from "react-router-dom";
-import routes from "../../config/routes";
-import icons from "../../utils/icons";
-import { SpinnerAnimation } from "../../components/Animation";
+import routes from "~/config/routes";
+import icons from "~/utils/icons";
+import { SpinnerAnimation } from "~/components/Animation";
 
 function FormInput() {
 	const dispatch = useDispatch();

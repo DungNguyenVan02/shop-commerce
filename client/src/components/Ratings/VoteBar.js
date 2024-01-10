@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import icons from "../../utils/icons";
+import icons from "~/utils/icons";
 function VoteBar({ number, ratingCount, ratingTotal }) {
 	const { FaStar } = icons;
 	const innerPercent = useRef();

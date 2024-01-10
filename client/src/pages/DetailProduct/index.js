@@ -1,24 +1,24 @@
 import { useParams } from "react-router-dom";
-import { apiGetProduct, apiGetProducts, apiRatingProduct } from "../../apis";
+import { apiGetProduct, apiGetProducts, apiRatingProduct } from "~/apis";
 import { useCallback, useEffect, useState } from "react";
-import icons from "../../utils/icons";
+import icons from "~/utils/icons";
 
-import { createSlug, formatMoney, renderStar } from "../../utils/helper";
-import Button from "../../components/Button";
-import ExtraInfo from "../../components/ExtraInfo";
-import { extraInfo } from "../../utils/contains";
-import images from "../../assets/images";
-import SliderSubProduct from "../../components/SliderSubProduct";
-import SelectQuantity from "../../components/SelectQuantity";
-import ProInforMation from "../../components/ProInforMation";
-import Slider from "../../components/Slider";
-import BreadcrumbHeader from "../../components/BreadcrumbHeader";
-import Ratings from "../../components/Ratings";
-import Modal from "../../components/Modal";
-import VoteForm from "../../components/Ratings/VoteForm";
+import { createSlug, formatMoney, renderStar } from "~/utils/helper";
+import Button from "~/components/Button";
+import ExtraInfo from "~/components/ExtraInfo";
+import { extraInfo } from "~/utils/contains";
+import images from "~/assets/images";
+import SliderSubProduct from "~/components/SliderSubProduct";
+import SelectQuantity from "~/components/SelectQuantity";
+import ProInforMation from "~/components/ProInforMation";
+import Slider from "~/components/Slider";
+import BreadcrumbHeader from "~/components/BreadcrumbHeader";
+import Ratings from "~/components/Ratings";
+import Modal from "~/components/Modal";
+import VoteForm from "~/components/Ratings/VoteForm";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { appSelector } from "../../redux/selector";
+import { appSelector } from "~/redux/selector";
 
 function DetailProduct() {
 	const { pid, category, name } = useParams();

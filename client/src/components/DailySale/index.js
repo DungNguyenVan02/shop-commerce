@@ -1,11 +1,11 @@
 import { useEffect, useState, memo, useRef } from "react";
-import icons from "../../utils/icons";
-import { apiGetProducts } from "../../apis/products";
-import { renderStar, formatMoney } from "../../utils/helper";
-import images from "../../assets/images";
+import icons from "~/utils/icons";
+import { apiGetProducts } from "~/apis/products";
+import { renderStar, formatMoney } from "~/utils/helper";
+import images from "~/assets/images";
 import CountDown from "../CountDown";
 import moment from "moment";
-import { formatTimes } from "../../utils/helper";
+import { formatTimes } from "~/utils/helper";
 
 function DailySale() {
 	const { FaStar } = icons;
