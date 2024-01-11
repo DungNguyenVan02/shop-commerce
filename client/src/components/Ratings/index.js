@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import VoteBar from "./VoteBar";
 import { renderStar } from "../../utils/helper";
 import Swal from "sweetalert2";
-import Button from "~/components/Button";
+import { Button } from "~/components/common";
 import Comment from "./Comment";
 import { showModal } from "~/redux/appSlice";
 import { appSelector } from "~/redux/selector";
@@ -90,7 +90,7 @@ function Ratings({ data }) {
 							</div>
 						</div>
 						<div className="col g-l-12 g-m-12 g-c-12">
-							<div className="flex flex-col gap-3 mt-2">
+							<div className="flex flex-col-reverse gap-3 mt-2 ">
 								{data?.ratings.map((item) => {
 									return (
 										<Comment key={item._id} data={item} />

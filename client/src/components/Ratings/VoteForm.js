@@ -3,7 +3,7 @@ import images from "~/assets/images";
 import icons from "~/utils/icons";
 import { useDispatch } from "react-redux";
 import { voteOptions } from "~/utils/contains";
-import Button from "~/components/Button";
+import { Button } from "~/components/common";
 import { showModal } from "~/redux/appSlice";
 
 function VoteForm({ name, onRating }) {

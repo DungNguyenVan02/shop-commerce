@@ -5,7 +5,7 @@ import {
 	useSearchParams,
 } from "react-router-dom";
 import icons from "../../utils/icons";
-import Button from "../Button";
+import { Button } from "~/components/common";
 function PaginationItem({ children }) {
 	const { HiOutlineDotsHorizontal } = icons;
 	const [params] = useSearchParams();

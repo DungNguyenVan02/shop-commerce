@@ -1,13 +1,18 @@
 import routes from "../config/routes";
-import Blogs from "../pages/Blogs";
-import DetailProduct from "../pages/DetailProduct";
-import FAQs from "../pages/FAQs";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import OurService from "../pages/OurService";
-import Products from "../pages/Products";
-import Register from "../pages/Register";
-import ResetPassword from "../pages/ResetPassword";
+import Blogs from "../pages/public/Blogs";
+import DetailProduct from "../pages/public/DetailProduct";
+import FAQs from "../pages/public/FAQs";
+import Home from "../pages/public/Home";
+import Login from "../pages/public/Login";
+import OurService from "../pages/public/OurService";
+import Products from "../pages/public/Products";
+import Register from "../pages/public/Register";
+import ResetPassword from "../pages/public/ResetPassword";
+import ManageOrder from "~/pages/admin/ManageProducts";
+import ManageProducts from "~/pages/admin/ManageProducts";
+import ManageUsers from "~/pages/admin/ManageUsers";
+import Admin from "~/pages/admin/Admin";
+import Member from "~/pages/public/Member";
 const publicRoutes = [
 	{
 		path: routes.home,
@@ -49,7 +54,36 @@ const publicRoutes = [
 		component: ResetPassword,
 		headerNone: true,
 	},
+
+	// Admin
+	{
+		path: routes.admin,
+		component: Admin,
+		isAdminRoutes: true,
+	},
+
+	{
+		path: routes.manage_orders,
+		component: ManageOrder,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.manage_products,
+		component: ManageProducts,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.manage_users,
+		component: ManageUsers,
+		isAdminRoutes: true,
+	},
+
+	// Member
+	{
+		path: routes.member,
+		component: Member,
+		isMemberRoutes: true,
+	},
 ];
 
-const privateRoutes = [];
-export { publicRoutes, privateRoutes };
+export { publicRoutes };
