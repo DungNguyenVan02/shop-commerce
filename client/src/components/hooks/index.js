@@ -1,1 +1,2 @@
-export { default } from "./usePagination";
+export { default as usePagination } from "./usePagination";
+export { default as useDebounce } from "./useDebounce";

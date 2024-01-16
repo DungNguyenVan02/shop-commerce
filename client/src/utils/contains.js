@@ -1,6 +1,16 @@
+import routes from "~/config/routes";
 import icons from "./icons";
-const { IoShieldCheckmark, FaShippingFast, IoGift, IoArrowUndo, FaPhoneAlt } =
-	icons;
+const {
+	IoShieldCheckmark,
+	FaShippingFast,
+	IoGift,
+	IoArrowUndo,
+	FaPhoneAlt,
+	RiDashboard3Line,
+	TiGroupOutline,
+	RiProductHuntLine,
+	HiOutlineClipboardDocumentList,
+} = icons;
 export const extraInfo = [
 	{
 		id: 1,
@@ -182,5 +192,43 @@ export const voteOptions = [
 	{
 		id: 5,
 		vote: "Excellent",
+	},
+];
+
+export const adminSlideBar = [
+	{
+		id: 0,
+		title: "Dashboard",
+		icon: <RiDashboard3Line />,
+		path: routes.admin_dashboard,
+	},
+	{
+		id: 1,
+		title: "Manage users",
+		icon: <TiGroupOutline />,
+		path: routes.admin_manage_users,
+	},
+	{
+		id: 2,
+		title: "Manage product",
+		icon: <RiProductHuntLine />,
+		children: [
+			{
+				id: 0,
+				title: "Create product",
+				path: routes.admin_create_product,
+			},
+			{
+				id: 1,
+				title: "Manage products",
+				path: routes.admin_manage_products,
+			},
+		],
+	},
+	{
+		id: 3,
+		title: "Manage order",
+		icon: <HiOutlineClipboardDocumentList />,
+		path: routes.admin_manage_orders,
 	},
 ];

@@ -1,23 +1,17 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { publicRoutes, privateRoutes } from "~/routes";
+import { publicRoutes } from "~/routes";
 import DefaultLayout from "~/layouts/DefaultLayout";
 import AdminLayout from "~/layouts/AdminLayout";
 import { getCategories } from "~/redux/asyncActions";
 import { useDispatch } from "react-redux";
 import Footer from "~/layouts/components/user/Footer";
-import { useSelector } from "react-redux";
-import { userSelector } from "./redux/selector";
 import MemberLayout from "./layouts/MemberLayout";
 
 function App() {
 	const dispatch = useDispatch();
-	const { currentUser } = useSelector(userSelector);
-
-	console.log(currentUser);
-
 	useEffect(() => {
 		dispatch(getCategories());
 		// eslint-disable-next-line react-hooks/exhaustive-deps

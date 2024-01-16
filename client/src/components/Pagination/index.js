@@ -1,10 +1,9 @@
-import usePagination from "../../components/hooks";
+import { usePagination } from "../../components/hooks";
 import PaginationItem from "./PaginationItem";
 import { useSearchParams } from "react-router-dom";
-function Pagination({ totalProducts }) {
+function Pagination({ totalCount }) {
 	const [params] = useSearchParams();
-	console.log(params);
-	const pagination = usePagination(totalProducts, +params.get("page") || 1);
+	const pagination = usePagination(totalCount, +params.get("page") || 1);
 	return (
 		<div className="flex justify-center">
 			{pagination?.map((pages, i) => (

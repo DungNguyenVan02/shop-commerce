@@ -41,12 +41,21 @@ import {
 	IoShieldCheckmark,
 	IoGift,
 	IoArrowUndo,
+	IoSaveOutline,
 } from "react-icons/io5";
 import { SlScreenDesktop } from "react-icons/sl";
 import { AiFillPrinter } from "react-icons/ai";
 import { GoDotFill, GoClock } from "react-icons/go";
 import { GiPositionMarker } from "react-icons/gi";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { RiDashboard3Line, RiProductHuntLine } from "react-icons/ri";
+import { TiGroupOutline } from "react-icons/ti";
+import {
+	HiOutlineClipboardDocumentList,
+	HiOutlineChevronDown,
+	HiOutlineChevronRight,
+} from "react-icons/hi2";
+import { TbUserEdit, TbUserX } from "react-icons/tb";
 
 const icons = {
 	FaLaptop,
@@ -83,6 +92,7 @@ const icons = {
 	IoLogoGoogleplus,
 	IoGift,
 	IoArrowUndo,
+	IoSaveOutline,
 
 	IoCloseOutline,
 
@@ -103,6 +113,16 @@ const icons = {
 	GoClock,
 
 	HiOutlineDotsHorizontal,
+	HiOutlineChevronDown,
+	HiOutlineChevronRight,
+
+	RiDashboard3Line,
+	TiGroupOutline,
+	RiProductHuntLine,
+	HiOutlineClipboardDocumentList,
+
+	TbUserEdit,
+	TbUserX,
 };
 
 export default icons;

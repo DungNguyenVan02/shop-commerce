@@ -7,6 +7,29 @@ export const apiGetCurrentUser = () => {
 	});
 };
 
+export const apiGetAllUser = (params) => {
+	return axios({
+		url: "/user",
+		method: "GET",
+		params,
+	});
+};
+
+export const apiUpdateUser = (data, uid) => {
+	return axios({
+		url: "/user/" + uid,
+		method: "PUT",
+		data,
+	});
+};
+
+export const apiDeleteUser = (uid) => {
+	return axios({
+		url: "/user/" + uid,
+		method: "DELETE",
+	});
+};
+
 export const apiForgotPassword = (data) => {
 	return axios({
 		url: `/user/forgotpassword`,

@@ -1,8 +1,8 @@
 import {
 	createSearchParams,
 	useNavigate,
-	useParams,
 	useSearchParams,
+	useLocation,
 } from "react-router-dom";
 import icons from "../../utils/icons";
 import { Button } from "~/components/common";
@@ -10,23 +10,16 @@ function PaginationItem({ children }) {
 	const { HiOutlineDotsHorizontal } = icons;
 	const [params] = useSearchParams();
 	const navigate = useNavigate();
-
-	const { category } = useParams();
+	const location = useLocation();
 
 	const handleChangePage = (page) => {
-		const param = [];
-		for (let i of params.entries()) {
-			param.push(i);
-		}
-		const queries = {};
-		for (let i of params) queries[i[0]] = i[1];
+		const queries = Object.fromEntries([...params]);
 		if (Number(page)) queries.page = page;
 		navigate({
-			pathname: `/${category}`,
+			pathname: location.pathname,
 			search: createSearchParams(queries).toString(),
 		});
 	};
-
 	return (
 		<Button
 			styleCustom={`${

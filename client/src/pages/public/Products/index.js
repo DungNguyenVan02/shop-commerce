@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import BreadcrumbHeader from "~/components/BreadcrumbHeader";
+import { BreadcrumbHeader } from "~/components/SectionLayout";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Product } from "~/components/Product";
 import { apiGetProducts } from "~/apis/products";
@@ -17,10 +17,7 @@ function Products() {
 	};
 
 	useEffect(() => {
-		const params = [];
-		for (let i of searchParams.entries()) params.push(i);
-		const queries = {};
-		for (let i of searchParams) queries[i[0]] = i[1];
+		const queries = Object.fromEntries([...searchParams]);
 		fetchProducts(queries);
 		window.scrollTo(0, 0);
 	}, [category, searchParams]);
@@ -53,7 +50,7 @@ function Products() {
 						</div>
 					</div>
 				</div>
-				<Pagination totalProducts={products?.counts} />
+				<Pagination totalCount={products?.counts} />
 			</div>
 		</div>
 	);

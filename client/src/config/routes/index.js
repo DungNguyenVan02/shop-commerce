@@ -12,12 +12,11 @@ const routes = {
 	detailProduct_category_pid_name: "/:category/:pid/:name",
 
 	// Admin
-	admin: "/admin",
-	dashboard: "/dashboard",
-	manage_users: "/manage-users",
-	manage_products: "/manage-products",
-	manage_orders: "/manage-order",
-	create_product: "/create-product",
+	admin_dashboard: "/admin/dashboard",
+	admin_manage_users: "/admin/manage-users",
+	admin_manage_orders: "/admin/manage-order",
+	admin_create_product: "/admin/create-product",
+	admin_manage_products: "/admin/manage-products",
 
 	// Member
 	member: "/member",

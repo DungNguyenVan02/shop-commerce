@@ -64,7 +64,7 @@ function Header() {
 										<Link
 											to={
 												currentUser?.role === 1974
-													? routes.admin
+													? routes.admin_dashboard
 													: routes.member
 											}
 										>

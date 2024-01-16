@@ -8,11 +8,11 @@ import OurService from "../pages/public/OurService";
 import Products from "../pages/public/Products";
 import Register from "../pages/public/Register";
 import ResetPassword from "../pages/public/ResetPassword";
-import ManageOrder from "~/pages/admin/ManageProducts";
-import ManageProducts from "~/pages/admin/ManageProducts";
+import { CreateProduct, ManageProducts } from "~/pages/admin/ManageProducts";
+import ManageOrder from "~/pages/admin/ManageOrder";
 import ManageUsers from "~/pages/admin/ManageUsers";
-import Admin from "~/pages/admin/Admin";
 import Member from "~/pages/public/Member";
+import DashBroad from "~/pages/admin/DashBroad";
 const publicRoutes = [
 	{
 		path: routes.home,
@@ -57,23 +57,28 @@ const publicRoutes = [
 
 	// Admin
 	{
-		path: routes.admin,
-		component: Admin,
+		path: routes.admin_dashboard,
+		component: DashBroad,
 		isAdminRoutes: true,
 	},
 
 	{
-		path: routes.manage_orders,
+		path: routes.admin_manage_orders,
 		component: ManageOrder,
 		isAdminRoutes: true,
 	},
 	{
-		path: routes.manage_products,
+		path: routes.admin_manage_products,
 		component: ManageProducts,
 		isAdminRoutes: true,
 	},
 	{
-		path: routes.manage_users,
+		path: routes.admin_create_product,
+		component: CreateProduct,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.admin_manage_users,
 		component: ManageUsers,
 		isAdminRoutes: true,
 	},

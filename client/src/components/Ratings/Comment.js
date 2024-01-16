@@ -15,7 +15,7 @@ function Comment({ data }) {
 				<div className="flex justify-between w-full">
 					<div>
 						<h3 className="text-[18px] font-semibold text-gray-900">
-							{`${data?.postedBy.firstName} ${data?.postedBy.lastName}`}
+							{`${data?.postedBy?.firstName} ${data?.postedBy?.lastName}`}
 						</h3>
 
 						<div className="flex items-center gap-2">

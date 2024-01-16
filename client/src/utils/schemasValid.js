@@ -3,15 +3,15 @@ import * as yup from "yup";
 export const schemasValidRegister = yup.object().shape({
 	firstName: yup
 		.string()
-		.min(2, "Please enter your first name")
+		.min("Please enter your first name")
 		.required("Required field"),
 	lastName: yup
 		.string()
-		.min(2, "Please enter your last name")
+		.min("Please enter your last name")
 		.required("Required field"),
 	phone: yup
 		.string()
-		.min(9, "Please enter at least 10 numbers")
+		.min(10, "Please enter at least 10 numbers")
 		.required("Required field"),
 	email: yup
 		.string()
@@ -50,5 +50,32 @@ export const schemasValidResetPassword = yup.object().shape({
 	codeVerify: yup
 		.string()
 		.min(5, "Code must be at least 5 characters")
+		.required("Required field"),
+});
+
+export const schemasValidUpdateUser = yup.object().shape({
+	firstName: yup
+		.string()
+		.min(2, "Invalid first name")
+		.required("Required field"),
+	lastName: yup
+		.string()
+		.min(2, "Invalid last name")
+		.required("Required field"),
+	phone: yup
+		.string()
+		.min(10, "Invalid phone numbers")
+		.required("Required field"),
+	email: yup
+		.string()
+		.email("Invalid email address")
+		.required("Required field"),
+	status: yup
+		.string()
+		.oneOf(["blocked", "active"], "Choose status")
+		.required("Required field"),
+	role: yup
+		.string()
+		.oneOf(["user", "admin"], "Choose role")
 		.required("Required field"),
 });

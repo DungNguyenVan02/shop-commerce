@@ -12,7 +12,7 @@ import { generateRange } from "../../utils/helper";
 function usePagination(totalProduct, currentPage, sibling = 1) {
 	const paginationArr = useMemo(() => {
 		// Tổng sp hiển thị
-		const limitProduct = process.env.REACT_APP_LIMIT_PRODUCT || 10;
+		const limitProduct = process.env.REACT_APP_LIMIT || 10;
 
 		// Tổng số trang
 		const totalPages = Math.ceil(totalProduct / limitProduct);
