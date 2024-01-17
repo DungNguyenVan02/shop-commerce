@@ -11,7 +11,7 @@ export const schemasValidRegister = yup.object().shape({
 		.required("Required field"),
 	phone: yup
 		.string()
-		.min(10, "Please enter at least 10 numbers")
+		.min(20, "Please enter at least 10 numbers")
 		.required("Required field"),
 	email: yup
 		.string()
@@ -64,7 +64,7 @@ export const schemasValidUpdateUser = yup.object().shape({
 		.required("Required field"),
 	phone: yup
 		.string()
-		.min(10, "Invalid phone numbers")
+		.min(20, "Invalid phone numbers")
 		.required("Required field"),
 	email: yup
 		.string()
@@ -77,5 +77,34 @@ export const schemasValidUpdateUser = yup.object().shape({
 	role: yup
 		.string()
 		.oneOf(["user", "admin"], "Choose role")
+		.required("Required field"),
+});
+
+export const schemasValidCreateProduct = yup.object().shape({
+	name: yup.string().min(2, "Please enter name").required("Required field"),
+
+	price: yup.number().min(2, "Please enter price").required("Required field"),
+
+	quantity: yup
+		.number()
+		.min(2, "Please enter quantity")
+		.required("Required field"),
+	color: yup.string().min(2, "Please enter color").required("Required field"),
+	brand: yup.string().required("Required field"),
+	category: yup
+		.string()
+		.oneOf(
+			[
+				"Smartphone",
+				"Tablet",
+				"Laptop",
+				"Speaker",
+				"Camera",
+				"Accessories",
+				"Television",
+				"Printer",
+			],
+			"Please choose category for product"
+		)
 		.required("Required field"),
 });
