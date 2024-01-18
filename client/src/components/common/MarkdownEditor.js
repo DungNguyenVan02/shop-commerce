@@ -53,8 +53,12 @@ function MarkdownEditor({
 						[name]: e.target.getContent(),
 					}))
 				}
+				onBlur={(e) =>
+					e.target.getContent() === "" &&
+					setInvalidField((prev) => ({ ...prev, description: true }))
+				}
 				onFocus={() =>
-					setInvalidField.description &&
+					invalidField.description &&
 					setInvalidField((prev) => ({ ...prev, description: false }))
 				}
 			/>

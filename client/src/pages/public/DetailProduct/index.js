@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { apiGetProduct, apiGetProducts, apiRatingProduct } from "~/apis";
 import { useCallback, useEffect, useState } from "react";
-import icons from "~/utils/icons";
+import DOMPurify from "dompurify";
 
+import icons from "~/utils/icons";
 import { createSlug, formatMoney, renderStar } from "~/utils/helper";
 import { extraInfo } from "~/utils/contains";
 import images from "~/assets/images";
@@ -170,15 +171,26 @@ function DetailProduct() {
 								<span>{product?.sold} Sold</span>
 							</div>
 							<ul className="flex flex-col gap-[5px]">
-								{product?.description?.map((item) => (
-									<li
-										key={item}
-										className="flex items-center gap-2"
-									>
-										<GoDotFill />
-										{item}
-									</li>
-								))}
+								{product?.description.length > 1 ? (
+									product?.description?.map((item) => (
+										<li
+											key={item}
+											className="flex items-center gap-2"
+										>
+											<GoDotFill />
+											{item}
+										</li>
+									))
+								) : (
+									<div
+										className="line-clamp-[15]"
+										dangerouslySetInnerHTML={{
+											__html: DOMPurify.sanitize(
+												product?.description[0]
+											),
+										}}
+									></div>
+								)}
 							</ul>
 							<div className="flex items-center gap-2">
 								<span>Quantity</span>

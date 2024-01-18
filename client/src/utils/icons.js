@@ -15,6 +15,7 @@ import {
 	FaEyeSlash,
 	FaShippingFast,
 	FaCartPlus,
+	FaUpload,
 } from "react-icons/fa";
 
 import { BsSpeaker, BsList, BsSortDown, BsSortDownAlt } from "react-icons/bs";
@@ -81,6 +82,7 @@ const icons = {
 	FaFlickr,
 	FaAngleDown,
 	FaCheck,
+	FaUpload,
 
 	CiSearch,
 

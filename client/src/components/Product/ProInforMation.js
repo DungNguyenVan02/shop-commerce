@@ -1,4 +1,5 @@
 import { memo, useState } from "react";
+import DOMPurify from "dompurify";
 import { tabs } from "~/utils/contains";
 import icons from "~/utils/icons";
 function ProInforMation({ description }) {
@@ -27,12 +28,20 @@ function ProInforMation({ description }) {
 			<div className="p-5 text-[14px] border rounded mt-4 shadow-md">
 				{active === 1 && (
 					<ul>
-						{description?.map((desc) => (
-							<li key={desc} className="flex gap-2">
-								<GoDotFill />
-								{desc}
-							</li>
-						))}
+						{description.length > 1 ? (
+							description.length?.map((desc) => (
+								<li key={desc} className="flex gap-2">
+									<GoDotFill />
+									{desc}
+								</li>
+							))
+						) : (
+							<div
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(description[0]),
+								}}
+							></div>
+						)}
 					</ul>
 				)}
 				{content}
