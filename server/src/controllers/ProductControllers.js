@@ -5,14 +5,27 @@ const slugify = require("slugify");
 class ProductControllers {
 	// [POST] /createproduct
 	createProduct = asyncHandler(async (req, res) => {
-		const { name } = req.body;
-		if (Object.keys(req.body).length === 0) {
+		const { name, price, description, category, brand, quantity, color } =
+			req.body;
+		const thumb = req?.files?.thumb[0]?.path;
+		const images = req.files?.images?.map((el) => el.path);
+		if (
+			!name ||
+			!price ||
+			!description ||
+			!category ||
+			!brand ||
+			!quantity ||
+			!color
+		) {
 			throw new Error("Missing inputs");
 		}
 
-		if (req.body && req.body.name) {
+		if (name) {
 			req.body.slug = slugify(name);
 		}
+		if (thumb) req.body.thumb = thumb;
+		if (images) req.body.images = images;
 
 		const newProduct = await Product.create(req.body);
 

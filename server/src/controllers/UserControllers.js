@@ -147,12 +147,16 @@ class UserControllers {
 		}
 
 		const response = await User.findOne({ email, isVerified: true });
+		if (!response) {
+			throw new Error("Cannot find user, please try again");
+		}
 		if (await response.isCorrectPassword(password)) {
-			const { password, role, refreshToken, ...userData } =
-				response.toObject();
-
+			const { password, refreshToken, ...userData } = response.toObject();
 			// create access token and refresh token
-			const accessToken = generateAccessToken(response._id, role);
+			const accessToken = generateAccessToken(
+				response._id,
+				userData.role
+			);
 			const newRefreshToken = generateRefreshToken(response._id);
 
 			// save refresh token in database
@@ -204,9 +208,7 @@ class UserControllers {
 
 	getCurrent = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const user = await User.findById(_id).select(
-			"-refreshToken -password -role"
-		);
+		const user = await User.findById(_id).select("-refreshToken -password");
 		return res.status(200).json({
 			success: user ? true : false,
 			res: user ? user : "User not found",
@@ -324,21 +326,76 @@ class UserControllers {
 
 	// [GET] /
 	getUsers = asyncHandler(async (req, res) => {
-		const response = await User.find().select(
-			"-refreshToken -password -role"
+		const queries = { ...req.query };
+		// Tách trường đặc biệt trên query
+		const excludeFields = ["page", "sort", "limit", "fields"];
+		// format lại các operators cho đúng cú pháp mongoose
+		excludeFields.forEach((field) => delete queries[field]);
+
+		let queryString = JSON.stringify(queries);
+		queryString = queryString.replace(
+			/\b(gte|gt|lte|lt)\b/g,
+			(matchedEl) => {
+				return `$${matchedEl}`;
+			}
 		);
-		return res.status(200).json({
-			success: response ? true : false,
-			users: response,
-		});
-	});
-	// [DELETE] ?_id=....
-	deleteUser = asyncHandler(async (req, res) => {
-		const { _id } = req.query;
-		if (!_id) {
-			throw new Error("Missing inputs");
+		const formatQuery = JSON.parse(queryString);
+
+		// Filtering
+		if (queries?.q) {
+			delete formatQuery.q;
+			formatQuery["$or"] = [
+				{ firstName: { $regex: queries.q, $options: "i" } },
+				{ lastName: { $regex: queries.q, $options: "i" } },
+				{ email: { $regex: queries.q, $options: "i" } },
+			];
 		}
-		const response = await User.findByIdAndDelete(_id);
+
+		let queryCommand = User.find(formatQuery);
+
+		// Sorting
+		if (req.query.sort) {
+			const sortBy = req.query.sort.split(",").join(" ");
+			queryCommand = queryCommand.sort(sortBy);
+		}
+
+		// Fields limiting
+		if (req.query.fields) {
+			const fields = req.query.fields.split(",").join(" ");
+			queryCommand = queryCommand.select(fields);
+		}
+		// Pagination
+		// limit: số object lấy về trong 1 lần gọi api
+		// skip: số trang muốn bỏ qua
+		const page = +req.query.page || 1;
+		const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+		const skip = (page - 1) * limit;
+		queryCommand.skip(skip).limit(limit);
+
+		// execute query
+		queryCommand.exec(async (err, response) => {
+			if (err) throw new Error(err.message);
+			const counts = await User.find(formatQuery).countDocuments();
+			return res.status(200).json({
+				success: response ? true : false,
+				counts,
+				users: response ? response : "Cannot get users",
+			});
+		});
+
+		// const response = await User.find().select(
+		// 	"-refreshToken -password -role"
+		// );
+		// return res.status(200).json({
+		// 	success: response ? true : false,
+		// 	users: response,
+		// });
+	});
+	// [DELETE] ?uid=....
+	deleteUser = asyncHandler(async (req, res) => {
+		const { uid } = req.params;
+
+		const response = await User.findByIdAndDelete(uid);
 		return res.status(200).json({
 			success: response ? true : false,
 			deletedUser: response
@@ -366,7 +423,7 @@ class UserControllers {
 	updateUserByAdmin = asyncHandler(async (req, res) => {
 		const { role } = req.user;
 		const { uid } = req.params;
-		if (role !== "admin") {
+		if (role !== 1974) {
 			throw new Error("You must be an admin");
 		}
 		if (!uid || Object.keys(req.body).length === 0) {

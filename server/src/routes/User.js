@@ -26,6 +26,6 @@ router.put(
 );
 
 router.get("/", verifyAccessToken, isAdmin, userControllers.getUsers);
-router.delete("/", verifyAccessToken, isAdmin, userControllers.deleteUser);
+router.delete("/:uid", verifyAccessToken, isAdmin, userControllers.deleteUser);
 
 module.exports = router;

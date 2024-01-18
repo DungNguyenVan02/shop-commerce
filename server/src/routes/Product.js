@@ -11,7 +11,17 @@ router.get("/:pid", productControllers.getProduct);
 router.put("/ratings", verifyAccessToken, productControllers.ratings);
 
 router.use(verifyAccessToken, isAdmin);
-router.post("/", productControllers.createProduct);
+router.post(
+	"/",
+	uploader.fields([
+		{
+			name: "images",
+			maxCount: 10,
+		},
+		{ name: "thumb", maxCount: 1 },
+	]),
+	productControllers.createProduct
+);
 router.put("/:pid", productControllers.updateProduct);
 router.delete("/:pid", productControllers.deleteProduct);
 router.put(
