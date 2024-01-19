@@ -73,12 +73,14 @@ class ProductControllers {
 		let colorQueryObj = {};
 
 		// Filtering
-		if (queries?.name) {
-			formatQuery.name = { $regex: queries.name, $options: "i" };
+		if (queries?.q) {
+			delete formatQuery.q;
+			formatQuery["$or"] = [
+				{ name: { $regex: queries.q, $options: "i" } },
+				{ category: { $regex: queries.q, $options: "i" } },
+			];
 		}
-		if (queries?.category) {
-			formatQuery.category = { $regex: queries.category, $options: "i" };
-		}
+
 		if (queries?.color) {
 			delete formatQuery.color;
 			const colorArr = queries.color?.split(",");
