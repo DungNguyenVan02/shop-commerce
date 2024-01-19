@@ -30,3 +30,10 @@ export const apiCreateProduct = (data) => {
 		data,
 	});
 };
+
+export const apiDeleteProduct = (pid) => {
+	return axios({
+		url: "/product/" + pid,
+		method: "DELETE",
+	});
+};

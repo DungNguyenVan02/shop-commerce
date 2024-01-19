@@ -4,7 +4,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { Product } from "~/components/Product";
 import { apiGetProducts } from "~/apis/products";
 import { createSlug } from "~/utils/helper";
-import FilterProduct from "./FilterProduct";
+import { FilterProduct } from "~/components/Filter";
 import Pagination from "~/components/Pagination";
 function Products() {
 	const { category } = useParams();

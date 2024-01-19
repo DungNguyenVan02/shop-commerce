@@ -5,7 +5,6 @@ import { userSelector } from "~/redux/selector";
 
 function Member() {
 	const { isLogin, currentUser } = useSelector(userSelector);
-	console.log(isLogin && currentUser.role !== 1974);
 	if (!isLogin && currentUser.role !== 1974) {
 		<Navigate to={routes.login} replace={true} />;
 	}

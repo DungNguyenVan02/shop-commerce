@@ -12,17 +12,19 @@ import { schemasValidCreateProduct } from "~/utils/schemasValid";
 import { toast } from "react-toastify";
 import icons from "~/utils/icons";
 import { apiCreateProduct } from "~/apis";
+import { ChooseImages } from "~/components/Admin/ManageProducts";
+import { DotsAnimation } from "~/components/Animation";
+import Swal from "sweetalert2";
 
 function CreateProduct() {
-	const { IoCloseOutline, FaUpload } = icons;
+	const { IoCloseOutline } = icons;
 	const { categories } = useSelector(appSelector);
+	const [isUploading, setIsUploading] = useState(false);
 	const [brands, setBrands] = useState([]);
-	const [descriptionProduct, setDescriptionProduct] = useState({
-		description: "",
-	});
+	const [descriptionProduct, setDescriptionProduct] = useState("");
 	const [files, setFiles] = useState({
 		thumb: "",
-		images: null,
+		images: [],
 	});
 	// Thể hiện trạng thái validate form
 	const [invalidField, setInvalidField] = useState({
@@ -53,7 +55,7 @@ function CreateProduct() {
 	};
 
 	const onSubmit = async (data, actions) => {
-		if (descriptionProduct.description === "") {
+		if (descriptionProduct === "") {
 			setInvalidField((prev) => ({
 				...prev,
 				description: true,
@@ -71,9 +73,14 @@ function CreateProduct() {
 				images: true,
 			}));
 		}
-		// actions.resetForm();
-		const mergeObjects = { ...data, ...descriptionProduct };
-		console.log(mergeObjects);
+		if (
+			descriptionProduct === "" ||
+			files.thumb === "" ||
+			files.images.length === 0
+		)
+			return;
+		const mergeObjects = { ...data, description: descriptionProduct };
+
 		const formData = new FormData();
 		for (let i of Object.entries(mergeObjects)) {
 			formData.append(i[0], i[1]);
@@ -85,8 +92,23 @@ function CreateProduct() {
 			}
 		}
 
+		setIsUploading(true);
 		const response = await apiCreateProduct(formData);
-		console.log(response);
+		if (response.success) {
+			actions.resetForm();
+			setIsUploading(false);
+			toast.success("Created product successfully!");
+			setPreview({ thumb: null, images: null });
+			setFiles({ thumb: "", images: [] });
+			setDescriptionProduct("");
+		} else {
+			setIsUploading(false);
+			Swal.fire(
+				"Notifications",
+				"Something went wrong, please try again",
+				"error"
+			);
+		}
 	};
 
 	const getIdChoose = (name) => {
@@ -110,34 +132,36 @@ function CreateProduct() {
 		if (checkInvalidFiles) {
 			setFiles((prev) => ({
 				...prev,
-				images: prev.images
-					? [...prev.images, ...event.target.files]
-					: [...event.target.files],
+				images: [...prev.images, ...event.target.files],
 			}));
 		} else {
 			toast.warning("File not supported");
 		}
 	};
 
-	const handleUploadThumb = (event) => {
-		const checkInvalidFiles = Array.from(event.target.files).some(
-			(file) => {
-				return (
-					file.type === "image/jpeg" ||
-					file.type === "image/png" ||
-					file.type === "image/jpg"
-				);
+	const handleUploadThumb = useCallback(
+		(event) => {
+			const checkInvalidFiles = Array.from(event.target.files).some(
+				(file) => {
+					return (
+						file.type === "image/jpeg" ||
+						file.type === "image/png" ||
+						file.type === "image/jpg"
+					);
+				}
+			);
+			if (checkInvalidFiles) {
+				setFiles((prev) => ({
+					...prev,
+					thumb: event.target.files[0],
+				}));
+			} else {
+				toast.warning("File not supported");
 			}
-		);
-		if (checkInvalidFiles) {
-			setFiles((prev) => ({
-				...prev,
-				thumb: event.target.files[0],
-			}));
-		} else {
-			toast.warning("File not supported");
-		}
-	};
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[files.thumb]
+	);
 
 	useEffect(() => {
 		if (files.thumb !== "") {
@@ -192,6 +216,16 @@ function CreateProduct() {
 
 	return (
 		<div>
+			{isUploading && (
+				<div className="fixed top-0 right-0 bottom-0 left-0 bg-overlay z-10 flex items-center justify-center">
+					<h3 className="text-[20px] text-white">
+						Uploading, please wait a moment!
+					</h3>{" "}
+					<i className="mt-[10px] ml-[-8px]">
+						<DotsAnimation height={57} width={57} />
+					</i>
+				</div>
+			)}
 			<div className="flex items-center h-[40px] bg-gray-600 text-white px-3">
 				Manage create new product
 			</div>
@@ -277,32 +311,12 @@ function CreateProduct() {
 							</div>
 							<div className="flex flex-col gap-3 mb-4 w-full">
 								<div className="w-1/4">
-									<h3 className="text-[16px] font-medium ml-2">
-										Choose thumb product
-									</h3>
-									<div className="p-1 bg-white rounded-md border">
-										<label
-											className="text-[16px] font-medium ml-2 flex items-center gap-2"
-											htmlFor="thumb"
-										>
-											<FaUpload /> {files.thumb ? 1 : 0}{" "}
-											file selected
-										</label>
-										<input
-											id="thumb"
-											name="thumb"
-											type="file"
-											accept="image/jpeg, image/png"
-											onChange={handleUploadThumb}
-											hidden
-										/>
-										{invalidField.thumb &&
-											files.thumb === "" && (
-												<div className="text-[12px] text-main">
-													Invalid field
-												</div>
-											)}
-									</div>
+									<ChooseImages
+										invalidField={invalidField}
+										id="thumb"
+										files={files}
+										onUpload={handleUploadThumb}
+									/>
 								</div>
 								{preview.thumb && (
 									<img
@@ -313,36 +327,13 @@ function CreateProduct() {
 									/>
 								)}
 								<div className="w-1/4">
-									<h3 className="text-[16px] font-medium ml-2">
-										Choose thumb product
-									</h3>
-
-									<div className="p-1 bg-white rounded-md border">
-										<label
-											className="text-[16px] font-medium ml-2 flex items-center gap-2"
-											htmlFor="images"
-										>
-											<FaUpload />{" "}
-											{files.images
-												? files.images.length
-												: 0}{" "}
-											file selected
-										</label>
-										<input
-											id="images"
-											name="images"
-											type="file"
-											multiple={true}
-											onChange={handleUploadImages}
-											hidden
-										/>
-										{invalidField.images &&
-											files.images.length === 0 && (
-												<div className="text-[12px] text-main">
-													Invalid field
-												</div>
-											)}
-									</div>
+									<ChooseImages
+										invalidField={invalidField}
+										id="images"
+										files={files}
+										onUpload={handleUploadImages}
+										multiple
+									/>
 								</div>
 								{preview.images && (
 									<div className="flex items-center gap-3 w-[770px] overflow-x-scroll">
@@ -374,10 +365,10 @@ function CreateProduct() {
 							</div>
 							<MarkdownEditor
 								label="Description product"
-								name="description"
 								onChangeValue={onChangeValue}
 								invalidField={invalidField}
 								setInvalidField={setInvalidField}
+								descriptionProduct={descriptionProduct}
 							/>
 							<Button
 								styleCustom="px-3 py-1 bg-green-500 text-white rounded hover:opacity-80 my-[24px]"

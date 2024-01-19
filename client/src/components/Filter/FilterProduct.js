@@ -1,12 +1,13 @@
 import { useEffect, useState, memo } from "react";
-import { createSearchParams, useNavigate, useParams } from "react-router-dom";
+import { createSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { filterBys, sortBys } from "~/utils/contains";
 import { Button } from "~/components/common";
 import icons from "~/utils/icons";
 
-function FilterProduct() {
+function FilterProduct({ customStyle }) {
+	const location = useLocation();
+	console.log(location);
 	const navigate = useNavigate();
-	const { category } = useParams();
 	const { FaAngleDown, FaCheck } = icons;
 	const [sort, setSort] = useState(null);
 	const [selectedByPrice, setSelectedByPrice] = useState("");
@@ -75,7 +76,7 @@ function FilterProduct() {
 		}
 
 		navigate({
-			pathname: `/${category}`,
+			pathname: location.pathname,
 			search: createSearchParams(dataSelected).toString(),
 		});
 
@@ -83,7 +84,9 @@ function FilterProduct() {
 	}, [selectedByPrice, selectedByColor, sort]);
 	return (
 		<div
-			className="flex flex-col gap-4 border p-5"
+			className={`flex ${
+				customStyle ? "gap-10" : "flex-col p-5 border gap-4"
+			} `}
 			onClick={() => {
 				if (isActiveFilter !== null) setIsActiveFilter(null);
 			}}
@@ -98,7 +101,9 @@ function FilterProduct() {
 									handleClick={() => {
 										handleClickFilter(item.id);
 									}}
-									styleCustom="flex justify-around items-center bg-main hover:opacity-80 text-[14px] py-2 px-5 text-white rounded-sm"
+									styleCustom={`flex justify-around items-center bg-main hover:opacity-80 text-[14px] ${
+										customStyle ? "p-2" : "py-2 px-5"
+									} text-white rounded-sm`}
 									title={item.title}
 									rightICon={<FaAngleDown />}
 								/>
@@ -158,6 +163,7 @@ function FilterProduct() {
 					})}
 				</ul>
 			</div>
+
 			<div>
 				<h3 className="mb-1 text-[16px] font-medium">Sort by</h3>
 				<div className="flex gap-4 ">
@@ -167,7 +173,9 @@ function FilterProduct() {
 								sort?.title === item.title
 									? "bg-red-300 border border-main"
 									: ""
-							} py-2 px-5 border border-main bg-main text-white text-[14px] rounded-sm`}
+							} 
+								${customStyle ? "p-2" : "py-2 px-5"}
+							border border-main bg-main text-white text-[14px] rounded-sm`}
 							key={item.id}
 							title={item.title}
 							handleClick={() => {

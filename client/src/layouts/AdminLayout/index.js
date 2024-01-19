@@ -9,7 +9,7 @@ function AdminLayout({ children }) {
 	const { currentUser } = useSelector(userSelector);
 	return (
 		<div className="relative">
-			<header className="fixed top-0 left-0 right-0 z-10 h-[50px] flex justify-between items-center bg-blue-500 shadow-sm px-5">
+			<header className="fixed top-0 left-0 right-0 z-[9999] h-[50px] flex justify-between items-center bg-blue-500 shadow-sm px-5">
 				<Link to={routes.home}>
 					<img
 						className="w-[200px] h-[30px]"
@@ -27,7 +27,7 @@ function AdminLayout({ children }) {
 				</div>
 			</header>
 			<div className="w-full min-h-screen mt-[50px] flex">
-				<div className="bg-white shadow-lg fixed top-0 left-0 bottom-0 w-[240px] mt-[50px]">
+				<div className="bg-white shadow-lg fixed top-0 left-0 bottom-0 w-[240px] mt-[50px] z-30">
 					<Sidebar />
 				</div>
 				<div className=" flex-1 ml-[240px]">{children}</div>

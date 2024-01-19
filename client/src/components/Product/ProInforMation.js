@@ -28,8 +28,8 @@ function ProInforMation({ description }) {
 			<div className="p-5 text-[14px] border rounded mt-4 shadow-md">
 				{active === 1 && (
 					<ul>
-						{description.length > 1 ? (
-							description.length?.map((desc) => (
+						{description?.length > 1 ? (
+							description?.map((desc) => (
 								<li key={desc} className="flex gap-2">
 									<GoDotFill />
 									{desc}
@@ -38,7 +38,7 @@ function ProInforMation({ description }) {
 						) : (
 							<div
 								dangerouslySetInnerHTML={{
-									__html: DOMPurify.sanitize(description[0]),
+									__html: DOMPurify.sanitize(description),
 								}}
 							></div>
 						)}

@@ -9,15 +9,12 @@ import { schemasValidUpdateUser } from "~/utils/schemasValid";
 function FormUpdate({ useEdit }) {
 	const dispatch = useDispatch();
 
-	console.log(useEdit?._id);
-
 	const onSubmit = async (data) => {
 		const transformData = {
 			...data,
 			role: data.role === "admin" ? 1974 : 1978,
 			isBlocked: data.status === "blocked" ? true : false,
 		};
-		console.log(transformData);
 		const response = await apiUpdateUser(transformData, useEdit?._id);
 		if (response.success) {
 			Swal.fire(

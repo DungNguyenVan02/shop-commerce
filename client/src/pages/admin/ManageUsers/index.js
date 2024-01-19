@@ -44,7 +44,7 @@ function ManageUsers() {
 			if (result.isConfirmed) {
 				Swal.fire({
 					title: "Deleted!",
-					text: "Your file has been deleted.",
+					text: "Your user has been deleted.",
 					icon: "success",
 				}).then(async () => {
 					await apiDeleteUser(uid);
@@ -175,7 +175,10 @@ function ManageUsers() {
 										className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
 									>
 										<td className="px-6 py-3">
-											{index + 1}
+											{((+params.get("page") || 1) - 1) *
+												process.env.REACT_APP_LIMIT +
+												index +
+												1}
 										</td>
 										<td className="px-6 py-3">
 											{user?.firstName}

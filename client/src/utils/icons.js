@@ -16,6 +16,7 @@ import {
 	FaShippingFast,
 	FaCartPlus,
 	FaUpload,
+	FaRegEdit,
 } from "react-icons/fa";
 
 import { BsSpeaker, BsList, BsSortDown, BsSortDownAlt } from "react-icons/bs";
@@ -43,6 +44,7 @@ import {
 	IoGift,
 	IoArrowUndo,
 	IoSaveOutline,
+	IoTrashBinOutline,
 } from "react-icons/io5";
 import { SlScreenDesktop } from "react-icons/sl";
 import { AiFillPrinter } from "react-icons/ai";
@@ -83,6 +85,7 @@ const icons = {
 	FaAngleDown,
 	FaCheck,
 	FaUpload,
+	FaRegEdit,
 
 	CiSearch,
 
@@ -95,6 +98,7 @@ const icons = {
 	IoGift,
 	IoArrowUndo,
 	IoSaveOutline,
+	IoTrashBinOutline,
 
 	IoCloseOutline,
 

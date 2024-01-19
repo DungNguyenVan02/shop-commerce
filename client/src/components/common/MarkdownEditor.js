@@ -3,11 +3,12 @@ import { Editor } from "@tinymce/tinymce-react";
 
 function MarkdownEditor({
 	label,
-	name,
 	value,
+
 	onChangeValue,
 	invalidField,
 	setInvalidField,
+	descriptionProduct,
 }) {
 	return (
 		<>
@@ -16,7 +17,7 @@ function MarkdownEditor({
 			)}
 			<Editor
 				apiKey={process.env.REACT_APP_TINYMCE_KEY}
-				initialValue={value}
+				value={descriptionProduct}
 				init={{
 					height: 400,
 					menubar: true,
@@ -47,12 +48,7 @@ function MarkdownEditor({
 					content_style:
 						"body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
 				}}
-				onChange={(e) =>
-					onChangeValue((prev) => ({
-						...prev,
-						[name]: e.target.getContent(),
-					}))
-				}
+				onChange={(e) => onChangeValue(e.target.getContent())}
 				onBlur={(e) =>
 					e.target.getContent() === "" &&
 					setInvalidField((prev) => ({ ...prev, description: true }))
