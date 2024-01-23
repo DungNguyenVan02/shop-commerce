@@ -30,7 +30,7 @@ function AdminLayout({ children }) {
 				<div className="bg-white shadow-lg fixed top-0 left-0 bottom-0 w-[240px] mt-[50px] z-30">
 					<Sidebar />
 				</div>
-				<div className=" flex-1 ml-[240px]">{children}</div>
+				<div className="relative flex-1 ml-[240px]">{children}</div>
 			</div>
 		</div>
 	);

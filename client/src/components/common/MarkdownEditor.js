@@ -8,7 +8,7 @@ function MarkdownEditor({
 	onChangeValue,
 	invalidField,
 	setInvalidField,
-	descriptionProduct,
+	// descriptionProduct,
 }) {
 	return (
 		<>
@@ -17,7 +17,7 @@ function MarkdownEditor({
 			)}
 			<Editor
 				apiKey={process.env.REACT_APP_TINYMCE_KEY}
-				value={descriptionProduct}
+				initialValue={value.description}
 				init={{
 					height: 400,
 					menubar: true,

@@ -8,7 +8,7 @@ import {
 	MarkdownEditor,
 } from "~/components/common";
 import { appSelector } from "~/redux/selector";
-import { schemasValidCreateProduct } from "~/utils/schemasValid";
+import { schemasValidProduct } from "~/utils/schemasValid";
 import { toast } from "react-toastify";
 import icons from "~/utils/icons";
 import { apiCreateProduct } from "~/apis";
@@ -118,26 +118,30 @@ function CreateProduct() {
 		if (result) setBrands(result[0]?.brand);
 	};
 
-	const handleUploadImages = (event) => {
-		const checkInvalidFiles = Array.from(event.target.files).some(
-			(file) => {
-				return (
-					file.type === "image/jpeg" ||
-					file.type === "image/png" ||
-					file.type === "image/jpg"
-				);
-			}
-		);
+	const handleUploadImages = useCallback(
+		(event) => {
+			const checkInvalidFiles = Array.from(event.target.files).some(
+				(file) => {
+					return (
+						file.type === "image/jpeg" ||
+						file.type === "image/png" ||
+						file.type === "image/jpg"
+					);
+				}
+			);
 
-		if (checkInvalidFiles) {
-			setFiles((prev) => ({
-				...prev,
-				images: [...prev.images, ...event.target.files],
-			}));
-		} else {
-			toast.warning("File not supported");
-		}
-	};
+			if (checkInvalidFiles) {
+				setFiles((prev) => ({
+					...prev,
+					images: [...prev.images, ...event.target.files],
+				}));
+			} else {
+				toast.warning("File not supported");
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[files.images]
+	);
 
 	const handleUploadThumb = useCallback(
 		(event) => {
@@ -191,7 +195,7 @@ function CreateProduct() {
 		return () => {
 			if (preview.images?.length > 0) {
 				for (let i of preview.images) {
-					URL.revokeObjectURL(i);
+					URL.revokeObjectURL(i.path);
 				}
 			}
 		};
@@ -211,13 +215,13 @@ function CreateProduct() {
 			...prev,
 			images: finalPreview,
 		}));
-		URL.revokeObjectURL(file);
+		URL.revokeObjectURL(file.path);
 	};
 
 	return (
 		<div>
 			{isUploading && (
-				<div className="fixed top-0 right-0 bottom-0 left-0 bg-overlay z-10 flex items-center justify-center">
+				<div className="fixed top-0 right-0 bottom-0 left-0 bg-overlay z-[99999999] flex items-center justify-center">
 					<h3 className="text-[20px] text-white">
 						Uploading, please wait a moment!
 					</h3>{" "}
@@ -232,7 +236,7 @@ function CreateProduct() {
 			<div className="p-3 bg-gray-100 min-h-screen w-full">
 				<Formik
 					initialValues={initialValues}
-					validationSchema={schemasValidCreateProduct}
+					validationSchema={schemasValidProduct}
 					onSubmit={onSubmit}
 				>
 					{({ handleSubmit }) => (
@@ -316,6 +320,7 @@ function CreateProduct() {
 										id="thumb"
 										files={files}
 										onUpload={handleUploadThumb}
+										selected={preview.thumb ? 1 : 0}
 									/>
 								</div>
 								{preview.thumb && (
@@ -333,6 +338,7 @@ function CreateProduct() {
 										files={files}
 										onUpload={handleUploadImages}
 										multiple
+										selected={preview.images?.length || 0}
 									/>
 								</div>
 								{preview.images && (
@@ -365,6 +371,7 @@ function CreateProduct() {
 							</div>
 							<MarkdownEditor
 								label="Description product"
+								value={{ description: "" }}
 								onChangeValue={onChangeValue}
 								invalidField={invalidField}
 								setInvalidField={setInvalidField}

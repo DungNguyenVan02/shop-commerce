@@ -1,5 +1,12 @@
 import icons from "~/utils/icons";
-function ChooseImages({ files, invalidField, id, onUpload, multiple }) {
+function ChooseImages({
+	files,
+	invalidField,
+	id,
+	onUpload,
+	multiple,
+	selected,
+}) {
 	const { FaUpload } = icons;
 	return (
 		<>
@@ -11,13 +18,8 @@ function ChooseImages({ files, invalidField, id, onUpload, multiple }) {
 					className="text-[16px] font-medium ml-2 flex items-center gap-2"
 					htmlFor={id}
 				>
-					<FaUpload />{" "}
-					{files[id] && id === "thumb"
-						? 1
-						: files[id]?.length > 0 && id === "images"
-						? files[id]?.length
-						: 0}{" "}
-					file selected
+					<FaUpload />
+					{`${selected} file selected`}
 				</label>
 				<input
 					id={id}

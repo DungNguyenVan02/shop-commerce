@@ -80,7 +80,7 @@ export const schemasValidUpdateUser = yup.object().shape({
 		.required("Required field"),
 });
 
-export const schemasValidCreateProduct = yup.object().shape({
+export const schemasValidProduct = yup.object().shape({
 	name: yup.string().min(2, "Please enter name").required("Required field"),
 	price: yup.number().min(2, "Please enter price").required("Required field"),
 	quantity: yup
@@ -88,7 +88,6 @@ export const schemasValidCreateProduct = yup.object().shape({
 		.min(2, "Please enter quantity")
 		.required("Required field"),
 	color: yup.string().min(2, "Please enter color").required("Required field"),
-	brand: yup.string().required("Required field"),
 	category: yup
 		.string()
 		.oneOf(
