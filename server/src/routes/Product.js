@@ -22,7 +22,17 @@ router.post(
 	]),
 	productControllers.createProduct
 );
-router.put("/:pid", productControllers.updateProduct);
+router.put(
+	"/:pid",
+	uploader.fields([
+		{
+			name: "images",
+			maxCount: 10,
+		},
+		{ name: "thumb", maxCount: 1 },
+	]),
+	productControllers.updateProduct
+);
 router.delete("/:pid", productControllers.deleteProduct);
 router.put(
 	"/upload-images/:pid",

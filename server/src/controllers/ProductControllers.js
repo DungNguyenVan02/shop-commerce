@@ -128,7 +128,48 @@ class ProductControllers {
 	// [PUT] /:pid
 	updateProduct = asyncHandler(async (req, res) => {
 		const { pid } = req.params;
-		const { name } = req.body;
+		const { name, price, description, category, brand, quantity, color } =
+			req.body;
+		if (
+			!name ||
+			!price ||
+			!description ||
+			!category ||
+			!brand ||
+			!quantity ||
+			!color
+		) {
+			throw new Error("Missing inputs");
+		}
+		const files = req?.files;
+
+		if (files?.thumb) req.body.thumb = files?.thumb[0].path;
+		if (Array.isArray(req.body?.initImages)) {
+			if (files?.images) {
+				const imagesUpdate = files?.images?.map((el) => el.path);
+
+				req.body.images = req.body?.initImages.concat(imagesUpdate);
+			} else {
+				req.body.images = req.body?.initImages;
+			}
+		} else if (typeof req.body?.initImages === "string") {
+			if (files?.images) {
+				const payload = [req.body?.initImages];
+				console.log("prev:", payload);
+
+				const imagesUpdate = files?.images?.map((el) => el.path);
+				for (let i of imagesUpdate) {
+					payload.push(i);
+				}
+				console.log("after: ", payload);
+				req.body.images = payload;
+			} else {
+				req.body.images = req.body?.initImages;
+			}
+		} else {
+			req.body.images = files?.images?.map((el) => el.path);
+		}
+
 		if (name) {
 			req.body.slug = slugify(name);
 		}
