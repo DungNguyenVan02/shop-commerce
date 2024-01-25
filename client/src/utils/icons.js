@@ -53,6 +53,7 @@ import { GiPositionMarker } from "react-icons/gi";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiDashboard3Line, RiProductHuntLine } from "react-icons/ri";
 import { TiGroupOutline } from "react-icons/ti";
+import { BiCustomize } from "react-icons/bi";
 import {
 	HiOutlineClipboardDocumentList,
 	HiOutlineChevronDown,
@@ -129,6 +130,8 @@ const icons = {
 
 	TbUserEdit,
 	TbUserX,
+
+	BiCustomize,
 };
 
 export default icons;

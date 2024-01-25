@@ -8,7 +8,7 @@ import { createSlug, formatMoney, renderStar } from "~/utils/helper";
 import { extraInfo } from "~/utils/contains";
 import images from "~/assets/images";
 import { SelectQuantity, ExtraInfo, Button } from "~/components/common";
-import { ProInforMation } from "~/components/Product";
+import { ProInforMation, Variants } from "~/components/Product";
 import { Slider, SliderSubProduct } from "~/components/Slider";
 import { BreadcrumbHeader } from "~/components/SectionLayout";
 import Ratings from "~/components/Ratings";
@@ -28,10 +28,18 @@ function DetailProduct() {
 	const [relateProduct, setRelateProduct] = useState([]);
 	const [thumbSrc, setThumbSrc] = useState("");
 	const [updateRating, setUpdateRating] = useState(false);
+	const [selectVariants, setSelectVariants] = useState({
+		id: "",
+		price: null,
+	});
 
 	const fetchProductData = async () => {
 		const response = await apiGetProduct(pid);
 		if (response?.success) {
+			setSelectVariants({
+				id: response?.getProduct?._id,
+				price: response?.getProduct?.price,
+			});
 			setProduct(response?.getProduct);
 			setThumbSrc(response?.getProduct?.thumb);
 		}
@@ -42,7 +50,8 @@ function DetailProduct() {
 	};
 
 	const fetchRelateProductData = async () => {
-		const response = await apiGetProducts({ category });
+		const response = await apiGetProducts({ category: product?.category });
+		console.log(response);
 		if (response?.success) {
 			setRelateProduct(response?.products);
 		}
@@ -63,6 +72,18 @@ function DetailProduct() {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updateRating]);
+	useEffect(() => {
+		let src = "";
+		if (selectVariants.id === product?._id) {
+			src = product?.thumb;
+		} else {
+			src = product?.variants?.find(
+				(el) => el.sku === selectVariants.id
+			)?.thumb;
+		}
+		setThumbSrc(src);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectVariants]);
 
 	const handleQuantity = useCallback(
 		(number) => {
@@ -151,7 +172,7 @@ function DetailProduct() {
 						</div>
 						<div className="col g-l-4 g-m-4 g-c-12 text-[#505050] text-[14px] ">
 							<h3 className="text-[30px] text-[#333333] font-semibold">
-								{formatMoney(product?.price)}
+								{formatMoney(selectVariants?.price)}
 							</h3>
 							<div className="flex items-center gap-5 my-5 mt-[10px]">
 								<span className="flex">
@@ -192,6 +213,26 @@ function DetailProduct() {
 									></div>
 								)}
 							</ul>
+							<div className="my-3">
+								<h3 className="text-[16px] font-semibold text-gray-800">
+									Color:
+								</h3>
+								<div className="flex">
+									<Variants
+										data={product}
+										active={selectVariants.id}
+										onClickActive={setSelectVariants}
+									/>
+									{product?.variants?.map((item) => (
+										<Variants
+											key={item.sku}
+											data={item}
+											active={selectVariants.id}
+											onClickActive={setSelectVariants}
+										/>
+									))}
+								</div>
+							</div>
 							<div className="flex items-center gap-2">
 								<span>Quantity</span>
 								<SelectQuantity

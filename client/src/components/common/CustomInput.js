@@ -1,7 +1,14 @@
 import { useField } from "formik";
 import { memo } from "react";
 
-function CustomInput({ label, placeholder, textArea, onSetFile, ...props }) {
+function CustomInput({
+	label,
+	placeholder,
+	textArea,
+	onSetFile,
+	readOnly,
+	...props
+}) {
 	const [field, meta] = useField(props);
 
 	let TypeInput = "input";
@@ -24,10 +31,12 @@ function CustomInput({ label, placeholder, textArea, onSetFile, ...props }) {
 					textArea ? "h-[100px]" : "h-[34px]"
 				}  ${meta.touched && meta.error ? "border-main bg-red-100" : ""}
 					${props.type === "file" ? "pt-1" : ""} 
+					${readOnly ? "cursor-default" : ""}
 				`}
 				placeholder={placeholder}
 				{...field}
 				{...props}
+				readOnly={readOnly}
 			/>
 			{meta.touched && meta.error ? (
 				<div className="text-[12px] text-main">{meta.error}</div>

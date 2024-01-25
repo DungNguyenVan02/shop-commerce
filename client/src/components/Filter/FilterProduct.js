@@ -6,7 +6,6 @@ import icons from "~/utils/icons";
 
 function FilterProduct({ customStyle }) {
 	const location = useLocation();
-	console.log(location);
 	const navigate = useNavigate();
 	const { FaAngleDown, FaCheck } = icons;
 	const [sort, setSort] = useState(null);

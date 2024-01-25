@@ -13,18 +13,25 @@ import {
 } from "react-router-dom";
 import { useDebounce } from "~/components/hooks";
 import Swal from "sweetalert2";
-import UpdatedProduct from "~/layouts/components/admin/Product";
+import {
+	UpdateProduct,
+	VariantsProduct,
+} from "~/layouts/components/admin/Product";
 
 function ManageProducts() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [searchQueries] = useSearchParams();
-	const { CiSearch, FaRegEdit, IoTrashBinOutline } = icons;
+	const { CiSearch, FaRegEdit, IoTrashBinOutline, BiCustomize } = icons;
 	const [searchText, setSearchText] = useState({ q: "" });
 	const [products, setProducts] = useState([]);
 	const [isRerender, setIsRender] = useState(false);
 	const [updateProduct, setUpdateProduct] = useState({
-		isShowLayout: false,
+		isUpdate: false,
+		data: null,
+	});
+	const [variantsProduct, setVariantsProduct] = useState({
+		isVariants: false,
 		data: null,
 	});
 
@@ -95,11 +102,19 @@ function ManageProducts() {
 
 	return (
 		<>
-			{updateProduct.isShowLayout && (
+			{updateProduct.isUpdate && (
 				<div className="absolute top-0 right-0 bottom-0 left-0 z-40 flex flex-col">
-					<UpdatedProduct
+					<UpdateProduct
 						dataUpdate={updateProduct?.data}
 						onHandleHide={setUpdateProduct}
+					/>
+				</div>
+			)}
+			{variantsProduct.isVariants && (
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-40 flex flex-col">
+					<VariantsProduct
+						variantsProduct={variantsProduct?.data}
+						onHandleHide={setVariantsProduct}
 					/>
 				</div>
 			)}
@@ -137,7 +152,7 @@ function ManageProducts() {
 									<th scope="col" className="px-6 py-3">
 										Name
 									</th>
-									<th scope="col" className="px-6 py-3">
+									<th scope="col" className="px-4 py-3">
 										Category
 									</th>
 									<th scope="col" className="px-6 py-3">
@@ -147,14 +162,17 @@ function ManageProducts() {
 										Price
 									</th>
 
-									<th scope="col" className="px-4 py-3">
+									<th scope="col" className="px-2 py-3">
 										Quantity
 									</th>
-									<th scope="col" className="px-4 py-3">
+									<th scope="col" className="px-2 py-3">
 										Sold
 									</th>
-									<th scope="col" className="px-4 py-3">
+									<th scope="col" className="px-2 py-3">
 										Ratings
+									</th>
+									<th scope="col" className="px-1 py-3">
+										Variants
 									</th>
 									<th
 										scope="col"
@@ -193,7 +211,7 @@ function ManageProducts() {
 											<td className="px-6 py-3">
 												{product?.name}
 											</td>
-											<td className="px-6 py-3">
+											<td className="px-4 py-3">
 												{product?.category}
 											</td>
 											<td className="px-6 py-3">
@@ -209,8 +227,11 @@ function ManageProducts() {
 											<td className=" py-3 text-center">
 												{product?.sold}
 											</td>
-											<td className=" py-3 text-center">
+											<td className="py-3 text-center">
 												{product?.totalRatings}
+											</td>
+											<td className="py-3 text-center">
+												{product?.variants.length}
 											</td>
 											<td className="px-5 py-3 text-center">
 												{moment(
@@ -223,14 +244,28 @@ function ManageProducts() {
 														className="cursor-pointer opacity-75 hover:opacity-100"
 														onClick={() =>
 															setUpdateProduct({
-																isShowLayout: true,
+																isUpdate: true,
 																data: product,
 															})
 														}
 													>
 														<FaRegEdit
 															size={19}
-															color="#03cafc"
+															color="#43a87b"
+														/>
+													</span>
+													<span
+														className="cursor-pointer opacity-75 hover:opacity-100"
+														onClick={() =>
+															setVariantsProduct({
+																isVariants: true,
+																data: product,
+															})
+														}
+													>
+														<BiCustomize
+															size={19}
+															color="#0B60B0"
 														/>
 													</span>
 													<span

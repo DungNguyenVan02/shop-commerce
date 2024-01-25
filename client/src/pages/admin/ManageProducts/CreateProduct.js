@@ -241,80 +241,81 @@ function CreateProduct() {
 				>
 					{({ handleSubmit }) => (
 						<Form onSubmit={handleSubmit}>
-							<div className="flex gap-5 items-center">
-								<div className="w-1/4">
-									<CustomInput
-										name="name"
-										label="Name product"
-										placeholder="Enter name product"
-									/>
-								</div>
-								<div className="w-1/4">
-									<CustomInput
-										name="price"
-										type="number"
-										label="Price product"
-										placeholder="Enter price product"
-									/>
-								</div>
-								<div className="w-1/4">
-									<CustomInput
-										name="quantity"
-										type="number"
-										label="Quantity product"
-										placeholder="Enter quantity product"
-									/>
-								</div>
-								<div className="w-1/4">
-									<CustomInput
-										name="color"
-										label="Color product"
-										placeholder="Enter color product"
-									/>
-								</div>
-							</div>
-							<div className="flex gap-10">
-								<div className="w-1/4">
-									<CustomSelect
-										name="category"
-										label="Category product"
-										getIdChoose={getIdChoose}
-									>
-										<option value="">
-											--Choose category for product--
-										</option>
-										{categories?.map((cate) => (
-											<option
-												key={cate._id}
-												value={cate.name}
-											>
-												{cate.name}
+							<div className="grid wide">
+								<div className="row">
+									<div className="col g-l-3">
+										<CustomInput
+											name="name"
+											label="Name product"
+											placeholder="Enter name product"
+										/>
+									</div>
+									<div className="col g-l-3">
+										<CustomInput
+											name="price"
+											type="number"
+											label="Price product"
+											placeholder="Enter price product"
+										/>
+									</div>
+									<div className="col g-l-3">
+										<CustomInput
+											name="quantity"
+											type="number"
+											label="Quantity product"
+											placeholder="Enter quantity product"
+										/>
+									</div>
+									<div className="col g-l-3">
+										<CustomInput
+											name="color"
+											label="Color product"
+											placeholder="Enter color product"
+										/>
+									</div>
+									<div className="col g-l-3">
+										<CustomSelect
+											name="category"
+											label="Category product"
+											getIdChoose={getIdChoose}
+										>
+											<option value="">
+												--Choose category for product--
 											</option>
-										))}
-									</CustomSelect>
-								</div>
-								<div className="w-1/4">
-									<CustomSelect
-										name="brand"
-										label="Brand product (optional)"
-									>
-										<option>
-											--Choose brand for product--
-										</option>
-										{brands?.length > 0 &&
-											brands?.map((brand) => (
+											{categories?.map((cate) => (
 												<option
-													key={brand}
-													value={brand}
+													key={cate._id}
+													value={cate.name}
 												>
-													{brand}
+													{cate.name}
 												</option>
 											))}
-									</CustomSelect>
+										</CustomSelect>
+									</div>
+									<div className="col g-l-3">
+										<CustomSelect
+											name="brand"
+											label="Brand product (optional)"
+										>
+											<option>
+												--Choose brand for product--
+											</option>
+											{brands?.length > 0 &&
+												brands?.map((brand) => (
+													<option
+														key={brand}
+														value={brand}
+													>
+														{brand}
+													</option>
+												))}
+										</CustomSelect>
+									</div>
 								</div>
 							</div>
-							<div className="flex flex-col gap-3 mb-4 w-full">
-								<div className="w-1/4">
+
+							<div className="row">
+								<div className="col g-l-4">
 									<ChooseImages
 										invalidField={invalidField}
 										id="thumb"
@@ -322,16 +323,16 @@ function CreateProduct() {
 										onUpload={handleUploadThumb}
 										selected={preview.thumb ? 1 : 0}
 									/>
+									{preview.thumb && (
+										<img
+											className="w-[140px] my-3 rounded-sm object-cover"
+											src={preview.thumb}
+											alt="previewThumb"
+											accept="image/jpeg, image/png"
+										/>
+									)}
 								</div>
-								{preview.thumb && (
-									<img
-										className="w-[140px] my-3 rounded-sm object-cover"
-										src={preview.thumb}
-										alt="previewThumb"
-										accept="image/jpeg, image/png"
-									/>
-								)}
-								<div className="w-1/4">
+								<div className="col g-l-8">
 									<ChooseImages
 										invalidField={invalidField}
 										id="images"
@@ -340,34 +341,36 @@ function CreateProduct() {
 										multiple
 										selected={preview.images?.length || 0}
 									/>
-								</div>
-								{preview.images && (
-									<div className="flex items-center gap-3 w-[770px] overflow-x-scroll">
-										{preview.images.map((file) => (
-											<div
-												key={file.name}
-												className="relative max-w-[140px] w-full"
-											>
-												<i
-													className="absolute top-3 right-0 p-1 cursor-pointer hover:opacity-70"
-													onClick={() =>
-														handleRemoveFile(file)
-													}
+									{preview.images && (
+										<div className="flex items-center gap-3 w-[806px] overflow-x-scroll">
+											{preview.images.map((file) => (
+												<div
+													key={file.name}
+													className="relative min-w-[140px] max-w-[140px]"
 												>
-													<IoCloseOutline
-														size={22}
-														color="gray"
+													<i
+														className="absolute top-3 right-0 p-1 cursor-pointer hover:opacity-70"
+														onClick={() =>
+															handleRemoveFile(
+																file
+															)
+														}
+													>
+														<IoCloseOutline
+															size={22}
+															color="gray"
+														/>
+													</i>
+													<img
+														className="w-full h-full my-3 rounded-sm object-cover"
+														src={file.path}
+														alt="previewImages"
 													/>
-												</i>
-												<img
-													className="w-full h-full my-3 rounded-sm object-cover"
-													src={file.path}
-													alt="previewImages"
-												/>
-											</div>
-										))}
-									</div>
-								)}
+												</div>
+											))}
+										</div>
+									)}
+								</div>
 							</div>
 							<MarkdownEditor
 								label="Description product"

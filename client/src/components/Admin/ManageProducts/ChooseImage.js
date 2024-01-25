@@ -9,13 +9,13 @@ function ChooseImages({
 }) {
 	const { FaUpload } = icons;
 	return (
-		<>
+		<div className="cursor-pointer">
 			<h3 className="text-[16px] font-medium ml-2">
 				{`Choose ${id} product`}
 			</h3>
-			<div className="p-1 bg-white rounded-md border">
+			<div className="p-1 bg-white rounded-md border cursor-pointer">
 				<label
-					className="text-[16px] font-medium ml-2 flex items-center gap-2"
+					className="text-[16px] font-medium ml-2 flex items-center gap-2 "
 					htmlFor={id}
 				>
 					<FaUpload />
@@ -42,7 +42,7 @@ function ChooseImages({
 					)
 				)}
 			</div>
-		</>
+		</div>
 	);
 }
 

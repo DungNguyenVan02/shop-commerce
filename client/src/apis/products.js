@@ -45,3 +45,11 @@ export const apiUpdateProduct = (data, pid) => {
 		data,
 	});
 };
+
+export const apiVariantsProduct = (data, pid) => {
+	return axios({
+		url: "/product/variants/" + pid,
+		method: "PUT",
+		data,
+	});
+};
