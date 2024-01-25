@@ -23,6 +23,17 @@ router.post(
 	productControllers.createProduct
 );
 router.put(
+	"/variants/:pid",
+	uploader.fields([
+		{
+			name: "images",
+			maxCount: 10,
+		},
+		{ name: "thumb", maxCount: 1 },
+	]),
+	productControllers.addVariantsProduct
+);
+router.put(
 	"/:pid",
 	uploader.fields([
 		{

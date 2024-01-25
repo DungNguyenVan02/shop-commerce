@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
+const { v4: uuid } = require("uuid");
 
 class ProductControllers {
 	// [POST] /createproduct
@@ -280,6 +281,41 @@ class ProductControllers {
 			updatedProduct: response
 				? response
 				: "Cannot upload images product",
+		});
+	});
+
+	// [PUT] /variants/:pid
+	addVariantsProduct = asyncHandler(async (req, res) => {
+		const { pid } = req.params;
+		const { name, color, price } = req.body;
+
+		const thumb = req?.files?.thumb[0]?.path;
+		const images = req.files?.images?.map((el) => el.path);
+
+		if (!name || !color || !price) {
+			throw new Error("Missing input");
+		}
+		const response = await Product.findByIdAndUpdate(
+			pid,
+			{
+				$push: {
+					variants: {
+						sku: uuid(),
+						name,
+						color,
+						price,
+						thumb,
+						images,
+					},
+				},
+			},
+			{ new: true }
+		);
+		return res.status(200).json({
+			success: response ? true : false,
+			variantsProduct: response
+				? response
+				: "Cannot add variants product",
 		});
 	});
 }

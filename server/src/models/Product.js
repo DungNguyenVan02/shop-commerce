@@ -65,6 +65,16 @@ var productSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
+		variants: [
+			{
+				sku: String,
+				name: String,
+				color: String,
+				price: Number,
+				thumb: String,
+				images: Array,
+			},
+		],
 	},
 	{
 		timestamps: true,
