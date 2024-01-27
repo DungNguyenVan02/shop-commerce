@@ -68,11 +68,10 @@ var productSchema = new mongoose.Schema(
 		variants: [
 			{
 				sku: String,
-				name: String,
 				color: String,
 				price: Number,
 				thumb: String,
-				images: Array,
+				quantity: { type: Number, default: 0 },
 			},
 		],
 	},

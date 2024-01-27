@@ -382,14 +382,6 @@ class UserControllers {
 				users: response ? response : "Cannot get users",
 			});
 		});
-
-		// const response = await User.find().select(
-		// 	"-refreshToken -password -role"
-		// );
-		// return res.status(200).json({
-		// 	success: response ? true : false,
-		// 	users: response,
-		// });
 	});
 	// [DELETE] ?uid=....
 	deleteUser = asyncHandler(async (req, res) => {
@@ -407,15 +399,20 @@ class UserControllers {
 	// [PUT] /current
 	updateUser = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
+		const { firstName, lastName, email, phone } = req.body;
+		const payload = { firstName, lastName, email, phone };
+		if (req.file) {
+			payload.image = req.file.path;
+		}
 		if (!_id || Object.keys(req.body).length === 0) {
 			throw new Error("Missing inputs");
 		}
-		const response = await User.findByIdAndUpdate(_id, req.body, {
+		const response = await User.findByIdAndUpdate(_id, payload, {
 			new: true,
 		}).select("-refreshToken -password -role");
 		return res.status(200).json({
 			success: response ? true : false,
-			updatedUser: response ? response : "some thing went wrong",
+			mes: response ? "Updated successfully" : "Some thing went wrong",
 		});
 	});
 

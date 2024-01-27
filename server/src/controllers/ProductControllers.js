@@ -287,12 +287,11 @@ class ProductControllers {
 	// [PUT] /variants/:pid
 	addVariantsProduct = asyncHandler(async (req, res) => {
 		const { pid } = req.params;
-		const { name, color, price } = req.body;
+		const { color, price, quantity } = req.body;
 
 		const thumb = req?.files?.thumb[0]?.path;
-		const images = req.files?.images?.map((el) => el.path);
 
-		if (!name || !color || !price) {
+		if (!color || !price || !thumb) {
 			throw new Error("Missing input");
 		}
 		const response = await Product.findByIdAndUpdate(
@@ -301,11 +300,10 @@ class ProductControllers {
 				$push: {
 					variants: {
 						sku: uuid(),
-						name,
 						color,
 						price,
 						thumb,
-						images,
+						quantity,
 					},
 				},
 			},
