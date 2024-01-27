@@ -39,6 +39,7 @@ function DetailProduct() {
 			setSelectVariants({
 				id: response?.getProduct?._id,
 				price: response?.getProduct?.price,
+				quantity: response?.getProduct?.quantity,
 			});
 			setProduct(response?.getProduct);
 			setThumbSrc(response?.getProduct?.thumb);
@@ -73,6 +74,7 @@ function DetailProduct() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updateRating]);
 	useEffect(() => {
+		selectVariants?.quantity > 0 ? setQuantity(1) : setQuantity(0);
 		let src = "";
 		if (selectVariants.id === product?._id) {
 			src = product?.thumb;
@@ -85,30 +87,32 @@ function DetailProduct() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectVariants]);
 
+	// Enter quantity
 	const handleQuantity = useCallback(
 		(number) => {
-			if (+number > product?.quantity) {
-				setQuantity(product?.quantity);
+			if (+number > selectVariants?.quantity) {
+				setQuantity(selectVariants?.quantity);
 			} else {
 				setQuantity(+number);
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[quantity]
+		[quantity, selectVariants?.quantity]
 	);
 
+	// Handle up or down quantity
 	const handleChangeQuantity = useCallback(
 		(number) => {
 			if (number < 1) {
 				setQuantity(1);
-			} else if (number > product?.quantity) {
-				setQuantity(product?.quantity);
+			} else if (number > selectVariants?.quantity) {
+				setQuantity(selectVariants?.quantity);
 			} else {
 				setQuantity(number);
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[quantity]
+		[quantity, selectVariants?.quantity]
 	);
 
 	const handleRating = useCallback(
@@ -217,7 +221,7 @@ function DetailProduct() {
 								<h3 className="text-[16px] font-semibold text-gray-800">
 									Color:
 								</h3>
-								<div className="flex">
+								<div className="flex flex-wrap">
 									<Variants
 										data={product}
 										active={selectVariants.id}
@@ -241,7 +245,7 @@ function DetailProduct() {
 									handleChangeQuantity={handleChangeQuantity}
 								/>
 								<span>
-									{product?.quantity} pieces available
+									{selectVariants?.quantity} pieces available
 								</span>
 							</div>
 							<div className="flex gap-4">

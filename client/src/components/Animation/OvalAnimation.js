@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Oval } from "react-loader-spinner";
 
-function OvalAnimation({ height = 80, width = 80 }) {
+function OvalAnimation({ height = 40, width = 40 }) {
 	return (
 		<Oval
 			visible={true}
@@ -10,8 +10,8 @@ function OvalAnimation({ height = 80, width = 80 }) {
 			color="#e1e4e8"
 			secondaryColor="#e1e3e6"
 			ariaLabel="oval-loading"
-			strokeWidthSecondary={4}
-			strokeWidth={4}
+			strokeWidthSecondary={2}
+			strokeWidth={2}
 		/>
 	);
 }

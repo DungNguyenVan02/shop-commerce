@@ -17,7 +17,7 @@ function Header() {
 	const dispatch = useDispatch();
 
 	const [isHover, setIsHover] = useState(false);
-	const { FaShoppingCart, FaCircleUser } = icons;
+	const { BsCart3, FaCircleUser } = icons;
 	const { isLogin, currentUser, mes } = useSelector(selector);
 
 	useEffect(() => {
@@ -57,20 +57,21 @@ function Header() {
 							<h2>{`${currentUser?.firstName} ${currentUser?.lastName}`}</h2>
 							{isHover && (
 								<ul
-									className="absolute top-[30px] w-[140px] right-0 py-2 bg-white
+									className="absolute top-[30px] min-w-[200px] right-0 py-2 bg-white
 							 text-gray-900 rounded-md shadow-md text-[14px] z-20 subArrow"
 								>
-									<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
-										<Link
-											to={
-												currentUser?.role === 1974
-													? routes.admin_dashboard
-													: routes.member
-											}
-										>
-											My account
+									{currentUser?.role === 1974 && (
+										<Link to={routes.admin_dashboard}>
+											<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
+												Admin workspace
+											</li>
 										</Link>
-									</li>
+									)}
+									<Link to={routes.member_personal}>
+										<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
+											My account
+										</li>
+									</Link>
 									<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
 										My purchase
 									</li>
@@ -112,7 +113,7 @@ function Header() {
 				</Link>
 				<Search />
 				<div className="relative cursor-pointer opacity-85">
-					<FaShoppingCart size={24} />
+					<BsCart3 size={24} />
 					<span className=" w-5 h-5 bg-main text-center text-white text-[14px] rounded-full absolute top-[-10px] left-3">
 						1
 					</span>

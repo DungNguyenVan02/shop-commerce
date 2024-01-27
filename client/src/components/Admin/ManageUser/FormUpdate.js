@@ -1,4 +1,4 @@
-import { apiUpdateUser } from "~/apis";
+import { apiUpdateUserByAdmin } from "~/apis";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { showModal } from "~/redux/appSlice";
@@ -15,7 +15,10 @@ function FormUpdate({ useEdit }) {
 			role: data.role === "admin" ? 1974 : 1978,
 			isBlocked: data.status === "blocked" ? true : false,
 		};
-		const response = await apiUpdateUser(transformData, useEdit?._id);
+		const response = await apiUpdateUserByAdmin(
+			transformData,
+			useEdit?._id
+		);
 		if (response.success) {
 			Swal.fire(
 				"Notifications",

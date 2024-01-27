@@ -10,6 +10,9 @@ const {
 	TiGroupOutline,
 	RiProductHuntLine,
 	HiOutlineClipboardDocumentList,
+	BiUser,
+	BsCart3,
+	AiOutlineHistory,
 } = icons;
 export const extraInfo = [
 	{
@@ -230,5 +233,26 @@ export const adminSlideBar = [
 		title: "Manage order",
 		icon: <HiOutlineClipboardDocumentList />,
 		path: routes.admin_manage_orders,
+	},
+];
+
+export const memberSlideBar = [
+	{
+		id: 0,
+		title: "Personal",
+		icon: <BiUser />,
+		path: routes.member_personal,
+	},
+	{
+		id: 1,
+		title: "My cart",
+		icon: <BsCart3 />,
+		path: routes.member_cart,
+	},
+	{
+		id: 2,
+		title: "History order",
+		icon: <AiOutlineHistory />,
+		path: routes.member_history,
 	},
 ];

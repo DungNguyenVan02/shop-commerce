@@ -2,7 +2,7 @@ import { renderStar } from "../../utils/helper";
 import images from "../../assets/images";
 import icons from "~/utils/icons";
 function Comment({ data }) {
-	const { GoClock } = icons;
+	const { GoClock, BiUser } = icons;
 
 	return (
 		<div className=" gap-3 bg-gray-200 shadow-lg px-[20px] py-[16px] rounded-sm">

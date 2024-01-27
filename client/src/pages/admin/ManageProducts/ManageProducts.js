@@ -5,22 +5,16 @@ import { apiDeleteProduct, apiGetProducts } from "~/apis";
 import Pagination from "~/components/Pagination";
 import { formatMoney } from "~/utils/helper";
 import { FilterProduct } from "~/components/Filter";
-import {
-	useSearchParams,
-	useNavigate,
-	useLocation,
-	createSearchParams,
-} from "react-router-dom";
+import { useSearchParams, createSearchParams } from "react-router-dom";
 import { useDebounce } from "~/components/hooks";
 import Swal from "sweetalert2";
 import {
 	UpdateProduct,
 	VariantsProduct,
 } from "~/layouts/components/admin/Product";
+import withBaseComponent from "~/components/hocs/withBaseComponent";
 
-function ManageProducts() {
-	const location = useLocation();
-	const navigate = useNavigate();
+function ManageProducts({ location, navigate }) {
 	const [searchQueries] = useSearchParams();
 	const { CiSearch, FaRegEdit, IoTrashBinOutline, BiCustomize } = icons;
 	const [searchText, setSearchText] = useState({ q: "" });
@@ -298,4 +292,4 @@ function ManageProducts() {
 	);
 }
 
-export default ManageProducts;
+export default withBaseComponent(ManageProducts);

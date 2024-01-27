@@ -1,16 +1,10 @@
-import {
-	createSearchParams,
-	useNavigate,
-	useSearchParams,
-	useLocation,
-} from "react-router-dom";
+import { createSearchParams, useSearchParams } from "react-router-dom";
 import icons from "../../utils/icons";
 import { Button } from "~/components/common";
-function PaginationItem({ children }) {
+import withBaseComponent from "../hocs/withBaseComponent";
+function PaginationItem({ children, navigate, location }) {
 	const { HiOutlineDotsHorizontal } = icons;
 	const [params] = useSearchParams();
-	const navigate = useNavigate();
-	const location = useLocation();
 
 	const handleChangePage = (page) => {
 		const queries = Object.fromEntries([...params]);
@@ -44,4 +38,4 @@ function PaginationItem({ children }) {
 	);
 }
 
-export default PaginationItem;
+export default withBaseComponent(PaginationItem);

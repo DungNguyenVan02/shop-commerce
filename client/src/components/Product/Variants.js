@@ -6,11 +6,12 @@ const Variants = ({ data, active, onClickActive }) => {
 
 	return (
 		<div
-			className="w-1/3"
+			className="w-1/3 p-1"
 			onClick={() =>
 				onClickActive({
 					id: idSelected,
 					price: data?.price,
+					quantity: data?.quantity,
 				})
 			}
 		>

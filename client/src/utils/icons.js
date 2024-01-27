@@ -1,5 +1,4 @@
 import {
-	FaShoppingCart,
 	FaTabletAlt,
 	FaLaptop,
 	FaCameraRetro,
@@ -17,9 +16,16 @@ import {
 	FaCartPlus,
 	FaUpload,
 	FaRegEdit,
+	FaPen,
 } from "react-icons/fa";
 
-import { BsSpeaker, BsList, BsSortDown, BsSortDownAlt } from "react-icons/bs";
+import {
+	BsSpeaker,
+	BsList,
+	BsSortDown,
+	BsSortDownAlt,
+	BsCart3,
+} from "react-icons/bs";
 
 import {
 	FaStar,
@@ -47,13 +53,13 @@ import {
 	IoTrashBinOutline,
 } from "react-icons/io5";
 import { SlScreenDesktop } from "react-icons/sl";
-import { AiFillPrinter } from "react-icons/ai";
+import { AiFillPrinter, AiOutlineHistory } from "react-icons/ai";
 import { GoDotFill, GoClock } from "react-icons/go";
 import { GiPositionMarker } from "react-icons/gi";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiDashboard3Line, RiProductHuntLine } from "react-icons/ri";
 import { TiGroupOutline } from "react-icons/ti";
-import { BiCustomize } from "react-icons/bi";
+import { BiCustomize, BiUser } from "react-icons/bi";
 import {
 	HiOutlineClipboardDocumentList,
 	HiOutlineChevronDown,
@@ -64,7 +70,6 @@ import { TbUserEdit, TbUserX } from "react-icons/tb";
 const icons = {
 	FaLaptop,
 	FaTabletAlt,
-	FaShoppingCart,
 	FaCameraRetro,
 	FaCircleUser,
 	FaHeadphonesSimple,
@@ -87,6 +92,7 @@ const icons = {
 	FaCheck,
 	FaUpload,
 	FaRegEdit,
+	FaPen,
 
 	CiSearch,
 
@@ -132,6 +138,10 @@ const icons = {
 	TbUserX,
 
 	BiCustomize,
+	BiUser,
+
+	BsCart3,
+	AiOutlineHistory,
 };
 
 export default icons;

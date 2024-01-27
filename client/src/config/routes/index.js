@@ -19,7 +19,9 @@ const routes = {
 	admin_manage_products: "/admin/manage-products",
 
 	// Member
-	member: "/member",
+	member_personal: "/member/personal",
+	member_cart: "/member/cart",
+	member_history: "/member/history",
 };
 
 export default routes;

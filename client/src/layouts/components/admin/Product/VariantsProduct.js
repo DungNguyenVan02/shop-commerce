@@ -14,48 +14,19 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 	const [isUploading, setIsUploading] = useState(false);
 	const [files, setFiles] = useState({
 		thumb: "",
-		images: [],
 	});
 
 	const [preview, setPreview] = useState({
 		thumb: "",
-		images: [],
 	});
 	// Thể hiện trạng thái validate form
 	const [invalidField, setInvalidField] = useState({
-		description: false,
 		thumb: false,
-		images: false,
 	});
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [variantsProduct]);
-
-	const handleUploadImages = useCallback(
-		(event) => {
-			const checkInvalidFiles = Array.from(event.target.files).some(
-				(file) => {
-					return (
-						file.type === "image/jpeg" ||
-						file.type === "image/png" ||
-						file.type === "image/jpg"
-					);
-				}
-			);
-
-			if (checkInvalidFiles) {
-				setFiles((prev) => ({
-					...prev,
-					images: [...prev.images, ...event.target.files],
-				}));
-			} else {
-				toast.warning("File not supported");
-			}
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[files.images]
-	);
 
 	const handleUploadThumb = useCallback(
 		(event) => {
@@ -69,10 +40,9 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 				}
 			);
 			if (checkInvalidFiles) {
-				setFiles((prev) => ({
-					...prev,
+				setFiles({
 					thumb: event.target.files[0],
-				}));
+				});
 			} else {
 				toast.warning("File not supported");
 			}
@@ -83,21 +53,9 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 
 	useEffect(() => {
 		if (files.thumb !== "") {
-			setPreview((prev) => ({
-				...prev,
+			setPreview({
 				thumb: URL.createObjectURL(files.thumb),
-			}));
-		}
-		if (files.images) {
-			const arr = [];
-			for (let i of files.images) {
-				const createSrcImg = URL.createObjectURL(i);
-				arr.push({ name: i.name, path: createSrcImg });
-			}
-			setPreview((prev) => ({
-				...prev,
-				images: arr,
-			}));
+			});
 		}
 	}, [files]);
 
@@ -105,52 +63,19 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 		return () => preview.thumb && URL.revokeObjectURL(preview.thumb);
 	}, [preview.thumb]);
 
-	useEffect(() => {
-		return () => {
-			if (preview.images?.length > 0) {
-				for (let i of preview.images) {
-					URL.revokeObjectURL(i.path);
-				}
-			}
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [preview.images]);
-
-	const handleRemoveFile = (file) => {
-		setFiles((prev) => ({
-			...prev,
-			images: prev.images.filter((item) => item.name !== file.name),
-		}));
-
-		const finalPreview = preview.images.filter(
-			(files) => files !== file.path
-		);
-		setPreview((prev) => ({
-			...prev,
-			images: finalPreview,
-		}));
-		URL.revokeObjectURL(file.path);
-	};
-
 	const initialValues = {
-		name: variantsProduct.name || "",
 		price: variantsProduct.price || "",
 		color: variantsProduct.color || "",
+		quantity: variantsProduct.quantity || "",
 	};
 	const onSubmit = async (data, actions) => {
 		if (files.thumb === "") {
-			setInvalidField((prev) => ({
-				...prev,
+			setInvalidField({
 				thumb: true,
-			}));
+			});
 		}
-		if (files.images.length === 0) {
-			setInvalidField((prev) => ({
-				...prev,
-				images: true,
-			}));
-		}
-		if (files.thumb === "" || files.images.length === 0) {
+
+		if (files.thumb === "") {
 			return;
 		}
 
@@ -168,11 +93,6 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 			formData.append(i[0], i[1]);
 		}
 		if (files.thumb) formData.append("thumb", files.thumb);
-		if (files.images) {
-			for (let i of files.images) {
-				formData.append("images", i);
-			}
-		}
 
 		setIsUploading(true);
 		const response = await apiVariantsProduct(
@@ -182,8 +102,6 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 		if (response.success) {
 			setIsUploading(false);
 			toast.success("Created variants product successfully!");
-			setPreview({ thumb: null, images: null });
-			setFiles({ thumb: "", images: [] });
 		} else {
 			setIsUploading(false);
 			Swal.fire(
@@ -222,13 +140,6 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 									<div className="row">
 										<div className="col g-l-4">
 											<CustomInput
-												name="name"
-												label="Name product"
-												placeholder="Enter name product"
-											/>
-										</div>
-										<div className="col g-l-4">
-											<CustomInput
 												name="price"
 												type="number"
 												label="Price product"
@@ -240,6 +151,14 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 												name="color"
 												label="Color product"
 												placeholder="Enter color product"
+											/>
+										</div>
+										<div className="col g-l-4">
+											<CustomInput
+												name="quantity"
+												type="number"
+												label="Quantity product"
+												placeholder="Enter quantity product"
 											/>
 										</div>
 									</div>
@@ -259,53 +178,6 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 													alt="previewThumb"
 													accept="image/jpeg, image/png"
 												/>
-											)}
-										</div>
-										<div className="col g-l-8">
-											<ChooseImages
-												invalidField={invalidField}
-												id="images"
-												files={files}
-												onUpload={handleUploadImages}
-												multiple
-												selected={
-													preview.images?.length || 0
-												}
-											/>
-											{preview.images && (
-												<div className="flex items-center gap-3 w-[806px] overflow-x-scroll">
-													{preview.images.map(
-														(file) => (
-															<div
-																key={file.name}
-																className="relative min-w-[140px] max-w-[140px]"
-															>
-																<i
-																	className="absolute top-3 right-0 p-1 cursor-pointer hover:opacity-70"
-																	onClick={() =>
-																		handleRemoveFile(
-																			file
-																		)
-																	}
-																>
-																	<IoCloseOutline
-																		size={
-																			22
-																		}
-																		color="gray"
-																	/>
-																</i>
-																<img
-																	className="w-full h-full my-3 rounded-sm object-cover"
-																	src={
-																		file.path
-																	}
-																	alt="previewImages"
-																/>
-															</div>
-														)
-													)}
-												</div>
 											)}
 										</div>
 									</div>

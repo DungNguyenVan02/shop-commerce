@@ -1,21 +1,24 @@
 import * as yup from "yup";
 
+// eslint-disable-next-line no-useless-escape
+const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const phoneRegex = /([0-9]{10})\b/;
 export const schemasValidRegister = yup.object().shape({
 	firstName: yup
 		.string()
-		.min("Please enter your first name")
+		.min(2, "Please enter your first name")
 		.required("Required field"),
 	lastName: yup
 		.string()
-		.min("Please enter your last name")
+		.min(2, "Please enter your last name")
 		.required("Required field"),
 	phone: yup
 		.string()
-		.min(20, "Please enter at least 10 numbers")
+		.min(10, "Please enter at least 10 number")
 		.required("Required field"),
 	email: yup
 		.string()
-		.email("Please enter a valid email address")
+		.matches(emailRegex, "Please enter your email address")
 		.required("Required field"),
 	password: yup
 		.string()
@@ -30,7 +33,7 @@ export const schemasValidRegister = yup.object().shape({
 export const schemasValidLogin = yup.object().shape({
 	email: yup
 		.string()
-		.email("Please enter a valid email address")
+		.matches(emailRegex, "Invalid email address")
 		.required("Required field"),
 	password: yup
 		.string()
@@ -64,11 +67,11 @@ export const schemasValidUpdateUser = yup.object().shape({
 		.required("Required field"),
 	phone: yup
 		.string()
-		.min(20, "Invalid phone numbers")
+		.min(10, "Invalid phone number")
 		.required("Required field"),
 	email: yup
 		.string()
-		.email("Invalid email address")
+		.matches(emailRegex, "Invalid email address")
 		.required("Required field"),
 	status: yup
 		.string()
@@ -85,7 +88,7 @@ export const schemasValidProduct = yup.object().shape({
 	price: yup.number().min(1, "Please enter price").required("Required field"),
 	quantity: yup
 		.number()
-		.min(2, "Please enter quantity")
+		.min(1, "Please enter quantity")
 		.required("Required field"),
 	color: yup.string().min(2, "Please enter color").required("Required field"),
 	category: yup
@@ -107,7 +110,30 @@ export const schemasValidProduct = yup.object().shape({
 });
 
 export const schemasValidVariants = yup.object().shape({
-	name: yup.string().min(2, "Please enter name").required("Required field"),
+	quantity: yup
+		.number()
+		.min(1, "Please enter quantity")
+		.required("Required field"),
 	price: yup.number().min(2, "Please enter price").required("Required field"),
 	color: yup.string().min(2, "Please enter color").required("Required field"),
+});
+
+export const schemasValidChangeProfile = yup.object().shape({
+	firstName: yup
+		.string()
+		.min(2, "Invalid first name")
+		.required("Required field"),
+	lastName: yup
+		.string()
+		.min(2, "Invalid last name")
+		.required("Required field"),
+	phone: yup
+		.string()
+		.test("phone", "Invalid phone number", (value) =>
+			phoneRegex.test(value)
+		),
+	email: yup
+		.string()
+		.matches(emailRegex, "Invalid email address")
+		.required("Required field"),
 });

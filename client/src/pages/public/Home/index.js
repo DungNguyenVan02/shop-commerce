@@ -1,5 +1,5 @@
 // import DailySale from "~/components/public/DailySale";
-import Sidebar from "~/layouts/components/user/Sidebar";
+import { Sidebar } from "~/layouts/components/user/Sidebar";
 import {
 	HotCollection,
 	NewArrivals,

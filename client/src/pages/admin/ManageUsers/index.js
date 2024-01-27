@@ -4,24 +4,18 @@ import moment from "moment";
 import icons from "~/utils/icons";
 import { useDebounce } from "~/components/hooks";
 import Pagination from "~/components/Pagination";
-import {
-	useSearchParams,
-	createSearchParams,
-	useLocation,
-	useNavigate,
-} from "react-router-dom";
+import { useSearchParams, createSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import Modal from "~/components/Modal";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { appSelector } from "~/redux/selector";
 import { showModal } from "~/redux/appSlice";
 import { FormUpdate } from "~/components/Admin/ManageUser";
+import withBaseComponent from "~/components/hocs/withBaseComponent";
 
-function ManageUsers() {
+function ManageUsers({ location, dispatch, navigate }) {
 	const [params] = useSearchParams();
-	const location = useLocation();
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
+
 	const { isShowModal } = useSelector(appSelector);
 
 	const { TbUserEdit, TbUserX, CiSearch } = icons;
@@ -254,4 +248,4 @@ function ManageUsers() {
 		</>
 	);
 }
-export default ManageUsers;
+export default withBaseComponent(ManageUsers);

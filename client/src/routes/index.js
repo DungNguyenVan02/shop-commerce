@@ -11,8 +11,10 @@ import ResetPassword from "../pages/public/ResetPassword";
 import { CreateProduct, ManageProducts } from "~/pages/admin/ManageProducts";
 import ManageOrder from "~/pages/admin/ManageOrder";
 import ManageUsers from "~/pages/admin/ManageUsers";
-import Member from "~/pages/public/Member";
 import DashBroad from "~/pages/admin/DashBroad";
+import Cart from "~/pages/public/Cart";
+import History from "~/pages/public/History";
+import Personal from "~/pages/public/Personal";
 const publicRoutes = [
 	{
 		path: routes.home,
@@ -85,8 +87,18 @@ const publicRoutes = [
 
 	// Member
 	{
-		path: routes.member,
-		component: Member,
+		path: routes.member_personal,
+		component: Personal,
+		isMemberRoutes: true,
+	},
+	{
+		path: routes.member_cart,
+		component: Cart,
+		isMemberRoutes: true,
+	},
+	{
+		path: routes.member_history,
+		component: History,
 		isMemberRoutes: true,
 	},
 ];
