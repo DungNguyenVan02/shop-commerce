@@ -11,7 +11,7 @@ function Navigation() {
 		{
 			id: 2,
 			name: "PRODUCT",
-			path: routes.products,
+			path: "/all-products",
 		},
 		{
 			id: 3,
@@ -32,7 +32,7 @@ function Navigation() {
 
 	const { IoMdArrowDropdown } = icons;
 	return (
-		<nav className="max-w-main w-full px-5 h-[48px] text-sm border-b flex items-center gap-7">
+		<nav className="max-w-main w-full px-5 h-[48px] text-sm border-b border-t flex items-center gap-7 mt-[148px]">
 			{NAVIGATION.map((item) => (
 				<NavLink
 					to={item.path}

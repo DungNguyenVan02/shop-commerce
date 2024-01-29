@@ -6,7 +6,7 @@ const Variants = ({ data, active, onClickActive }) => {
 
 	return (
 		<div
-			className="w-1/3 p-1"
+			className="w-1/3"
 			onClick={() =>
 				onClickActive({
 					id: idSelected,
@@ -25,9 +25,9 @@ const Variants = ({ data, active, onClickActive }) => {
 				<img
 					src={data?.thumb}
 					alt={data?.name}
-					className="w-[30px] h-[30px] object-cover rounded"
+					className="w-[30px] h-[30px] object-cover rounded mr-1"
 				/>
-				<div className="flex flex-col justify-center ml-2 text-[12px] flex-1">
+				<div className="flex flex-col justify-center text-[12px] flex-1">
 					<h3 className="font-semibold text-gray-900 line-clamp-1">
 						{data?.color}
 					</h3>

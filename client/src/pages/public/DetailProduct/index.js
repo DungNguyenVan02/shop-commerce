@@ -52,7 +52,6 @@ function DetailProduct() {
 
 	const fetchRelateProductData = async () => {
 		const response = await apiGetProducts({ category: product?.category });
-		console.log(response);
 		if (response?.success) {
 			setRelateProduct(response?.products);
 		}

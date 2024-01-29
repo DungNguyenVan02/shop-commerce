@@ -6,16 +6,16 @@ import images from "~/assets/images";
 import icons from "~/utils/icons";
 import routes from "~/config/routes";
 import { useSelector } from "react-redux";
-import { userSelector as selector } from "~/redux/selector";
+import { userSelector as selector, userSelector } from "~/redux/selector";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { useDispatch } from "react-redux";
 import { logout, clearMes } from "~/redux/userSlice";
 import Swal from "sweetalert2";
+import { Cart } from "~/components/Product";
 
 function Header() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
 	const [isHover, setIsHover] = useState(false);
 	const { BsCart3, FaCircleUser } = icons;
 	const { isLogin, currentUser, mes } = useSelector(selector);
@@ -41,7 +41,7 @@ function Header() {
 	};
 
 	return (
-		<header className="w-full flex flex-col items-center">
+		<header className="w-full flex flex-col items-center fixed top-0 left-0 right-0 bg-white z-[90]">
 			<div className="w-full h-[38px] bg-main">
 				<div className="max-w-main w-full h-full mx-auto px-5 flex items-center justify-between text-[12px] text-white">
 					<div>
@@ -103,7 +103,7 @@ function Header() {
 					)}
 				</div>
 			</div>
-			<div className="max-w-main w-full px-5 h-[110px] flex justify-between items-center py-[35px] border-b gap-[60px]">
+			<div className="max-w-main w-full px-5 h-[110px] flex justify-between items-center py-[35px] gap-[60px]">
 				<Link to={routes.home}>
 					<img
 						className="w-[234px] object-contain flex-1"
@@ -112,11 +112,14 @@ function Header() {
 					/>
 				</Link>
 				<Search />
-				<div className="relative cursor-pointer opacity-85">
-					<BsCart3 size={24} />
-					<span className=" w-5 h-5 bg-main text-center text-white text-[14px] rounded-full absolute top-[-10px] left-3">
-						1
-					</span>
+				<div className="cart-wrap p-2 relative cursor-pointer opacity-85">
+					<Link to={currentUser && routes.cart}>
+						<BsCart3 size={24} />
+						<span className=" w-5 h-5 bg-main text-center text-white text-[14px] rounded-full absolute top-[-2px] left-5">
+							{currentUser?.cart.length || 0}
+						</span>
+					</Link>
+					<Cart />
 				</div>
 			</div>
 		</header>

@@ -144,3 +144,19 @@ div.swiper-pagination {
 .product-parent:hover .product-child {
 	display: flex;
 }
+
+.cart {
+	display: none;
+	z-index: 90;
+}
+.cart-wrap::before {
+	position: absolute;
+	content: "";
+	width: 64px;
+	height: 14px;
+	top: 19px;
+	right: -25px;
+}
+.cart-wrap:hover .cart {
+	display: block;
+}

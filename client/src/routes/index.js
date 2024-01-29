@@ -15,6 +15,7 @@ import DashBroad from "~/pages/admin/DashBroad";
 import Cart from "~/pages/public/Cart";
 import History from "~/pages/public/History";
 import Personal from "~/pages/public/Personal";
+
 const publicRoutes = [
 	{
 		path: routes.home,
@@ -46,6 +47,10 @@ const publicRoutes = [
 	{
 		path: routes.FAQs,
 		component: FAQs,
+	},
+	{
+		path: routes.cart,
+		component: Cart,
 	},
 	{
 		path: routes.detailProduct_category_pid_name,

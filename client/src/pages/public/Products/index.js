@@ -12,6 +12,10 @@ function Products() {
 	const [searchParams] = useSearchParams();
 
 	const fetchProducts = async (queries) => {
+		if (category !== "all-products") {
+			queries.category =
+				category.slice(0, 1).toUpperCase() + category.slice(1);
+		}
 		const response = await apiGetProducts(queries);
 		if (response?.success) setProducts(response);
 	};
@@ -20,6 +24,7 @@ function Products() {
 		const queries = Object.fromEntries([...searchParams]);
 		fetchProducts(queries);
 		window.scrollTo(0, 0);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [category, searchParams]);
 
 	return (

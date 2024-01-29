@@ -9,7 +9,7 @@ function FeaturedProduct() {
 	const fetchFeaturedProducts = async () => {
 		const response = await apiGetProducts({
 			limit: 9,
-			totalRatings: 3,
+			sort: "-totalRatings",
 		});
 		if (response.success) {
 			setProducts(response.products);
@@ -31,19 +31,27 @@ function FeaturedProduct() {
 					})}
 				</div>
 			</div>
-			<div className="flex justify-between">
-				<img src={images.banner1Home} alt="banner" />
-				<div className="flex flex-col justify-between">
-					<img src={images.banner2Home} alt="banner" />
-					<h3
-						className="text-center
-					 text-[30px] font-bold uppercase text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 animate-textGradient"
-					>
-						Sale Hot
-					</h3>
-					<img src={images.banner3Home} alt="banner" />
-				</div>
-				<img src={images.banner4Home} alt="banner" />
+			<div className="grid grid-cols-4 grid-rows-2 gap-4">
+				<img
+					className="w-full h-full col-span-2 row-span-2"
+					src={images.banner1Home}
+					alt="banner"
+				/>
+				<img
+					className="w-full h-full col-span-1 row-span-1"
+					src={images.banner2Home}
+					alt="banner"
+				/>
+				<img
+					className="w-full h-full col-span-1 row-span-2"
+					src={images.banner4Home}
+					alt="banner"
+				/>
+				<img
+					className="w-full h-full col-span-1 row-span-1"
+					src={images.banner3Home}
+					alt="banner"
+				/>
 			</div>
 		</>
 	);

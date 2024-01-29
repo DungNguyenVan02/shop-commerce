@@ -26,6 +26,7 @@ function Slider({
 			</SwiperSlide>
 		));
 	};
+
 	return (
 		<div>
 			<Swiper

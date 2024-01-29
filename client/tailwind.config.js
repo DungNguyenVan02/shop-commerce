@@ -41,6 +41,21 @@ module.exports = {
 					},
 				},
 
+				scaleUpTopRight: {
+					"0%": {
+						"-webkit-transform": "scale(0.5);",
+						transform: "scale(0.5);",
+						"-webkit-transform-origin": "100% 0% ;",
+						"transform-origin": "100% 0% ;",
+					},
+					"100%": {
+						"-webkit-transform": "scale(1);",
+						transform: "scale(1);",
+						"-webkit-transform-origin": "100% 0% ;",
+						"transform-origin": "100% 0% ;",
+					},
+				},
+
 				textGradient: {
 					"0%, 100%": {
 						"background-size": "200% 200%",
@@ -57,6 +72,8 @@ module.exports = {
 					"slideTop 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;",
 				slideTopInput: "slideTopInput 0.2s linear forwards",
 				textGradient: "textGradient 3s ease infinite",
+				scaleUpTopRight:
+					"scaleUpTopRight 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
 			},
 			borderRadius: {
 				custom: "37% 63% 100% 0% / 33% 0% 100% 67% ",

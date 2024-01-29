@@ -7,6 +7,7 @@ const routes = {
 	blogs: "/blogs",
 	services: "/services",
 	FAQs: "/FAQs",
+	cart: "/cart",
 	resetpassword: "/resetpassword",
 	resetpassword_email: "/resetpassword/:email",
 	detailProduct_category_pid_name: "/:category/:pid/:name",

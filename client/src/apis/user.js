@@ -84,3 +84,18 @@ export const apiUpdateUser = (data) => {
 		data,
 	});
 };
+
+export const apiAddCart = (data) => {
+	return axios({
+		url: "/user/cart",
+		method: "PUT",
+		data,
+	});
+};
+
+export const apiRemoveCart = (pid) => {
+	return axios({
+		url: "/user/remove-cart/" + pid,
+		method: "DELETE",
+	});
+};
