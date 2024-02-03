@@ -22,7 +22,7 @@ const appSlice = createSlice({
 				state.categories = action.payload;
 			})
 			.addCase(actions.getCategories.rejected, (state, action) => {
-				state.errorMessage = action.payload.message;
+				state.errorMessage = action.payload?.message;
 			});
 	},
 });

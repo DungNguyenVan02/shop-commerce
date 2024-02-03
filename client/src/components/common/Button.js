@@ -17,8 +17,10 @@ function Button({
 			className={
 				styleCustom
 					? styleCustom
-					: `px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-full hover:opacity-90 ${
-							isDisabled ? "opacity-40" : ""
+					: `px-4 py-2 text-white  ${
+							isDisabled
+								? "opacity-40"
+								: " bg-red-500 text-[14px] rounded-md w-full hover:opacity-90"
 					  }`
 			}
 			onClick={(e) => {

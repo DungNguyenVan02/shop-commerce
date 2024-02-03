@@ -1,5 +1,10 @@
-import { useParams } from "react-router-dom";
-import { apiGetProduct, apiGetProducts, apiRatingProduct } from "~/apis";
+import { createSearchParams, useNavigate, useParams } from "react-router-dom";
+import {
+	apiAddCart,
+	apiGetProduct,
+	apiGetProducts,
+	apiRatingProduct,
+} from "~/apis";
 import { useCallback, useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 
@@ -16,9 +21,15 @@ import Modal from "~/components/Modal";
 import VoteForm from "~/components/Ratings/VoteForm";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { appSelector } from "~/redux/selector";
+import { appSelector, userSelector } from "~/redux/selector";
+import Swal from "sweetalert2";
+import routes from "~/config/routes";
+import withBaseComponent from "~/components/hocs/withBaseComponent";
+import { getCurrentUser } from "~/redux/asyncActions";
 
-function DetailProduct() {
+function DetailProduct({ dispatch, location }) {
+	const navigate = useNavigate();
+	const { currentUser } = useSelector(userSelector);
 	const { pid, category, name } = useParams();
 	const { isShowModal } = useSelector(appSelector);
 	const { GoDotFill, FaCartPlus } = icons;
@@ -30,6 +41,7 @@ function DetailProduct() {
 	const [updateRating, setUpdateRating] = useState(false);
 	const [selectVariants, setSelectVariants] = useState({
 		id: "",
+		color: null,
 		price: null,
 	});
 
@@ -39,6 +51,7 @@ function DetailProduct() {
 			setSelectVariants({
 				id: response?.getProduct?._id,
 				price: response?.getProduct?.price,
+				color: response?.getProduct?.color,
 				quantity: response?.getProduct?.quantity,
 			});
 			setProduct(response?.getProduct);
@@ -145,6 +158,43 @@ function DetailProduct() {
 		[isShowModal]
 	);
 
+	const handleAddCart = useCallback(async () => {
+		if (!currentUser) {
+			Swal.fire({
+				title: "Notification!",
+				text: "You need to log in to continue",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Go to login!",
+				cancelButtonText: "No, cancel!",
+				reverseButtons: true,
+			}).then((result) => {
+				if (result.isConfirmed) {
+					navigate({
+						pathname: routes.login,
+						search: createSearchParams({
+							redirect: location.pathname,
+						}).toString(),
+					});
+				}
+			});
+		} else {
+			const response = await apiAddCart({
+				pid,
+				thumbnail: thumbSrc,
+				color: selectVariants.color,
+				quantity,
+				price: selectVariants.price,
+			});
+			if (response.success) {
+				toast.success("Has been added to your cart!");
+				dispatch(getCurrentUser());
+			} else {
+				toast.error(response.mes);
+			}
+		}
+	});
+
 	return (
 		<div className="w-full">
 			{isShowModal && (
@@ -249,6 +299,7 @@ function DetailProduct() {
 							</div>
 							<div className="flex gap-4">
 								<Button
+									handleClick={handleAddCart}
 									title="ADD TO CART"
 									leftICon={<FaCartPlus />}
 									styleCustom="rounded-sm bg-red-300 border border-red-600 text-white hover:opacity-80 px-4 py3"
@@ -290,4 +341,4 @@ function DetailProduct() {
 	);
 }
 
-export default DetailProduct;
+export default withBaseComponent(DetailProduct);

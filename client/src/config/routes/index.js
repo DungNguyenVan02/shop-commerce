@@ -11,6 +11,7 @@ const routes = {
 	resetpassword: "/resetpassword",
 	resetpassword_email: "/resetpassword/:email",
 	detailProduct_category_pid_name: "/:category/:pid/:name",
+	checkout: "/checkout",
 
 	// Admin
 	admin_dashboard: "/admin/dashboard",

@@ -32,7 +32,7 @@ function Navigation() {
 
 	const { IoMdArrowDropdown } = icons;
 	return (
-		<nav className="max-w-main w-full px-5 h-[48px] text-sm border-b border-t flex items-center gap-7 mt-[148px]">
+		<nav className="max-w-main w-full px-5 h-[48px] text-sm border-b flex items-center gap-7 mt-[148px]">
 			{NAVIGATION.map((item) => (
 				<NavLink
 					to={item.path}

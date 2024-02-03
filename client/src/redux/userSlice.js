@@ -8,6 +8,7 @@ const userSlice = createSlice({
 		currentUser: null,
 		token: null,
 		mes: "",
+		checkouts: [],
 	},
 	reducers: {
 		login: (state, action) => {
@@ -22,6 +23,9 @@ const userSlice = createSlice({
 		},
 		clearMes: (state) => {
 			state.mes = "";
+		},
+		checkouts: (state, action) => {
+			state.checkouts = [...action.payload];
 		},
 	},
 	extraReducers: (builder) => {
@@ -40,6 +44,6 @@ const userSlice = createSlice({
 	},
 });
 
-export const { login, logout, clearMes } = userSlice.actions;
+export const { login, logout, clearMes, checkouts } = userSlice.actions;
 
 export default userSlice.reducer;

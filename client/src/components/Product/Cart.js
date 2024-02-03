@@ -4,8 +4,12 @@ import { Button } from "../common";
 import { useSelector } from "react-redux";
 import { userSelector } from "~/redux/selector";
 import images from "~/assets/images";
+import { useNavigate } from "react-router-dom";
+import routes from "~/config/routes";
 
 const Cart = () => {
+	const navigate = useNavigate();
+
 	const { currentUser } = useSelector(userSelector);
 	return (
 		<div className="cart">
@@ -23,6 +27,7 @@ const Cart = () => {
 						<Button
 							styleCustom="float-right mr-3 my-3 px-4 py-2 text-white bg-red-500 text-[14px] rounded hover:opacity-90"
 							title="View my shopping cart"
+							handleClick={() => navigate(routes.cart)}
 						/>
 					</>
 				) : (

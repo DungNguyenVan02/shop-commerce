@@ -41,7 +41,7 @@ function Header() {
 	};
 
 	return (
-		<header className="w-full flex flex-col items-center fixed top-0 left-0 right-0 bg-white z-[90]">
+		<header className="w-full flex flex-col items-center fixed top-0 left-0 right-0 bg-white z-[90] shadow-sm">
 			<div className="w-full h-[38px] bg-main">
 				<div className="max-w-main w-full h-full mx-auto px-5 flex items-center justify-between text-[12px] text-white">
 					<div>
@@ -103,7 +103,7 @@ function Header() {
 					)}
 				</div>
 			</div>
-			<div className="max-w-main w-full px-5 h-[110px] flex justify-between items-center py-[35px] gap-[60px]">
+			<div className="max-w-main w-full h-[110px] flex justify-between items-center py-[35px] gap-[60px] ">
 				<Link to={routes.home}>
 					<img
 						className="w-[234px] object-contain flex-1"

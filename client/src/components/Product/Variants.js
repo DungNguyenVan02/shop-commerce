@@ -11,6 +11,7 @@ const Variants = ({ data, active, onClickActive }) => {
 				onClickActive({
 					id: idSelected,
 					price: data?.price,
+					color: data?.color,
 					quantity: data?.quantity,
 				})
 			}

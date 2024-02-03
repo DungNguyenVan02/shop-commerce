@@ -93,9 +93,18 @@ export const apiAddCart = (data) => {
 	});
 };
 
-export const apiRemoveCart = (pid) => {
+export const apiRemoveCart = (pid, data) => {
 	return axios({
 		url: "/user/remove-cart/" + pid,
 		method: "DELETE",
+		data,
+	});
+};
+
+export const apiUpdateQuantityCart = (pid, data) => {
+	return axios({
+		url: "/user/update-quantity/" + pid,
+		method: "PUT",
+		data,
 	});
 };

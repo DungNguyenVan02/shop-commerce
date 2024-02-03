@@ -8,18 +8,21 @@ import { toast } from "react-toastify";
 
 const ItemCart = ({ data, dispatch }) => {
 	const handleRemove = async () => {
-		const response = await apiRemoveCart(data?.product._id);
+		const response = await apiRemoveCart(data?.product._id, {
+			color: data?.color,
+		});
 		if (response.success) {
 			dispatch(getCurrentUser());
 		} else {
 			toast.warning(response.mes);
 		}
 	};
+
 	return (
 		<div className="px-3 py-2 flex gap-2">
 			<img
 				className="w-[50px] h-[50px] object-cover"
-				src={data?.product.thumb || images.defaultProduct}
+				src={data?.thumbnail || images.defaultProduct}
 				alt="Product cart"
 			/>
 			<div className="flex-1">
@@ -29,12 +32,14 @@ const ItemCart = ({ data, dispatch }) => {
 					</h3>
 					<div>
 						<span className="text-main text-[14px] font-normal">
-							{formatMoney(data?.product.price)}
+							{formatMoney(data?.price)}
 						</span>
 						<span className="text-[10px] text-[#757575] mx-1">
 							x
 						</span>
-						<span className="text-[12px] text-[#757575]">1</span>
+						<span className="text-[12px] text-[#757575]">
+							{data?.quantity}
+						</span>
 					</div>
 				</div>
 				<div className="flex justify-between">

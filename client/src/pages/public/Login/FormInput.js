@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { apiLogin, apiForgotPassword } from "~/apis";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useFormik } from "formik";
 import { schemasValidLogin } from "~/utils/schemasValid";
 import { Link } from "react-router-dom";
@@ -20,6 +20,7 @@ function FormInput() {
 	const [isAnimation, setIsAnimation] = useState(false);
 	const [isForgotpassword, setIsForgotpassword] = useState(false);
 	const [emailForgotpassword, setEmailForgotpassword] = useState("");
+	const [searchParams] = useSearchParams();
 
 	const { FaEyeSlash, FaRegEye, IoCloseOutline } = icons;
 
@@ -53,7 +54,11 @@ function FormInput() {
 			setTimeout(() => {
 				toast.info("Welcome to digital world!", { theme: "colored" });
 				setIsAnimation(false);
-				navigate(routes.home);
+				navigate(
+					searchParams.get("redirect")
+						? searchParams.get("redirect")
+						: routes.home
+				);
 			}, 1500);
 		} else {
 			Swal.fire("Oops!", response.mes, "error");

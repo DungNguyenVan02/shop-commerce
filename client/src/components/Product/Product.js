@@ -48,7 +48,10 @@ function Product({
 				} else {
 					const response = await apiAddCart({
 						pid: data._id,
-						color: data.color,
+						color: data?.color || "Unknown",
+						price: data.price,
+						quantity: 1,
+						thumbnail: data.thumb,
 					});
 					if (response.success) {
 						toast.success("Has been added to your cart!");
@@ -95,7 +98,7 @@ function Product({
 						<SelectOptions icon={<FaHeart />} />
 					</span>
 					<span
-						title="Show detail"
+						title="Add your cart"
 						onClick={(e) => handleClickOptions(e, "addCart")}
 					>
 						<SelectOptions icon={<FaCartPlus />} />
