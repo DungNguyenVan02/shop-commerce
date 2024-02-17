@@ -14,6 +14,7 @@ const {
 	BsCart3,
 	AiOutlineHistory,
 	LiaFileInvoiceDollarSolid,
+	GoChecklist,
 } = icons;
 export const extraInfo = [
 	{
@@ -246,18 +247,24 @@ export const memberSlideBar = [
 	},
 	{
 		id: 1,
+		title: "Wishlist",
+		icon: <GoChecklist />,
+		path: routes.member_wishlist,
+	},
+	{
+		id: 2,
 		title: "My cart",
 		icon: <BsCart3 />,
 		path: routes.member_cart,
 	},
 	{
-		id: 2,
+		id: 3,
 		title: "My order",
 		icon: <LiaFileInvoiceDollarSolid />,
 		path: routes.member_order,
 	},
 	{
-		id: 3,
+		id: 4,
 		title: "History order",
 		icon: <AiOutlineHistory />,
 		path: routes.member_history,

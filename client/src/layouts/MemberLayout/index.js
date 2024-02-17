@@ -8,7 +8,7 @@ function MemberLayout({ children }) {
 			<Header />
 			<div className="mt-4">
 				<div className="grid wide">
-					<div className="row no-gutters mt-[148px]">
+					<div className="row mt-[148px]">
 						<div className=" col g-l-3">
 							<SidebarProfile />
 						</div>

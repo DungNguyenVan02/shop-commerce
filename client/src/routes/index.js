@@ -18,6 +18,7 @@ import Personal from "~/pages/public/Personal";
 import Checkout from "~/pages/public/Checkout";
 import CheckoutOnline from "~/pages/public/CheckoutOnline";
 import Order from "~/pages/public/Order";
+import Wishlist from "~/pages/public/Wishlist";
 
 const publicRoutes = [
 	{
@@ -111,6 +112,11 @@ const publicRoutes = [
 	{
 		path: routes.member_cart,
 		component: Cart,
+		isMemberRoutes: true,
+	},
+	{
+		path: routes.member_wishlist,
+		component: Wishlist,
 		isMemberRoutes: true,
 	},
 	{

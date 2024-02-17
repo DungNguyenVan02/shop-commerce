@@ -24,6 +24,7 @@ const routes = {
 	// Member
 	member_personal: "/member/personal",
 	member_cart: "/member/cart",
+	member_wishlist: "/member/wishlist",
 	member_order: "/member/order",
 	member_history: "/member/history",
 };

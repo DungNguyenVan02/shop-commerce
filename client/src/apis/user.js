@@ -116,3 +116,10 @@ export const apiUpdateAddress = (data) => {
 		data,
 	});
 };
+
+export const apiUpdateWishlist = (params) => {
+	return axios({
+		url: "/user/wishlist/" + params,
+		method: "PUT",
+	});
+};

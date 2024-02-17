@@ -55,7 +55,7 @@ import {
 } from "react-icons/io5";
 import { SlScreenDesktop } from "react-icons/sl";
 import { AiFillPrinter, AiOutlineHistory } from "react-icons/ai";
-import { GoDotFill, GoClock } from "react-icons/go";
+import { GoDotFill, GoClock, GoChecklist } from "react-icons/go";
 import { GiPositionMarker } from "react-icons/gi";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiDashboard3Line, RiProductHuntLine } from "react-icons/ri";
@@ -125,6 +125,7 @@ const icons = {
 
 	GoDotFill,
 	GoClock,
+	GoChecklist,
 
 	HiOutlineDotsHorizontal,
 	HiOutlineChevronDown,

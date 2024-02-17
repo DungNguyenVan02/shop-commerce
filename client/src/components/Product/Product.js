@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { userSelector } from "~/redux/selector";
 import Swal from "sweetalert2";
 import routes from "~/config/routes";
-import { apiAddCart } from "~/apis";
+import { apiAddCart, apiUpdateWishlist } from "~/apis";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { toast } from "react-toastify";
 
@@ -28,7 +28,13 @@ function Product({
 		e.stopPropagation();
 		switch (click) {
 			case "heart":
-				console.log("heart");
+				const response = await apiUpdateWishlist(data._id);
+				if (response.success) {
+					toast.success(response.mes);
+					dispatch(getCurrentUser());
+				} else {
+					toast.error(response.mes);
+				}
 				break;
 			case "addCart":
 				if (!currentUser) {
@@ -49,7 +55,7 @@ function Product({
 					const response = await apiAddCart({
 						pid: data._id,
 						color: data?.color || "Unknown",
-						price: data.price,
+						price: data?.price,
 						quantity: 1,
 						thumbnail: data.thumb,
 					});
@@ -95,7 +101,19 @@ function Product({
 						title="Add wishlist"
 						onClick={(e) => handleClickOptions(e, "heart")}
 					>
-						<SelectOptions icon={<FaHeart />} />
+						<SelectOptions
+							icon={
+								<FaHeart
+									color={
+										currentUser.wishlist.find(
+											(item) => item._id === data._id
+										)
+											? "red"
+											: ""
+									}
+								/>
+							}
+						/>
 					</span>
 					<span
 						title="Add your cart"
