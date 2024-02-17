@@ -19,6 +19,7 @@ const Cart = ({ dispatch }) => {
 	const [checkAll, setCheckAll] = useState(false);
 	const [checkedList, setCheckList] = useState([]);
 	const [itemUpdateCart, setItemUpdateCart] = useState(null);
+
 	const fetchUpdateCart = async (data) => {
 		const response = await apiUpdateQuantityCart(data?.pid, data);
 		if (response.success) {
@@ -68,7 +69,7 @@ const Cart = ({ dispatch }) => {
 		}
 	}, [checkedList]);
 
-	const handleCheckedItem = useCallback((pid, color) => {
+	const handleCheckedItem = useCallback((cid, pid, color) => {
 		const isAlready = checkedList?.some(
 			(item) => item.pid === pid && item.color === color
 		);
@@ -79,14 +80,25 @@ const Cart = ({ dispatch }) => {
 				)
 			);
 		} else {
-			setCheckList((prev) => [...prev, { pid: pid, color: color }]);
+			setCheckList((prev) => [
+				...prev,
+				{ cid: cid, pid: pid, color: color },
+			]);
 		}
 	});
 
-	const handleRemoveCart = async (pid, color) => {
-		const response = await apiRemoveCart(pid, { color });
+	const handleRemoveCart = async (cid) => {
+		let payload = {};
+		if (checkedList.length > 0) {
+			payload.arrProduct = checkedList.map((item) => item.cid);
+		} else {
+			payload.arrProduct = [cid];
+		}
+
+		const response = await apiRemoveCart(payload);
 		if (response.success) {
 			dispatch(getCurrentUser());
+			setCheckList([]);
 		} else {
 			toast.error("Something went wrong, please try again!");
 		}
@@ -153,7 +165,10 @@ const Cart = ({ dispatch }) => {
 									<span>
 										Select all({currentUser?.cart.length})
 									</span>
-									<span className="cursor-pointer hover:underline hover:text-main">
+									<span
+										className="cursor-pointer hover:underline hover:text-main"
+										onClick={handleRemoveCart}
+									>
 										Delete
 									</span>
 								</div>

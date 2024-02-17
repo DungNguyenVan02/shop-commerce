@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { apiUpdateUser } from "~/apis";
 import images from "~/assets/images";
-import { Button, CustomInput } from "~/components/common";
+import { Button, CustomInput, CustomSelect } from "~/components/common";
 import { userSelector } from "~/redux/selector";
 import { schemasValidChangeProfile } from "~/utils/schemasValid";
 import { OvalAnimation } from "~/components/Animation";
@@ -35,6 +35,7 @@ function Personal({ dispatch }) {
 		lastName: currentUser.lastName || "",
 		email: currentUser.email || "",
 		phone: currentUser.phone || "",
+		address: currentUser.address[0] || "",
 	};
 	const checkDirty = (data) => {
 		let isDirty = false;
@@ -110,6 +111,18 @@ function Personal({ dispatch }) {
 											name="lastName"
 											placeholder="Enter your last name"
 										/>
+										<CustomSelect
+											label="Address"
+											name="address"
+										>
+											{currentUser.address?.map(
+												(item, i) => (
+													<option key={i}>
+														{item}
+													</option>
+												)
+											)}
+										</CustomSelect>
 										<CustomInput
 											label="Email"
 											name="email"

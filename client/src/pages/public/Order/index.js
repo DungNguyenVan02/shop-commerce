@@ -1,11 +1,11 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { apiGetHistoryOrder } from "~/apis";
+import { apiGetOrder } from "~/apis";
 
-const History = () => {
+const Order = () => {
 	const [orders, setOrders] = useState([]);
 	const fetchOrder = async () => {
-		const response = await apiGetHistoryOrder();
+		const response = await apiGetOrder();
 		if (response.success) {
 			setOrders(response.listOrder);
 		}
@@ -103,4 +103,4 @@ const History = () => {
 	);
 };
 
-export default History;
+export default Order;

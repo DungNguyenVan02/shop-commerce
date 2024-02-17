@@ -12,6 +12,7 @@ const routes = {
 	resetpassword_email: "/resetpassword/:email",
 	detailProduct_category_pid_name: "/:category/:pid/:name",
 	checkout: "/checkout",
+	checkoutOnline: "/checkout-online",
 
 	// Admin
 	admin_dashboard: "/admin/dashboard",
@@ -23,6 +24,7 @@ const routes = {
 	// Member
 	member_personal: "/member/personal",
 	member_cart: "/member/cart",
+	member_order: "/member/order",
 	member_history: "/member/history",
 };
 

@@ -16,6 +16,8 @@ import Cart from "~/pages/public/Cart";
 import History from "~/pages/public/History";
 import Personal from "~/pages/public/Personal";
 import Checkout from "~/pages/public/Checkout";
+import CheckoutOnline from "~/pages/public/CheckoutOnline";
+import Order from "~/pages/public/Order";
 
 const publicRoutes = [
 	{
@@ -56,6 +58,11 @@ const publicRoutes = [
 	{
 		path: routes.checkout,
 		component: Checkout,
+	},
+	{
+		path: routes.checkoutOnline,
+		component: CheckoutOnline,
+		headerNone: true,
 	},
 	{
 		path: routes.detailProduct_category_pid_name,
@@ -104,6 +111,11 @@ const publicRoutes = [
 	{
 		path: routes.member_cart,
 		component: Cart,
+		isMemberRoutes: true,
+	},
+	{
+		path: routes.member_order,
+		component: Order,
 		isMemberRoutes: true,
 	},
 	{

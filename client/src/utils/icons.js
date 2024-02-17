@@ -18,6 +18,7 @@ import {
 	FaRegEdit,
 	FaPen,
 } from "react-icons/fa";
+import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 
 import {
 	BsSpeaker,
@@ -142,6 +143,8 @@ const icons = {
 
 	BsCart3,
 	AiOutlineHistory,
+
+	LiaFileInvoiceDollarSolid,
 };
 
 export default icons;

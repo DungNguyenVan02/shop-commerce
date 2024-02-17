@@ -8,6 +8,7 @@ const images = {
 	banner2Home: require("./banner2-home.png"),
 	banner3Home: require("./banner3-home.png"),
 	banner4Home: require("./banner4-home.png"),
+	onlinePayment: require("./online-payment.svg").default,
 };
 
 export default images;

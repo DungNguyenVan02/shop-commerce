@@ -8,9 +8,7 @@ import { toast } from "react-toastify";
 
 const ItemCart = ({ data, dispatch }) => {
 	const handleRemove = async () => {
-		const response = await apiRemoveCart(data?.product._id, {
-			color: data?.color,
-		});
+		const response = await apiRemoveCart({ arrProduct: [data?._id] });
 		if (response.success) {
 			dispatch(getCurrentUser());
 		} else {

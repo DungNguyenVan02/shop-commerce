@@ -58,7 +58,11 @@ const ItemCartDetail = ({
 								item.color === data?.color
 						)}
 						onChange={() =>
-							onChangeChecked(data?.product._id, data?.color)
+							onChangeChecked(
+								data?._id,
+								data?.product._id,
+								data?.color
+							)
 						}
 						className="w-[18px] h-[18px]"
 						type="checkbox"
@@ -93,7 +97,7 @@ const ItemCartDetail = ({
 			</div>
 			<div
 				className="text-center cursor-pointer hover:underline hover:text-main col g-l-1"
-				onClick={() => onRemoveCart(data?.product._id, data?.color)}
+				onClick={() => onRemoveCart(data?._id)}
 			>
 				Delete
 			</div>

@@ -13,6 +13,7 @@ const {
 	BiUser,
 	BsCart3,
 	AiOutlineHistory,
+	LiaFileInvoiceDollarSolid,
 } = icons;
 export const extraInfo = [
 	{
@@ -251,6 +252,12 @@ export const memberSlideBar = [
 	},
 	{
 		id: 2,
+		title: "My order",
+		icon: <LiaFileInvoiceDollarSolid />,
+		path: routes.member_order,
+	},
+	{
+		id: 3,
 		title: "History order",
 		icon: <AiOutlineHistory />,
 		path: routes.member_history,
