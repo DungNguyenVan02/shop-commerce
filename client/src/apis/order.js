@@ -7,6 +7,13 @@ export const apiCreateOrder = (data) => {
 		data,
 	});
 };
+export const apiGetOrderByAdmin = (params) => {
+	return axios({
+		url: "/order/admin",
+		method: "GET",
+		params,
+	});
+};
 
 export const apiGetOrder = () => {
 	return axios({

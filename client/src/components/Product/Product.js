@@ -105,7 +105,7 @@ function Product({
 							icon={
 								<FaHeart
 									color={
-										currentUser.wishlist.find(
+										currentUser?.wishlist?.find(
 											(item) => item._id === data._id
 										)
 											? "red"

@@ -112,7 +112,7 @@ function ManageProducts({ location, navigate }) {
 					/>
 				</div>
 			)}
-			<div className="">
+			<div>
 				<div className="flex items-center h-[40px] bg-gray-600 text-white px-3">
 					Manage create products
 				</div>
