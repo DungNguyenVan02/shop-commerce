@@ -18,7 +18,7 @@ const Wishlist = () => {
 			<div className="grid wide">
 				<div className="row">
 					{currentUser?.wishlist?.map((item) => (
-						<div key={item._id} className="col g-l-4">
+						<div key={item._id} className="col g-l-4 mt-2">
 							<Product data={item} productPage />
 						</div>
 					))}

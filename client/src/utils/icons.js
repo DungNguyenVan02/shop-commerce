@@ -67,6 +67,7 @@ import {
 	HiOutlineChevronRight,
 } from "react-icons/hi2";
 import { TbUserEdit, TbUserX } from "react-icons/tb";
+import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 
 const icons = {
 	FaLaptop,
@@ -146,6 +147,8 @@ const icons = {
 	AiOutlineHistory,
 
 	LiaFileInvoiceDollarSolid,
+
+	MdOutlineScreenSearchDesktop,
 };
 
 export default icons;

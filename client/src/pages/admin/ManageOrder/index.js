@@ -1,18 +1,22 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { apiGetOrderByAdmin } from "~/apis";
+import { apiDeleteOrder, apiGetOrderByAdmin } from "~/apis";
 import icons from "~/utils/icons";
 import Pagination from "~/components/Pagination";
 import { createSearchParams, useSearchParams } from "react-router-dom";
 import { useDebounce } from "~/components/hooks";
 import withBaseComponent from "~/components/hocs/withBaseComponent";
 import Select from "react-select";
+import { UpdateOrder } from "~/components/Admin/ManageOrder";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 function ManageOrder({ location, navigate }) {
 	const [searchQueries] = useSearchParams();
 	const { CiSearch, IoTrashBinOutline, FaRegEdit, BiCustomize } = icons;
 	const [searchText, setSearchText] = useState({ q: "" });
 	const [orders, setOrders] = useState({});
+	const [isRerender, setIsRerender] = useState(false);
 	const [selectedOption, setSelectedOption] = useState(null);
 	const [updateOrder, setUpdateOrder] = useState({
 		isUpdate: false,
@@ -66,15 +70,47 @@ function ManageOrder({ location, navigate }) {
 
 		fetchGetOrders(queries);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debouncedValue, searchQueries, selectedOption]);
+	}, [debouncedValue, searchQueries, selectedOption, isRerender]);
 
-	useEffect(() => {}, [updateOrder]);
+	const handleRemoveOrder = (oid) => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Remove products from this list!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					title: "Deleted!",
+					text: "Product has been deleted.",
+					icon: "success",
+				}).then(async () => {
+					const response = await apiDeleteOrder(oid);
+					if (response.success) {
+						setIsRerender(!isRerender);
+					} else {
+						toast.warning(response.message);
+					}
+				});
+			}
+		});
+	};
 
 	return (
-		<div className="w-full">
+		<div
+			className="w-full"
+			onClick={() => setUpdateOrder({ isUpdate: false, data: [] })}
+		>
 			{updateOrder.isUpdate && (
 				<div className="fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center bg-overlay z-[99999999]">
-					<div className="bg-white min-w-[700px] h-[90%]"></div>
+					<UpdateOrder
+						dataUpdate={updateOrder.data}
+						onHide={setUpdateOrder}
+						onRerender={setIsRerender}
+					/>
 				</div>
 			)}
 			<div className="flex items-center h-[40px] bg-gray-600 text-white px-3">
@@ -96,7 +132,6 @@ function ManageOrder({ location, navigate }) {
 						/>
 					</div>
 					<Select
-						isClearable
 						defaultValue={selectedOption}
 						onChange={setSelectedOption}
 						options={options}
@@ -187,25 +222,27 @@ function ManageOrder({ location, navigate }) {
 											<div className="flex items-center justify-center gap-3">
 												<span
 													className="cursor-pointer opacity-75 hover:opacity-100"
-													onClick={() =>
+													onClick={(e) => {
+														e.stopPropagation();
 														setUpdateOrder({
 															isUpdate: true,
 															data: order,
-														})
-													}
+														});
+													}}
 												>
 													<FaRegEdit
 														size={19}
 														color="#43a87b"
 													/>
 												</span>
-												<span className="cursor-pointer opacity-75 hover:opacity-100">
-													<BiCustomize
-														size={19}
-														color="#0B60B0"
-													/>
-												</span>
-												<span className="cursor-pointer opacity-75 hover:opacity-100">
+												<span
+													className="cursor-pointer opacity-75 hover:opacity-100"
+													onClick={() =>
+														handleRemoveOrder(
+															order._id
+														)
+													}
+												>
 													<IoTrashBinOutline
 														size={19}
 														color="red"

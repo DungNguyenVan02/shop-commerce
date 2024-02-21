@@ -1,9 +1,13 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { apiGetOrder } from "~/apis";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import { apiDeleteOrder, apiGetOrder } from "~/apis";
 
 const Order = () => {
 	const [orders, setOrders] = useState([]);
+	const [isRerender, setIsRerender] = useState(false);
+
 	const fetchOrder = async () => {
 		const response = await apiGetOrder();
 		if (response.success) {
@@ -12,7 +16,34 @@ const Order = () => {
 	};
 	useEffect(() => {
 		fetchOrder();
-	}, []);
+	}, [isRerender]);
+
+	const handleRemoveOrder = (oid) => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Remove products from this list!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					title: "Deleted!",
+					text: "Product has been deleted.",
+					icon: "success",
+				}).then(async () => {
+					const response = await apiDeleteOrder(oid);
+					if (response.success) {
+						setIsRerender(!isRerender);
+					} else {
+						toast.warning(response.message);
+					}
+				});
+			}
+		});
+	};
 
 	return (
 		<div>
@@ -36,6 +67,9 @@ const Order = () => {
 						</th>
 						<th scope="col" className="px-2 py-3">
 							Created at
+						</th>
+						<th scope="col" className="px-2 py-3">
+							Options
 						</th>
 					</tr>
 				</thead>
@@ -93,6 +127,16 @@ const Order = () => {
 									{moment(order.updatedAt).format(
 										"DD-MM-YYYY"
 									)}
+								</td>
+								<td className="px-4 py-3 text-center">
+									<span
+										className="cursor-pointer hover:underline text-main"
+										onClick={() =>
+											handleRemoveOrder(order._id)
+										}
+									>
+										Cancel
+									</span>
 								</td>
 							</tr>
 						);

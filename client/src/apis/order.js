@@ -27,3 +27,18 @@ export const apiGetHistoryOrder = () => {
 		method: "GET",
 	});
 };
+
+export const apiUpdateStatusByAdmin = (data, oid) => {
+	return axios({
+		url: "/order/status/" + oid,
+		method: "PUT",
+		data,
+	});
+};
+
+export const apiDeleteOrder = (oid) => {
+	return axios({
+		url: "/order/delete/" + oid,
+		method: "DELETE",
+	});
+};

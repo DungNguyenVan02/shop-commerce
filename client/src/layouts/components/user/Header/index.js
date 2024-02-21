@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search } from "~/components/SectionLayout";
+import { Search } from "~/components/common";
 import images from "~/assets/images";
 import icons from "~/utils/icons";
 import routes from "~/config/routes";
 import { useSelector } from "react-redux";
-import { userSelector as selector, userSelector } from "~/redux/selector";
+import { userSelector } from "~/redux/selector";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { useDispatch } from "react-redux";
 import { logout, clearMes } from "~/redux/userSlice";
@@ -18,7 +18,7 @@ function Header() {
 	const dispatch = useDispatch();
 	const [isHover, setIsHover] = useState(false);
 	const { BsCart3, FaCircleUser } = icons;
-	const { isLogin, currentUser, mes } = useSelector(selector);
+	const { isLogin, currentUser, mes } = useSelector(userSelector);
 
 	useEffect(() => {
 		if (isLogin) {

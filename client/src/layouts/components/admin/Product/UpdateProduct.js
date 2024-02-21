@@ -289,7 +289,7 @@ const UpdateProduct = ({ dataUpdate, onHandleHide }) => {
 					</i>
 				</div>
 			)}
-			<div className="flex items-center h-[40px] bg-gray-600 text-white px-5">
+			<div className="flex items-center min-h-[40px] bg-gray-600 text-white px-5">
 				Update products
 			</div>
 			<div className="px-5 py-3 bg-slate-100 flex-1">
