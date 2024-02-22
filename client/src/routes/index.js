@@ -9,7 +9,7 @@ import Products from "../pages/public/Products";
 import Register from "../pages/public/Register";
 import ResetPassword from "../pages/public/ResetPassword";
 import { CreateProduct, ManageProducts } from "~/pages/admin/ManageProducts";
-import ManageOrder from "~/pages/admin/ManageOrder";
+import { Canceled, ListOrder, ReturnOrder } from "~/pages/admin/ManageOrder";
 import ManageUsers from "~/pages/admin/ManageUsers";
 import DashBroad from "~/pages/admin/DashBroad";
 import Cart from "~/pages/public/Cart";
@@ -19,6 +19,7 @@ import Checkout from "~/pages/public/Checkout";
 import CheckoutOnline from "~/pages/public/CheckoutOnline";
 import Order from "~/pages/public/Order";
 import Wishlist from "~/pages/public/Wishlist";
+import Return from "~/pages/public/Return";
 
 const publicRoutes = [
 	{
@@ -84,7 +85,17 @@ const publicRoutes = [
 
 	{
 		path: routes.admin_manage_orders,
-		component: ManageOrder,
+		component: ListOrder,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.admin_manage_return,
+		component: ReturnOrder,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.admin_manage_canceled,
+		component: Canceled,
 		isAdminRoutes: true,
 	},
 	{
@@ -122,6 +133,11 @@ const publicRoutes = [
 	{
 		path: routes.member_order,
 		component: Order,
+		isMemberRoutes: true,
+	},
+	{
+		path: routes.member_return,
+		component: Return,
 		isMemberRoutes: true,
 	},
 	{

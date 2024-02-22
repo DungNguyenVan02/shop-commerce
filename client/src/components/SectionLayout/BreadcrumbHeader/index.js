@@ -23,7 +23,6 @@ function BreadcrumbHeader({ name, slug, category }) {
 					>
 						{category}
 					</Link>
-					<IoIosArrowForward />
 					<span className="text-[#505050]">{name}</span>
 				</div>
 			</div>

@@ -15,6 +15,20 @@ export const apiGetOrderByAdmin = (params) => {
 	});
 };
 
+export const apiGetOrderCanceledByAdmin = () => {
+	return axios({
+		url: "/order/admin/canceled",
+		method: "GET",
+	});
+};
+
+export const apiGetOrderReturnByAdmin = () => {
+	return axios({
+		url: "/order/admin/return-refund",
+		method: "GET",
+	});
+};
+
 export const apiGetOrder = () => {
 	return axios({
 		url: "/order",
@@ -28,7 +42,21 @@ export const apiGetHistoryOrder = () => {
 	});
 };
 
-export const apiUpdateStatusByAdmin = (data, oid) => {
+export const apiGetReturnOrder = () => {
+	return axios({
+		url: "/order/return-order",
+		method: "GET",
+	});
+};
+
+export const apiPutReturnOrder = (oid) => {
+	return axios({
+		url: "/order/confirm/" + oid,
+		method: "PUT",
+	});
+};
+
+export const apiUpdateStatusOrder = (data, oid) => {
 	return axios({
 		url: "/order/status/" + oid,
 		method: "PUT",

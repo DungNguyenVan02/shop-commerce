@@ -1,0 +1,243 @@
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { apiDeleteOrder, apiGetOrderCanceledByAdmin } from "~/apis";
+import icons from "~/utils/icons";
+import Pagination from "~/components/Pagination";
+import { createSearchParams, useSearchParams } from "react-router-dom";
+import { useDebounce } from "~/components/hooks";
+import withBaseComponent from "~/components/hocs/withBaseComponent";
+import { UpdateOrder } from "~/components/Admin/ManageOrder";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+
+function Canceled({ location, navigate }) {
+	const [searchQueries] = useSearchParams();
+	const { CiSearch, IoTrashBinOutline, FaRegEdit } = icons;
+	const [searchText, setSearchText] = useState({ q: "" });
+	const [orders, setOrders] = useState({});
+	const [isRerender, setIsRerender] = useState(false);
+	const [updateOrder, setUpdateOrder] = useState({
+		isUpdate: false,
+		data: [],
+	});
+
+	const fetchGetOrders = async (params) => {
+		const response = await apiGetOrderCanceledByAdmin({
+			...params,
+			limit: process.env.REACT_APP_LIMIT,
+		});
+		if (response.success) {
+			setOrders(response);
+		}
+	};
+
+	const debouncedValue = useDebounce(searchText.q, 500);
+
+	const handleSearchText = (e) => {
+		let valueSearch = e.target.value;
+		if (!valueSearch.startsWith(" ")) {
+			setSearchText({ q: valueSearch });
+		}
+	};
+
+	useEffect(() => {
+		const queries = Object.fromEntries([...searchQueries]);
+		if (debouncedValue) {
+			queries.q = debouncedValue;
+		} else {
+			navigate({
+				pathname: location.pathname,
+				search: createSearchParams("").toString(),
+			});
+		}
+		navigate({
+			pathname: location.pathname,
+			search: createSearchParams("").toString(),
+		});
+
+		fetchGetOrders(queries);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [debouncedValue, searchQueries, isRerender]);
+
+	const handleRemoveOrder = (oid) => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Remove products from this list!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					title: "Deleted!",
+					text: "Product has been deleted.",
+					icon: "success",
+				}).then(async () => {
+					const response = await apiDeleteOrder(oid);
+					if (response.success) {
+						setIsRerender(!isRerender);
+					} else {
+						toast.warning(response.message);
+					}
+				});
+			}
+		});
+	};
+
+	return (
+		<div
+			className="w-full"
+			onClick={() => setUpdateOrder({ isUpdate: false, data: [] })}
+		>
+			{updateOrder.isUpdate && (
+				<div className="fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center bg-overlay z-[99999999]">
+					<UpdateOrder
+						dataUpdate={updateOrder.data}
+						onHide={setUpdateOrder}
+						onRerender={setIsRerender}
+					/>
+				</div>
+			)}
+			<div className="flex items-center h-[40px] bg-gray-600 text-white px-3">
+				Manage order
+			</div>
+			<div className="px-3 bg-gray-100 min-h-screen">
+				<div className="flex h-[60px] items-center py-3 gap-5">
+					<div className="h-full flex items-center border rounded-md ">
+						<input
+							type="text"
+							value={searchQueries.q}
+							onChange={handleSearchText}
+							placeholder="Enter search order by code"
+							className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
+						/>
+						<CiSearch
+							size={20}
+							className="mx-3 cursor-pointer opacity-80 hover:opacity-100"
+						/>
+					</div>
+				</div>
+				<div className="overflow-x-auto shadow-md sm:rounded-lg">
+					<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+						<thead className="text-xs text-white uppercase bg-gray-800 dark:bg-gray-700 dark:text-gray-400">
+							<tr>
+								<th scope="col" className="px-6 py-3">
+									#
+								</th>
+								<th scope="col" className="px-6 py-3">
+									Code
+								</th>
+								<th scope="col" className="px-6 py-3">
+									Quantity
+								</th>
+								<th scope="col" className="px-6 py-3">
+									Total price
+								</th>
+
+								<th scope="col" className="px-6 py-3">
+									Purchaser
+								</th>
+
+								<th scope="col" className="px-6 py-3">
+									Phone number
+								</th>
+								<th scope="col" className="px-6 py-3">
+									Status
+								</th>
+								<th scope="col" className="px-6 py-3">
+									createdAt
+								</th>
+								<th scope="col" className="px-6 py-3">
+									Actions
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{orders?.orders?.map((order, index) => {
+								return (
+									<tr
+										key={order._id}
+										className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+									>
+										<td className="px-6 py-3">
+											{((+searchQueries.get("page") ||
+												1) -
+												1) *
+												process.env.REACT_APP_LIMIT +
+												index +
+												1}
+										</td>
+										<td className="px-6 py-3">
+											{order?.code}
+										</td>
+										<td className="px-6 py-3">
+											{order?.products.length}
+										</td>
+										<td className="px-6 py-3">
+											{order?.total}
+										</td>
+
+										<td className="px-6 py-3">
+											{`${order?.orderBy?.firstName} ${order?.orderBy?.lastName}`}
+										</td>
+
+										<td className="px-6 py-3">
+											{order?.orderBy?.phone}
+										</td>
+										<td className="px-6 py-3">
+											{order?.status}
+										</td>
+										<td className="px-6 py-3">
+											{moment(order?.createdAt).format(
+												"DD-MM-YYYY"
+											)}
+										</td>
+										<td className="px-6 py-3">
+											<div className="flex items-center justify-center gap-3">
+												<span
+													className="cursor-pointer opacity-75 hover:opacity-100"
+													onClick={(e) => {
+														e.stopPropagation();
+														setUpdateOrder({
+															isUpdate: true,
+															data: order,
+														});
+													}}
+												>
+													<FaRegEdit
+														size={19}
+														color="#43a87b"
+													/>
+												</span>
+												<span
+													className="cursor-pointer opacity-75 hover:opacity-100"
+													onClick={() =>
+														handleRemoveOrder(
+															order._id
+														)
+													}
+												>
+													<IoTrashBinOutline
+														size={19}
+														color="red"
+													/>
+												</span>
+											</div>
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				</div>
+				<div className="mt-4 flex justify-end">
+					<Pagination totalCount={orders.counts} />
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export default withBaseComponent(Canceled);

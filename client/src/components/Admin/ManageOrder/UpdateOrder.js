@@ -2,7 +2,7 @@ import images from "~/assets/images";
 import { formatMoney } from "~/utils/helper";
 import Select from "react-select";
 import { useEffect, useState } from "react";
-import { apiUpdateStatusByAdmin } from "~/apis";
+import { apiPutReturnOrder, apiUpdateStatusOrder } from "~/apis";
 import { toast } from "react-toastify";
 
 const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
@@ -10,7 +10,8 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 	const [isInvalid, setIsInvalid] = useState(false);
 	const options = [
 		{ value: "Processing", label: "Processing" },
-		{ value: "Success", label: "Success" },
+		{ value: "Transported", label: "Transported" },
+		{ value: "Return", label: "Return" },
 		{ value: "Canceled", label: "Canceled" },
 	];
 
@@ -21,13 +22,18 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 	}, [selectedOption]);
 
 	const handleUpdateStatus = async () => {
-		if (selectedOption === null) {
+		if (selectedOption === null && dataUpdate?.status !== "Return") {
 			setIsInvalid(true);
 		} else {
-			const response = await apiUpdateStatusByAdmin(
-				{ status: selectedOption.value },
-				dataUpdate._id
-			);
+			let response;
+			if (dataUpdate?.status === "Return") {
+				response = await apiPutReturnOrder(dataUpdate._id);
+			} else {
+				response = await apiUpdateStatusOrder(
+					{ status: selectedOption.value },
+					dataUpdate._id
+				);
+			}
 			if (response.success) {
 				onHide({ isUpdate: false, data: [] });
 				onRerender((prev) => !prev);
@@ -67,6 +73,10 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 					<span>{dataUpdate?.products.length}</span>
 				</div>
 				<div className="border p-3 rounded shadow-md">
+					<span className="font-semibold">Total: </span>
+					<span>{`${dataUpdate?.total} $`}</span>
+				</div>
+				<div className="border p-3 rounded shadow-md">
 					<span className="font-semibold">Products order</span>
 					<span>
 						{dataUpdate?.products.map((item) => {
@@ -92,25 +102,28 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 						})}
 					</span>
 				</div>
-				<div className="border p-3 rounded shadow-md">
-					<span className="font-semibold">Status order </span>
-					<Select
-						defaultValue={selectedOption}
-						onChange={setSelectedOption}
-						options={options}
-						formatOptionLabel={(options) => (
-							<div className="flex text-[#333] items-center gap-2">
-								<span>{options.label}</span>
-							</div>
+				{(dataUpdate.status === "Processing" ||
+					dataUpdate.status === "Transported") && (
+					<div className="border p-3 rounded shadow-md">
+						<span className="font-semibold">Status order </span>
+						<Select
+							defaultValue={selectedOption}
+							onChange={setSelectedOption}
+							options={options}
+							formatOptionLabel={(options) => (
+								<div className="flex text-[#333] items-center gap-2">
+									<span>{options.label}</span>
+								</div>
+							)}
+							className=" w-[170px]"
+						/>
+						{isInvalid && (
+							<p className="text-[12px] text-main">
+								Please choose status
+							</p>
 						)}
-						className=" w-[170px]"
-					/>
-					{isInvalid && (
-						<p className="text-[12px] text-main">
-							Please choose status
-						</p>
-					)}
-				</div>
+					</div>
+				)}
 			</div>
 			<div className="flex justify-end px-5 py-2 gap-3">
 				<button
@@ -120,10 +133,12 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 					Exit
 				</button>
 				<button
-					className="px-3 py-1 bg-green-500 text-white rounded hover:opacity-80"
+					className="px-3 py-2 bg-green-500 text-white rounded hover:opacity-80"
 					onClick={handleUpdateStatus}
 				>
-					Save
+					{dataUpdate.status === "Return"
+						? "Confirm return and refund"
+						: "Save"}
 				</button>
 			</div>
 		</div>

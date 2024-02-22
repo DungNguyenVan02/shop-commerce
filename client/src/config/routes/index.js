@@ -20,12 +20,15 @@ const routes = {
 	admin_manage_orders: "/admin/manage-order",
 	admin_create_product: "/admin/create-product",
 	admin_manage_products: "/admin/manage-products",
+	admin_manage_return: "/admin/manage-return",
+	admin_manage_canceled: "/admin/manage-canceled",
 
 	// Member
 	member_personal: "/member/personal",
 	member_cart: "/member/cart",
 	member_wishlist: "/member/wishlist",
 	member_order: "/member/order",
+	member_return: "/member/return-refund",
 	member_history: "/member/history",
 };
 

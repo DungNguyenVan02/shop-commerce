@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { apiDeleteOrder, apiGetOrder } from "~/apis";
+import { apiGetOrder, apiUpdateStatusOrder } from "~/apis";
 
 const Order = () => {
 	const [orders, setOrders] = useState([]);
@@ -18,23 +18,26 @@ const Order = () => {
 		fetchOrder();
 	}, [isRerender]);
 
-	const handleRemoveOrder = (oid) => {
+	const handleCanceledOrder = (oid) => {
 		Swal.fire({
 			title: "Are you sure?",
-			text: "Remove products from this list!",
+			text: "Cancel order!",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
 			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete it!",
+			confirmButtonText: "Confirm",
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire({
-					title: "Deleted!",
-					text: "Product has been deleted.",
+					title: "Canceled!",
+					text: "Order has been deleted.",
 					icon: "success",
 				}).then(async () => {
-					const response = await apiDeleteOrder(oid);
+					const response = await apiUpdateStatusOrder(
+						{ status: "Canceled" },
+						oid
+					);
 					if (response.success) {
 						setIsRerender(!isRerender);
 					} else {
@@ -45,6 +48,53 @@ const Order = () => {
 		});
 	};
 
+	const handleReturnOrder = (oid) => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Request for return and refund!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Confirm",
+		}).then(async (result) => {
+			if (result.isConfirmed) {
+				const response = await apiUpdateStatusOrder(
+					{ status: "Return" },
+					oid
+				);
+				if (response.success) {
+					setIsRerender(!isRerender);
+				} else {
+					toast.warning(response.message);
+				}
+			}
+		});
+	};
+
+	const handleReceivedOrder = (oid) => {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "I have received the goods",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Confirm",
+		}).then(async (result) => {
+			if (result.isConfirmed) {
+				const response = await apiUpdateStatusOrder(
+					{ status: "Success" },
+					oid
+				);
+				if (response.success) {
+					setIsRerender(!isRerender);
+				} else {
+					toast.warning(response.message);
+				}
+			}
+		});
+	};
 	return (
 		<div>
 			<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -68,7 +118,7 @@ const Order = () => {
 						<th scope="col" className="px-2 py-3">
 							Created at
 						</th>
-						<th scope="col" className="px-2 py-3">
+						<th scope="col" className="px-5 py-3 text-center">
 							Options
 						</th>
 					</tr>
@@ -129,14 +179,39 @@ const Order = () => {
 									)}
 								</td>
 								<td className="px-4 py-3 text-center">
-									<span
-										className="cursor-pointer hover:underline text-main"
-										onClick={() =>
-											handleRemoveOrder(order._id)
-										}
-									>
-										Cancel
-									</span>
+									{order.status === "Processing" ? (
+										<span
+											className="cursor-pointer hover:underline text-main"
+											onClick={() =>
+												handleCanceledOrder(order._id)
+											}
+										>
+											Cancel
+										</span>
+									) : order.status === "Transported" ? (
+										<div className="flex gap-2 justify-center items-center">
+											<span
+												className="cursor-pointer hover:underline text-main"
+												onClick={() =>
+													handleReceivedOrder(
+														order._id
+													)
+												}
+											>
+												Received
+											</span>
+											<span
+												className="cursor-pointer hover:underline text-main"
+												onClick={() =>
+													handleReturnOrder(order._id)
+												}
+											>
+												Return
+											</span>
+										</div>
+									) : (
+										"Success"
+									)}
 								</td>
 							</tr>
 						);

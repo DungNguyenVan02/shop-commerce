@@ -14,6 +14,7 @@ const {
 	BsCart3,
 	AiOutlineHistory,
 	LiaFileInvoiceDollarSolid,
+	TbTruckReturn,
 	GoChecklist,
 } = icons;
 export const extraInfo = [
@@ -234,7 +235,23 @@ export const adminSlideBar = [
 		id: 3,
 		title: "Manage order",
 		icon: <HiOutlineClipboardDocumentList />,
-		path: routes.admin_manage_orders,
+		children: [
+			{
+				id: 0,
+				title: "List orders",
+				path: routes.admin_manage_orders,
+			},
+			{
+				id: 1,
+				title: "Return and refund",
+				path: routes.admin_manage_return,
+			},
+			{
+				id: 2,
+				title: "Canceled",
+				path: routes.admin_manage_canceled,
+			},
+		],
 	},
 ];
 
@@ -263,8 +280,15 @@ export const memberSlideBar = [
 		icon: <LiaFileInvoiceDollarSolid />,
 		path: routes.member_order,
 	},
+
 	{
 		id: 4,
+		title: "Return and refund",
+		icon: <TbTruckReturn />,
+		path: routes.member_return,
+	},
+	{
+		id: 5,
 		title: "History order",
 		icon: <AiOutlineHistory />,
 		path: routes.member_history,

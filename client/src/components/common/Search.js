@@ -4,7 +4,7 @@ import HeadlessTippy from "@tippyjs/react/headless";
 import { useDebounce } from "../hooks";
 import withBaseComponent from "../hocs/withBaseComponent";
 import { apiGetProducts } from "~/apis";
-import { Link, createSearchParams, useSearchParams } from "react-router-dom";
+import { createSearchParams, useSearchParams } from "react-router-dom";
 import { SpinnerAnimation } from "../Animation";
 
 function Search({ location, navigate }) {

@@ -68,6 +68,7 @@ import {
 } from "react-icons/hi2";
 import { TbUserEdit, TbUserX } from "react-icons/tb";
 import { MdOutlineScreenSearchDesktop } from "react-icons/md";
+import { TbTruckReturn } from "react-icons/tb";
 
 const icons = {
 	FaLaptop,
@@ -149,6 +150,8 @@ const icons = {
 	LiaFileInvoiceDollarSolid,
 
 	MdOutlineScreenSearchDesktop,
+
+	TbTruckReturn,
 };
 
 export default icons;

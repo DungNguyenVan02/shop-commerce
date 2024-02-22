@@ -226,7 +226,10 @@ const Checkout = ({ dispatch, navigate }) => {
 							{methodPayment === 1 ? (
 								<Button
 									title="Cash On Delivery"
-									handleClick={handleCreateOrder}
+									handleClick={() => {
+										handleCreateOrder();
+										handleSubmit();
+									}}
 								/>
 							) : (
 								<Link
