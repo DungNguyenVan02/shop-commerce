@@ -33,6 +33,7 @@ router.put(
 	]),
 	productControllers.addVariantsProduct
 );
+router.put("/sold", productControllers.updateSold);
 router.put(
 	"/:pid",
 	uploader.fields([

@@ -156,13 +156,11 @@ class ProductControllers {
 		} else if (typeof req.body?.initImages === "string") {
 			if (files?.images) {
 				const payload = [req.body?.initImages];
-				console.log("prev:", payload);
 
 				const imagesUpdate = files?.images?.map((el) => el.path);
 				for (let i of imagesUpdate) {
 					payload.push(i);
 				}
-				console.log("after: ", payload);
 				req.body.images = payload;
 			} else {
 				req.body.images = req.body?.initImages;
@@ -314,6 +312,28 @@ class ProductControllers {
 			variantsProduct: response
 				? response
 				: "Cannot add variants product",
+		});
+	});
+
+	// [PUT] /update-sold
+	updateSold = asyncHandler(async (req, res) => {
+		const { arrProduct } = req.body;
+		if (!arrProduct) throw new Error("Missing inputs");
+
+		arrProduct.forEach(async (product) => {
+			const productUpdate = await Product.findByIdAndUpdate(
+				product.pid,
+				{
+					$inc: { sold: product.quantity },
+				},
+				{ new: true }
+			);
+			return res.status(200).json({
+				success: product ? true : false,
+				mes: productUpdate
+					? "Update sold successfully"
+					: "Cannot find product in cart",
+			});
 		});
 	});
 }

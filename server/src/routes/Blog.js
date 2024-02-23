@@ -4,21 +4,21 @@ const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
 const uploader = require("../config/cloudinary");
 const router = express.Router();
 
-router.get("/", verifyAccessToken, blogControllers.getAllBlog);
 router.get("/:bid", verifyAccessToken, blogControllers.getBlog);
 
 router.put("/like/:bid", verifyAccessToken, blogControllers.likeBlog);
 router.put("/dislike/:bid", verifyAccessToken, blogControllers.dislikeBlog);
+router.get("/", verifyAccessToken, blogControllers.getAllBlog);
 
 router.use(verifyAccessToken, isAdmin);
 
-router.post("/", blogControllers.createBlog);
-router.put("/:bid", blogControllers.updateBlog);
+router.put("/:bid", uploader.single("image"), blogControllers.updateBlog);
 router.put(
 	"/upload-image/:bid",
 	uploader.single("image"),
 	blogControllers.uploadImageBlog
 );
+router.post("/", uploader.single("image"), blogControllers.createBlog);
 router.delete("/:bid", blogControllers.deleteBlog);
 
 module.exports = router;

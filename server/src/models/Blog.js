@@ -7,14 +7,15 @@ var blogSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+
 		description: {
 			type: String,
 			required: true,
 		},
-		category: {
-			type: String,
-			required: true,
-		},
+		// category: {
+		// 	type: String,
+		// 	required: true,
+		// },
 		views: {
 			type: Number,
 			default: 0,
@@ -43,8 +44,6 @@ var blogSchema = new mongoose.Schema(
 	},
 	{
 		timestamps: true,
-		toJSON: { virtuals: true },
-		toObject: { virtuals: true },
 	}
 );
 

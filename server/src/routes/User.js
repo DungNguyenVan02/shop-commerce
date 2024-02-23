@@ -23,6 +23,12 @@ router.put(
 	userControllers.updateUser
 );
 router.put("/cart", verifyAccessToken, userControllers.updateCart);
+router.put(
+	"/update-quantity/:pid",
+	verifyAccessToken,
+	userControllers.updateQuantityCart
+);
+router.delete("/remove-cart", verifyAccessToken, userControllers.removeCart);
 
 router.put(
 	"/:uid",
@@ -30,6 +36,8 @@ router.put(
 	isAdmin,
 	userControllers.updateUserByAdmin
 );
+
+router.put("/wishlist/:pid", verifyAccessToken, userControllers.wishList);
 
 router.get("/", verifyAccessToken, isAdmin, userControllers.getUsers);
 router.delete("/:uid", verifyAccessToken, isAdmin, userControllers.deleteUser);

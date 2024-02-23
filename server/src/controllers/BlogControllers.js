@@ -4,20 +4,78 @@ const asyncHandler = require("express-async-handler");
 class BlogControllers {
 	// [GET] /
 	getAllBlog = asyncHandler(async (req, res) => {
-		const response = await Blog.find();
-		return res.json({
-			success: response ? true : false,
-			getAllBlog: response ? response : "List blog empty !",
+		const queries = { ...req.query };
+		// Tách trường đặc biệt trên query
+		const excludeFields = ["page", "sort", "limit", "fields"];
+		// format lại các operators cho đúng cú pháp mongoose
+		excludeFields.forEach((field) => delete queries[field]);
+
+		let queryString = JSON.stringify(queries);
+		queryString = queryString.replace(
+			/\b(gte|gt|lte|lt)\b/g,
+			(matchedEl) => {
+				return `$${matchedEl}`;
+			}
+		);
+		const formatQuery = JSON.parse(queryString);
+
+		// Filtering
+		if (queries?.q) {
+			delete formatQuery.q;
+			formatQuery["$or"] = [
+				{ title: { $regex: queries.q, $options: "i" } },
+			];
+		}
+
+		const q = { ...formatQuery };
+
+		let queryCommand = Blog.find(q);
+
+		// Sorting
+		if (req.query.sort) {
+			const sortBy = req.query.sort.split(",").join(" ");
+			queryCommand = queryCommand.sort(sortBy);
+		}
+
+		// Fields limiting
+		if (req.query.fields) {
+			const fields = req.query.fields.split(",").join(" ");
+			queryCommand = queryCommand.select(fields);
+		}
+		// Pagination
+		// limit: số object lấy về trong 1 lần gọi api
+		// skip: số trang muốn bỏ qua
+		const page = +req.query.page || 1;
+		const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+		const skip = (page - 1) * limit;
+		queryCommand.skip(skip).limit(limit);
+
+		// execute query
+		queryCommand.exec(async (err, response) => {
+			if (err) throw new Error(err.message);
+			const counts = await Blog.find(q).countDocuments();
+			return res.status(200).json({
+				success: response ? true : false,
+				counts,
+				blogs: response ? response : "Cannot get blogs",
+			});
 		});
 	});
 
 	// [POST] /
 	createBlog = asyncHandler(async (req, res) => {
-		const { title, description, category } = req.body;
-		if (!title || !description || !category) {
+		const { title, description } = req.body;
+		const image = req?.file.path;
+
+		if (!title || !description) {
 			throw new Error("Missing inputs");
 		}
-		const response = await Blog.create(req.body);
+		const data = {
+			title,
+			description,
+			image,
+		};
+		const response = await Blog.create(data);
 		return res.json({
 			success: response ? true : false,
 			createdBlog: response ? response : "Cannot created new blog",
@@ -27,12 +85,31 @@ class BlogControllers {
 	// [PUT] /:bid
 	updateBlog = asyncHandler(async (req, res) => {
 		const { bid } = req.params;
-		if (Object.keys(bid).length === 0) {
+		const { title, description } = req.body;
+
+		if (!title || !description || !bid) {
 			throw new Error("Missing inputs");
 		}
-		const response = await Blog.findByIdAndUpdate(bid, req.body, {
+		let data;
+		const payload = {
+			title,
+			description,
+		};
+
+		if (req?.file) {
+			const image = req?.file.path;
+			data = {
+				...payload,
+				image,
+			};
+		} else {
+			data = { ...payload };
+		}
+
+		const response = await Blog.findByIdAndUpdate(bid.trim(), data, {
 			new: true,
 		});
+
 		return res.json({
 			success: response ? true : false,
 			updatedBlog: response ? response : "Cannot updated blog",
@@ -45,7 +122,7 @@ class BlogControllers {
 		if (!bid) {
 			throw new Error("Missing input !");
 		}
-		const response = await Blog.findByIdAndDelete(bid);
+		const response = await Blog.findByIdAndDelete(bid.trim());
 		return res.json({
 			success: response ? true : false,
 			deletedBlog: response
@@ -153,17 +230,14 @@ class BlogControllers {
 	// [GET] /:bid
 	getBlog = asyncHandler(async (req, res) => {
 		const { bid } = req.params;
-		const excludedFields = "firstName lastName";
 		const blog = await Blog.findByIdAndUpdate(
 			bid,
 			{ $inc: { views: 1 } },
 			{ new: true }
-		)
-			.populate("likes", excludedFields)
-			.populate("dislikes", excludedFields);
+		);
 		return res.status(200).json({
 			success: blog ? true : false,
-			res: blog ? blog : "something went wrong !!",
+			blog: blog ? blog : "something went wrong !!",
 		});
 	});
 
