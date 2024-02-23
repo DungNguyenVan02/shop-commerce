@@ -47,14 +47,11 @@ const Checkout = ({ dispatch, navigate }) => {
 	const handleSubmit = async () => {
 		if (address.length >= 10) {
 			const response = await apiUpdateAddress({ address });
-			if (response.success) {
-				console.log(response);
-			} else {
+			if (!response.success) {
 				toast.error("Address update failed! please try again");
 			}
 		}
 	};
-
 	const handleCreateOrder = async () => {
 		const payload = {
 			products: productCheckout,

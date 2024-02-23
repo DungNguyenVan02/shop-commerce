@@ -16,6 +16,7 @@ const {
 	LiaFileInvoiceDollarSolid,
 	TbTruckReturn,
 	GoChecklist,
+	TfiWrite,
 } = icons;
 export const extraInfo = [
 	{
@@ -250,6 +251,23 @@ export const adminSlideBar = [
 				id: 2,
 				title: "Canceled",
 				path: routes.admin_manage_canceled,
+			},
+		],
+	},
+	{
+		id: 4,
+		title: "Manage blog",
+		icon: <TfiWrite size={16} />,
+		children: [
+			{
+				id: 0,
+				title: "Write blog",
+				path: routes.admin_create_blog,
+			},
+			{
+				id: 1,
+				title: "Manage blogs",
+				path: routes.admin_manage_blogs,
 			},
 		],
 	},

@@ -137,3 +137,10 @@ export const schemasValidChangeProfile = yup.object().shape({
 		.matches(emailRegex, "Invalid email address")
 		.required("Required field"),
 });
+
+export const schemasValidBlog = yup.object().shape({
+	title: yup
+		.string()
+		.min(2, "Please enter title blog")
+		.required("Required field"),
+});

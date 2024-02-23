@@ -6,12 +6,13 @@ function ChooseImages({
 	onUpload,
 	multiple,
 	selected,
+	title = "product",
 }) {
 	const { FaUpload } = icons;
 	return (
 		<div className="cursor-pointer">
 			<h3 className="text-[16px] font-medium ml-2">
-				{`Choose ${id} product`}
+				{`Choose ${id} ${title}`}
 			</h3>
 			<div className="p-1 bg-white rounded-md border cursor-pointer">
 				<label

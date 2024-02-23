@@ -20,6 +20,8 @@ import CheckoutOnline from "~/pages/public/CheckoutOnline";
 import Order from "~/pages/public/Order";
 import Wishlist from "~/pages/public/Wishlist";
 import Return from "~/pages/public/Return";
+import { CreateBlog, ManageBlogs } from "~/pages/admin/ManageBlogs";
+import DetailBlog from "~/pages/public/DetailBlog";
 
 const publicRoutes = [
 	{
@@ -40,10 +42,13 @@ const publicRoutes = [
 		component: Register,
 		headerNone: true,
 	},
-
 	{
 		path: routes.blogs,
 		component: Blogs,
+	},
+	{
+		path: routes.blogs_detail_bid,
+		component: DetailBlog,
 	},
 	{
 		path: routes.services,
@@ -86,6 +91,16 @@ const publicRoutes = [
 	{
 		path: routes.admin_manage_orders,
 		component: ListOrder,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.admin_manage_blogs,
+		component: ManageBlogs,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.admin_create_blog,
+		component: CreateBlog,
 		isAdminRoutes: true,
 	},
 	{

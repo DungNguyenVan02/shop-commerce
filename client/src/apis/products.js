@@ -46,6 +46,14 @@ export const apiUpdateProduct = (data, pid) => {
 	});
 };
 
+export const apiUpdateSold = (data) => {
+	return axios({
+		url: "/product/sold",
+		method: "PUT",
+		data,
+	});
+};
+
 export const apiVariantsProduct = (data, pid) => {
 	return axios({
 		url: "/product/variants/" + pid,

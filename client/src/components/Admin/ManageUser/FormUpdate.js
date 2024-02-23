@@ -1,14 +1,12 @@
 import { apiUpdateUserByAdmin } from "~/apis";
 import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
 import { showModal } from "~/redux/appSlice";
 import { Form, Formik } from "formik";
 import { CustomInput, CustomSelect } from "~/components/common";
 import { schemasValidUpdateUser } from "~/utils/schemasValid";
+import withBaseComponent from "~/components/hocs/withBaseComponent";
 
-function FormUpdate({ useEdit }) {
-	const dispatch = useDispatch();
-
+function FormUpdate({ useEdit, dispatch }) {
 	const onSubmit = async (data) => {
 		const transformData = {
 			...data,
@@ -19,14 +17,9 @@ function FormUpdate({ useEdit }) {
 			transformData,
 			useEdit?._id
 		);
+		dispatch(showModal({ isShowModal: false }));
 		if (response.success) {
-			Swal.fire(
-				"Notifications",
-				"Update user successfully",
-				"success"
-			).then(() => {
-				dispatch(showModal({ isShowModal: false }));
-			});
+			Swal.fire("Notifications", "Update user successfully", "success");
 		} else {
 			Swal.fire(
 				"Notifications",
@@ -126,4 +119,4 @@ function FormUpdate({ useEdit }) {
 	);
 }
 
-export default FormUpdate;
+export default withBaseComponent(FormUpdate);

@@ -69,6 +69,7 @@ import {
 import { TbUserEdit, TbUserX } from "react-icons/tb";
 import { MdOutlineScreenSearchDesktop } from "react-icons/md";
 import { TbTruckReturn } from "react-icons/tb";
+import { TfiWrite } from "react-icons/tfi";
 
 const icons = {
 	FaLaptop,
@@ -152,6 +153,7 @@ const icons = {
 	MdOutlineScreenSearchDesktop,
 
 	TbTruckReturn,
+	TfiWrite,
 };
 
 export default icons;

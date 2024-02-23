@@ -1,33 +1,33 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { apiDeleteOrder, apiGetOrderByAdmin } from "~/apis";
+import { apiDeleteBlog, apiGetBlogs } from "~/apis";
 import icons from "~/utils/icons";
 import Pagination from "~/components/Pagination";
 import { createSearchParams, useSearchParams } from "react-router-dom";
 import { useDebounce } from "~/components/hooks";
 import withBaseComponent from "~/components/hocs/withBaseComponent";
-import { UpdateOrder } from "~/components/Admin/ManageOrder";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import UpdateBlog from "~/layouts/components/admin/Blog";
 
-function ListOrder({ location, navigate }) {
+function ManageBlogs({ location, navigate }) {
 	const [searchQueries] = useSearchParams();
 	const { CiSearch, IoTrashBinOutline, FaRegEdit } = icons;
 	const [searchText, setSearchText] = useState({ q: "" });
-	const [orders, setOrders] = useState({});
+	const [blogs, setBlogs] = useState([]);
 	const [isRerender, setIsRerender] = useState(false);
-	const [updateOrder, setUpdateOrder] = useState({
+	const [updateBlog, setUpdateBlog] = useState({
 		isUpdate: false,
 		data: [],
 	});
 
-	const fetchGetOrders = async (params) => {
-		const response = await apiGetOrderByAdmin({
+	const fetchGetBlogs = async (params) => {
+		const response = await apiGetBlogs({
 			...params,
 			limit: process.env.REACT_APP_LIMIT,
 		});
 		if (response.success) {
-			setOrders(response);
+			setBlogs(response);
 		}
 	};
 
@@ -55,14 +55,14 @@ function ListOrder({ location, navigate }) {
 			});
 		}
 
-		fetchGetOrders(queries);
+		fetchGetBlogs(queries);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debouncedValue, searchQueries, isRerender]);
+	}, [debouncedValue, searchQueries, isRerender, updateBlog]);
 
-	const handleRemoveOrder = (oid) => {
+	const handleDeleteBlog = (bid) => {
 		Swal.fire({
 			title: "Are you sure?",
-			text: "Remove products from this list!",
+			text: "Delete blog from this list!",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
@@ -72,10 +72,10 @@ function ListOrder({ location, navigate }) {
 			if (result.isConfirmed) {
 				Swal.fire({
 					title: "Deleted!",
-					text: "Product has been deleted.",
+					text: "Blog has been deleted.",
 					icon: "success",
 				}).then(async () => {
-					const response = await apiDeleteOrder(oid);
+					const response = await apiDeleteBlog(bid);
 					if (response.success) {
 						setIsRerender(!isRerender);
 					} else {
@@ -89,28 +89,27 @@ function ListOrder({ location, navigate }) {
 	return (
 		<div
 			className="w-full"
-			onClick={() => setUpdateOrder({ isUpdate: false, data: [] })}
+			onClick={() => setUpdateBlog({ isUpdate: false, data: [] })}
 		>
-			{updateOrder.isUpdate && (
-				<div className="fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center bg-overlay z-[99999999]">
-					<UpdateOrder
-						dataUpdate={updateOrder.data}
-						onHide={setUpdateOrder}
-						onRerender={setIsRerender}
+			{updateBlog.isUpdate && (
+				<div className="absolute top-0 right-0 bottom-0 left-0 z-40 flex flex-col">
+					<UpdateBlog
+						dataUpdate={updateBlog?.data}
+						onHandleHide={setUpdateBlog}
 					/>
 				</div>
 			)}
 			<div className="flex items-center h-[40px] bg-gray-600 text-white px-3">
-				Manage order
+				Manage blog
 			</div>
 			<div className="px-3 bg-gray-100 min-h-screen">
 				<div className="flex h-[60px] items-center py-3 gap-5">
-					<div className="h-full flex items-center border rounded-md ">
+					<div className="h-full flex items-center bblog rounded-md ">
 						<input
 							type="text"
 							value={searchQueries.q}
 							onChange={handleSearchText}
-							placeholder="Enter search order by code"
+							placeholder="Enter search by title blog"
 							className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
 						/>
 						<CiSearch
@@ -127,24 +126,17 @@ function ListOrder({ location, navigate }) {
 									#
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Code
+									Title
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Quantity
+									Like
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Total price
-								</th>
-
-								<th scope="col" className="px-6 py-3">
-									Purchaser
+									Dislike
 								</th>
 
 								<th scope="col" className="px-6 py-3">
-									Phone number
-								</th>
-								<th scope="col" className="px-6 py-3">
-									Status
+									Viewer
 								</th>
 								<th scope="col" className="px-6 py-3">
 									createdAt
@@ -155,11 +147,11 @@ function ListOrder({ location, navigate }) {
 							</tr>
 						</thead>
 						<tbody>
-							{orders?.orders?.map((order, index) => {
+							{blogs?.blogs?.map((blog, index) => {
 								return (
 									<tr
-										key={order._id}
-										className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+										key={blog._id}
+										className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 bblog-b dark:bblog-gray-700"
 									>
 										<td className="px-6 py-3">
 											{((+searchQueries.get("page") ||
@@ -170,39 +162,33 @@ function ListOrder({ location, navigate }) {
 												1}
 										</td>
 										<td className="px-6 py-3">
-											{order?.code}
+											{blog?.title}
 										</td>
 										<td className="px-6 py-3">
-											{order?.products.length}
+											{blog?.like?.length || 0}
 										</td>
 										<td className="px-6 py-3">
-											{order?.total}
-										</td>
-
-										<td className="px-6 py-3">
-											{`${order?.orderBy?.firstName} ${order?.orderBy?.lastName}`}
+											{blog?.dislike?.length || 0}
 										</td>
 
 										<td className="px-6 py-3">
-											{order?.orderBy?.phone}
+											{blog?.views}
 										</td>
+
 										<td className="px-6 py-3">
-											{order?.status}
-										</td>
-										<td className="px-6 py-3">
-											{moment(order?.createdAt).format(
+											{moment(blog?.createdAt).format(
 												"DD-MM-YYYY"
 											)}
 										</td>
 										<td className="px-6 py-3">
-											<div className="flex items-center justify-center gap-3">
+											<div className="flex items-center  gap-3">
 												<span
 													className="cursor-pointer opacity-75 hover:opacity-100"
 													onClick={(e) => {
 														e.stopPropagation();
-														setUpdateOrder({
+														setUpdateBlog({
 															isUpdate: true,
-															data: order,
+															data: blog,
 														});
 													}}
 												>
@@ -214,8 +200,8 @@ function ListOrder({ location, navigate }) {
 												<span
 													className="cursor-pointer opacity-75 hover:opacity-100"
 													onClick={() =>
-														handleRemoveOrder(
-															order._id
+														handleDeleteBlog(
+															blog._id
 														)
 													}
 												>
@@ -233,11 +219,11 @@ function ListOrder({ location, navigate }) {
 					</table>
 				</div>
 				<div className="mt-4 flex justify-end">
-					<Pagination totalCount={orders.counts} />
+					<Pagination totalCount={blogs.counts} />
 				</div>
 			</div>
 		</div>
 	);
 }
 
-export default withBaseComponent(ListOrder);
+export default withBaseComponent(ManageBlogs);

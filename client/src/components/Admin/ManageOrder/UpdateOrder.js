@@ -69,8 +69,12 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 					<span>{dataUpdate?.address}</span>
 				</div>
 				<div className="border p-3 rounded shadow-md">
-					<span className="font-semibold">Quantity: </span>
-					<span>{dataUpdate?.products.length}</span>
+					<span className="font-semibold">Quantity product: </span>
+					<span>
+						{dataUpdate?.products.reduce((sum, pro) => {
+							return sum + pro.quantity;
+						}, 0)}
+					</span>
 				</div>
 				<div className="border p-3 rounded shadow-md">
 					<span className="font-semibold">Total: </span>
@@ -93,9 +97,19 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 										}
 										alt=""
 									/>
-									<div className="text-[#333]">
-										<h3>{item?.product?.name}</h3>
-										<h5>{formatMoney(item.price)}</h5>
+									<div className="text-[#333] text-[14px]">
+										<h3>
+											<strong>Name:</strong>{" "}
+											{item?.product?.name}
+										</h3>
+										<h5>
+											<strong>Price:</strong>{" "}
+											{formatMoney(item?.price)}
+										</h5>
+										<h5>
+											<strong>Quantity:</strong>{" "}
+											{item?.quantity}
+										</h5>
 									</div>
 								</div>
 							);

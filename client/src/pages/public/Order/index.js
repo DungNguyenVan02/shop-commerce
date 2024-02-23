@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { apiGetOrder, apiUpdateStatusOrder } from "~/apis";
+import { apiGetOrder, apiUpdateSold, apiUpdateStatusOrder } from "~/apis";
 
 const Order = () => {
 	const [orders, setOrders] = useState([]);
@@ -72,7 +72,7 @@ const Order = () => {
 		});
 	};
 
-	const handleReceivedOrder = (oid) => {
+	const handleReceivedOrder = (order) => {
 		Swal.fire({
 			title: "Are you sure?",
 			text: "I have received the goods",
@@ -85,9 +85,16 @@ const Order = () => {
 			if (result.isConfirmed) {
 				const response = await apiUpdateStatusOrder(
 					{ status: "Success" },
-					oid
+					order._id
 				);
 				if (response.success) {
+					const data = {
+						arrProduct: order?.products?.map((od) => ({
+							quantity: od.quantity,
+							pid: od?.product?._id,
+						})),
+					};
+					await apiUpdateSold(data);
 					setIsRerender(!isRerender);
 				} else {
 					toast.warning(response.message);
@@ -193,9 +200,7 @@ const Order = () => {
 											<span
 												className="cursor-pointer hover:underline text-main"
 												onClick={() =>
-													handleReceivedOrder(
-														order._id
-													)
+													handleReceivedOrder(order)
 												}
 											>
 												Received

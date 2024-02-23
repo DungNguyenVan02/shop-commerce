@@ -17,6 +17,9 @@ module.exports = {
 				main: "#ee3131",
 				star: "#f1b400",
 			},
+			boxShadow: {
+				custom: "0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15)",
+			},
 
 			keyframes: {
 				slideTop: {

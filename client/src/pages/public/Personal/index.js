@@ -49,7 +49,6 @@ function Personal({ dispatch }) {
 	};
 	const handleSaveChanges = async (data) => {
 		if (checkDirty(data) || fileAvatar !== "") {
-			console.log(data);
 			const formData = new FormData();
 			for (let i of Object.entries(data)) {
 				formData.append(i[0], i[1]);

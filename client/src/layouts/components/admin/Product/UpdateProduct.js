@@ -148,8 +148,6 @@ const UpdateProduct = ({ dataUpdate, onHandleHide }) => {
 
 	const handleRemoveFile = (file) => {
 		if (files.images.length > 0 && !file.startsWith("https")) {
-			console.log("remove file have path");
-
 			const getNameByFile = previewCreate.find(
 				(item) => item.path === file
 			);
@@ -169,7 +167,6 @@ const UpdateProduct = ({ dataUpdate, onHandleHide }) => {
 
 			URL.revokeObjectURL(file);
 		} else {
-			console.log("remove file not path");
 			const finalImages = imagesInit.filter((item) => item !== file);
 			setImagesInit(finalImages);
 		}
@@ -223,8 +220,6 @@ const UpdateProduct = ({ dataUpdate, onHandleHide }) => {
 				: descriptionProduct,
 			thumb: files.thumb !== "" ? files.thumb : preview.thumb,
 		};
-
-		console.log(mergeObjects);
 
 		const formData = new FormData();
 		for (let i of Object.entries(mergeObjects)) {
