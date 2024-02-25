@@ -1,7 +1,7 @@
 import routes from "../config/routes";
 import Blogs from "../pages/public/Blogs";
 import DetailProduct from "../pages/public/DetailProduct";
-import FAQs from "../pages/public/FAQs";
+// import FAQs from "../pages/public/FAQs";
 import Home from "../pages/public/Home";
 import Login from "../pages/public/Login";
 import OurService from "../pages/public/OurService";
@@ -54,10 +54,10 @@ const publicRoutes = [
 		path: routes.services,
 		component: OurService,
 	},
-	{
-		path: routes.FAQs,
-		component: FAQs,
-	},
+	// {
+	// 	path: routes.FAQs,
+	// 	component: FAQs,
+	// },
 	{
 		path: routes.cart,
 		component: Cart,

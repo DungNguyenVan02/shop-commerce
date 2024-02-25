@@ -8,7 +8,12 @@ import { formatMoney } from "~/utils/helper";
 import { Button, Congratulations } from "~/components/common";
 import { Link } from "react-router-dom";
 import routes from "~/config/routes";
-import { apiCreateOrder, apiRemoveCart, apiUpdateAddress } from "~/apis";
+import {
+	apiCreateOrder,
+	apiGetProduct,
+	apiRemoveCart,
+	apiUpdateAddress,
+} from "~/apis";
 import { toast } from "react-toastify";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { checkouts as checkoutsSlice } from "~/redux/userSlice";
@@ -23,23 +28,44 @@ const Checkout = ({ dispatch, navigate }) => {
 
 	const { GiPositionMarker } = icons;
 
+	const fetchProduct = async () => {
+		const response = await apiGetProduct(checkouts[0]?.pid);
+		if (response.success) {
+			setProductCheckout([
+				{
+					...response.getProduct,
+					quantity: checkouts[0]?.quantity || 1,
+				},
+			]);
+		}
+	};
+
 	useEffect(() => {
 		if (checkouts.length > 0) {
 			const products = [];
-			currentUser?.cart.forEach((item) => {
-				checkouts.forEach((el) => {
-					if (
-						el.color === item.color &&
-						el.pid === item.product._id
-					) {
-						products.push(item);
-					}
+			if (!checkouts[0].cid) {
+				fetchProduct();
+				console.log(123);
+			} else {
+				console.log(321);
+
+				currentUser?.cart.forEach((item) => {
+					checkouts.forEach((el) => {
+						if (
+							el.color === item.color &&
+							el.pid === item.product._id
+						) {
+							products.push(item);
+						}
+					});
 				});
-			});
-			setProductCheckout(products);
+				setProductCheckout(products);
+			}
 		} else {
 			setProductCheckout([]);
 		}
+
+		window.scrollTo(0, 0);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [checkouts]);
@@ -153,7 +179,7 @@ const Checkout = ({ dispatch, navigate }) => {
 								Total Price
 							</div>
 						</div>
-						{productCheckout.map((pro, index) => (
+						{productCheckout?.map((pro, index) => (
 							<div
 								key={index}
 								className="row no-gutters bg-white text-[#888] text-[14px] items-center p-3 mt-2 border-b shadow-sm border"
@@ -165,13 +191,15 @@ const Checkout = ({ dispatch, navigate }) => {
 												className="w-[80px] h-[80x] object-cover"
 												src={
 													pro?.thumbnail ||
+													pro?.thumb ||
 													images.defaultProduct
 												}
 												alt=""
 											/>
 											<div className="flex flex-col justify-center">
 												<span className="text-[#000D] line-clamp-2">
-													{pro?.product?.name}
+													{pro?.product?.name ||
+														pro?.name}
 												</span>
 												<span>Color: {pro?.color}</span>
 											</div>

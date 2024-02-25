@@ -7,7 +7,7 @@ import images from "~/assets/images";
 import { formatMoney } from "~/utils/helper";
 import { Congratulations, Paypal } from "~/components/common";
 import { getCurrentUser } from "~/redux/asyncActions";
-import { apiRemoveCart } from "~/apis";
+import { apiGetProduct, apiRemoveCart } from "~/apis";
 import { checkouts as checkoutsSlice } from "~/redux/userSlice";
 
 const CheckoutOnline = ({ dispatch }) => {
@@ -18,16 +18,36 @@ const CheckoutOnline = ({ dispatch }) => {
 
 	const { GiPositionMarker } = icons;
 
+	const fetchProduct = async () => {
+		const response = await apiGetProduct(checkouts[0]?.pid);
+
+		if (response.success) {
+			setProductCheckout([
+				{
+					...response.getProduct,
+					quantity: checkouts[0]?.quantity || 1,
+				},
+			]);
+		}
+	};
+
 	useEffect(() => {
 		dispatch(getCurrentUser());
 		const products = [];
-		currentUser?.cart.forEach((item) => {
-			checkouts.forEach((el) => {
-				if (el.color === item.color && el.pid === item.product._id) {
-					products.push(item);
-				}
+		if (!checkouts.cid) {
+			fetchProduct();
+		} else {
+			currentUser?.cart.forEach((item) => {
+				checkouts.forEach((el) => {
+					if (
+						el.color === item.color &&
+						el.pid === item.product._id
+					) {
+						products.push(item);
+					}
+				});
 			});
-		});
+		}
 		setProductCheckout(products);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,6 +118,7 @@ const CheckoutOnline = ({ dispatch }) => {
 											className="w-[80px] h-[80x] object-cover"
 											src={
 												pro?.thumbnail ||
+												pro?.thumb ||
 												images.defaultProduct
 											}
 											alt=""

@@ -14,7 +14,7 @@ const BlogItem = ({ data }) => {
 					<div className="col g-l-5 g-c-5 g-m-12">
 						<div className="w-full rounded-xl overflow-hidden">
 							<img
-								className="w-full object-cover hover:scale-110 transition "
+								className="w-full object-cover "
 								src={data?.image}
 								alt=""
 							/>
@@ -23,7 +23,7 @@ const BlogItem = ({ data }) => {
 					<div className="col g-l-7 g-c-5 g-m-12">
 						<div className="flex h-full flex-col gap-5">
 							<div>
-								<h3 className="text-[18px] text-[#1c1d1d] font-semibold">
+								<h3 className="text-[18px] text-[#1c1d1d] font-semibold line-clamp-2">
 									{data?.title}
 								</h3>
 								<p className="text-[13px] text-[#999] flex items-center gap-2">

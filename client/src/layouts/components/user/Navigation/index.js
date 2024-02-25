@@ -23,11 +23,11 @@ function Navigation() {
 			name: "OUR SERVICES",
 			path: routes.services,
 		},
-		{
-			id: 5,
-			name: "FAQs",
-			path: routes.FAQs,
-		},
+		// {
+		// 	id: 5,
+		// 	name: "FAQs",
+		// 	path: routes.FAQs,
+		// },
 	];
 
 	const { IoMdArrowDropdown } = icons;

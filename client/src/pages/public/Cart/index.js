@@ -120,7 +120,7 @@ const Cart = ({ dispatch }) => {
 	};
 
 	return (
-		<div className="bg-[#f5f5f5]">
+		<div className="bg-[#f5f5f5] w-full">
 			<div className="max-w-main w-full mx-auto py-[20px]">
 				<div className="grid wide">
 					<div className="row bg-white text-[#888] h-[55px] text-[14px] items-center  px-3 mb-[20px] shadow-sm">

@@ -1,4 +1,4 @@
-import { createSearchParams, useNavigate, useParams } from "react-router-dom";
+import { createSearchParams, useParams } from "react-router-dom";
 import {
 	apiAddCart,
 	apiGetProduct,
@@ -26,9 +26,9 @@ import Swal from "sweetalert2";
 import routes from "~/config/routes";
 import withBaseComponent from "~/components/hocs/withBaseComponent";
 import { getCurrentUser } from "~/redux/asyncActions";
+import { checkouts } from "~/redux/userSlice";
 
-function DetailProduct({ dispatch, location }) {
-	const navigate = useNavigate();
+function DetailProduct({ navigate, dispatch, location }) {
 	const { currentUser } = useSelector(userSelector);
 	const { pid, category, name } = useParams();
 	const { isShowModal } = useSelector(appSelector);
@@ -195,6 +195,19 @@ function DetailProduct({ dispatch, location }) {
 		}
 	});
 
+	const handleBuyNow = () => {
+		dispatch(
+			checkouts([
+				{
+					pid,
+					color: selectVariants.color || "Unknown",
+					quantity,
+				},
+			])
+		);
+		navigate(routes.checkout);
+	};
+
 	return (
 		<div className="w-full">
 			{isShowModal && (
@@ -305,6 +318,7 @@ function DetailProduct({ dispatch, location }) {
 									styleCustom="rounded-sm bg-red-300 border border-red-600 text-white hover:opacity-80 px-4 py3"
 								/>
 								<Button
+									handleClick={handleBuyNow}
 									title="BUY NOW"
 									styleCustom="rounded-sm bg-main text-white hover:opacity-80 px-4 py-3"
 								/>

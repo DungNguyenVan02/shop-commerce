@@ -1,5 +1,6 @@
 import routes from "~/config/routes";
 import icons from "./icons";
+import images from "~/assets/images";
 const {
 	IoShieldCheckmark,
 	FaShippingFast,
@@ -310,5 +311,24 @@ export const memberSlideBar = [
 		title: "History order",
 		icon: <AiOutlineHistory />,
 		path: routes.member_history,
+	},
+];
+
+export const slider = [
+	{
+		id: 1,
+		src: images.slide1,
+	},
+	{
+		id: 2,
+		src: images.slide2,
+	},
+	{
+		id: 3,
+		src: images.slide3,
+	},
+	{
+		id: 4,
+		src: images.slide4,
 	},
 ];

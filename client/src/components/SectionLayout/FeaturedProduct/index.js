@@ -27,7 +27,7 @@ function FeaturedProduct() {
 			<div className="grid wide">
 				<div className="row">
 					{products?.map((item) => {
-						return <CardProduct key={item._id} data={item} />;
+						return <CardProduct key={item?._id} data={item} />;
 					})}
 				</div>
 			</div>

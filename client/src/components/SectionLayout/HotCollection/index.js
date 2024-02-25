@@ -3,8 +3,10 @@ import { appSelector } from "~/redux/selector";
 import { useEffect, useState } from "react";
 import images from "~/assets/images";
 import icons from "~/utils/icons";
+import withBaseComponent from "~/components/hocs/withBaseComponent";
+import { createSearchParams } from "react-router-dom";
 
-function HotCollection() {
+function HotCollection({ navigate }) {
 	const [hotCollection, setHotCollection] = useState([]);
 	const { categories } = useSelector(appSelector);
 	const { IoIosArrowForward } = icons;
@@ -37,7 +39,7 @@ function HotCollection() {
 						return (
 							<div
 								key={item._id}
-								className="col g-l-4 g-m-6 g-c-16"
+								className="col g-l-3 g-m-6 g-c-16"
 							>
 								<div className="flex items-center border mt-4 p-5">
 									<img
@@ -45,14 +47,24 @@ function HotCollection() {
 											item?.image || images.defaultProduct
 										}
 										alt={item?.name}
-										className="col g-l-6 w-[144px] h-[129px] object-contain"
+										className="col g-l-5 w-[120px] h-[110px] object-contain"
 									/>
-									<ul className="col g-l-6">
+									<ul className="col g-l-7">
 										<h3 className="font-semibold uppercase">
 											{item?.name}
 										</h3>
 										{item?.brand?.map((brand, index) => (
-											<li key={index}>
+											<li
+												key={index}
+												onClick={() => {
+													navigate({
+														pathname: `/${item?.name.toLowerCase()}`,
+														search: createSearchParams(
+															{ brand: brand }
+														).toString(),
+													});
+												}}
+											>
 												<span className="flex items-center mb-1 cursor-pointer text-gray-500 text-[14px] hover:text-main">
 													<IoIosArrowForward />
 													{brand}
@@ -70,4 +82,4 @@ function HotCollection() {
 	);
 }
 
-export default HotCollection;
+export default withBaseComponent(HotCollection);

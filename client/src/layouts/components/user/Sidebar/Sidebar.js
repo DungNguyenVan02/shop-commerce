@@ -47,8 +47,8 @@ function Sidebar() {
 							key={category._id}
 							className={({ isActive }) =>
 								isActive
-									? "flex items-center text-4 py-[16px] px-[20px] text-main hover:bg-slate-100 gap-3"
-									: "flex items-center text-4 py-[16px] px-[20px] hover:text-main hover:bg-slate-100 gap-3"
+									? "flex items-center text-4 py-[12px] px-[20px] text-main hover:bg-slate-100 gap-3"
+									: "flex items-center text-4 py-[12px] px-[20px] hover:text-main hover:bg-slate-100 gap-3"
 							}
 						>
 							<Icon />

@@ -81,6 +81,10 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 					<span>{`${dataUpdate?.total} $`}</span>
 				</div>
 				<div className="border p-3 rounded shadow-md">
+					<span className="font-semibold">Payment methods: </span>
+					<span>{dataUpdate?.method}</span>
+				</div>
+				<div className="border p-3 rounded shadow-md">
 					<span className="font-semibold">Products order</span>
 					<span>
 						{dataUpdate?.products.map((item) => {

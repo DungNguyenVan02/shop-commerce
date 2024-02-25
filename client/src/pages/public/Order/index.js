@@ -134,18 +134,18 @@ const Order = () => {
 					{orders?.map((order, i) => {
 						return (
 							<tr
-								key={order._id}
+								key={order?._id}
 								className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
 							>
 								<td className="px-6 py-3">{i + 1}</td>
 								<td className="px-6 py-3">
-									{order.products.map((item, i) => (
+									{order?.products.map((item, i) => (
 										<div
 											className="flex gap-7 items-center"
 											key={i}
 										>
 											<img
-												src={item.thumbnail}
+												src={item?.thumbnail}
 												alt=""
 												className="w-[100px] object-cover mb-2"
 											/>
@@ -155,47 +155,47 @@ const Order = () => {
 														Name:{" "}
 													</span>
 													<span className="line-clamp-2">
-														{item.product.name}
+														{item?.product?.name}
 													</span>
 												</div>
 												<div className="text-[14px]">
 													<span className=" text-[#333] font-semibold">
 														Color:{" "}
 													</span>
-													<span>{item.color}</span>
+													<span>{item?.color}</span>
 												</div>
 												<div className="text-[14px]">
 													<span className=" text-[#333] font-semibold">
 														Quantity:{" "}
 													</span>
-													{item.quantity}
+													{item?.quantity}
 												</div>
 											</div>
 										</div>
 									))}
 								</td>
 
-								<td className="px-4 py-3">{order.total} $</td>
+								<td className="px-4 py-3">{order?.total} $</td>
 
 								<td className="px-4 py-3 text-center">
-									{order.status}
+									{order?.status}
 								</td>
 								<td className="px-4 py-3 text-center">
-									{moment(order.updatedAt).format(
+									{moment(order?.updatedAt).format(
 										"DD-MM-YYYY"
 									)}
 								</td>
 								<td className="px-4 py-3 text-center">
-									{order.status === "Processing" ? (
+									{order?.status === "Processing" ? (
 										<span
 											className="cursor-pointer hover:underline text-main"
 											onClick={() =>
-												handleCanceledOrder(order._id)
+												handleCanceledOrder(order?._id)
 											}
 										>
 											Cancel
 										</span>
-									) : order.status === "Transported" ? (
+									) : order?.status === "Transported" ? (
 										<div className="flex gap-2 justify-center items-center">
 											<span
 												className="cursor-pointer hover:underline text-main"
@@ -208,7 +208,9 @@ const Order = () => {
 											<span
 												className="cursor-pointer hover:underline text-main"
 												onClick={() =>
-													handleReturnOrder(order._id)
+													handleReturnOrder(
+														order?._id
+													)
 												}
 											>
 												Return

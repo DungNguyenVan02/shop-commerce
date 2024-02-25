@@ -72,9 +72,7 @@ function Header() {
 											My account
 										</li>
 									</Link>
-									<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
-										My purchase
-									</li>
+
 									<li
 										onClick={handleLogout}
 										className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400"

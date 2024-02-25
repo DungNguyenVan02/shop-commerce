@@ -1,6 +1,5 @@
-import { memo, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { memo, useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import VoteBar from "./VoteBar";
 import { renderStar } from "../../utils/helper";
 import Swal from "sweetalert2";
@@ -10,12 +9,37 @@ import { showModal } from "~/redux/appSlice";
 import { appSelector } from "~/redux/selector";
 import { userSelector } from "~/redux/selector";
 import routes from "~/config/routes";
+import { apiGetHistoryOrder } from "~/apis";
+import withBaseComponent from "../hocs/withBaseComponent";
 
-function Ratings({ data }) {
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
+function Ratings({ data, dispatch, navigate }) {
 	const { isLogin } = useSelector(userSelector);
 	const { isShowModal } = useSelector(appSelector);
+	const [historyOrders, setHistoryOrders] = useState([]);
+	const [isSold, setIsSold] = useState(false);
+
+	const fetchOrder = async () => {
+		const response = await apiGetHistoryOrder();
+		if (response.success) {
+			setHistoryOrders(response.listOrder);
+		}
+	};
+
+	useEffect(() => {
+		fetchOrder();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data]);
+
+	useEffect(() => {
+		historyOrders.forEach((order) => {
+			const result = order?.products?.some(
+				(item) => item?.product?._id === data?._id
+			);
+			if (result) setIsSold(result);
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [historyOrders]);
 
 	const handleReview = useCallback(() => {
 		if (isLogin) {
@@ -83,9 +107,14 @@ function Ratings({ data }) {
 									How do you rate this product?
 								</h3>
 								<Button
+									isDisabled={!isSold}
 									title="Reviews"
 									handleClick={handleReview}
-									styleCustom="px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-[200px] hover:opacity-90 "
+									styleCustom={`px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-[200px]  ${
+										isSold
+											? "hover:opacity-90"
+											: "opacity-40"
+									}`}
 								/>
 							</div>
 						</div>
@@ -105,4 +134,4 @@ function Ratings({ data }) {
 	);
 }
 
-export default memo(Ratings);
+export default withBaseComponent(memo(Ratings));

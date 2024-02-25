@@ -70,18 +70,6 @@ function BestSeller() {
 					defaultViewShow={3}
 				/>
 			</div>
-			<div className="mt-4 flex gap-4">
-				<img
-					className="flex-1 object-cover cursor-pointer"
-					src="https://digital-world-2.myshopify.com/cdn/shop/files/banner2-home2_2000x_crop_center.png?v=1613166657"
-					alt="seller"
-				/>
-				<img
-					className="flex-1 object-cover cursor-pointer"
-					src="https://digital-world-2.myshopify.com/cdn/shop/files/banner1-home2_2000x_crop_center.png?v=1613166657"
-					alt="seller"
-				/>
-			</div>
 		</div>
 	);
 }
