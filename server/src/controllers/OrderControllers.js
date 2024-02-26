@@ -211,6 +211,21 @@ class OrderControllers {
 	});
 
 	// [GET] /
+	getAllOrders = asyncHandler(async (req, res) => {
+		const response = await Order.find().populate({
+			path: "products",
+			populate: {
+				path: "product",
+				select: "name",
+			},
+		});
+		return res.status(200).json({
+			success: response ? true : false,
+			listOrder: response ? response : "Entity cart order",
+		});
+	});
+
+	// [GET] /
 	getOrderReturn = asyncHandler(async (req, res) => {
 		const queries = { ...req.query };
 		// Tách trường đặc biệt trên query

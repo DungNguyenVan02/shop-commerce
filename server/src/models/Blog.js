@@ -12,10 +12,6 @@ var blogSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		// category: {
-		// 	type: String,
-		// 	required: true,
-		// },
 		views: {
 			type: Number,
 			default: 0,

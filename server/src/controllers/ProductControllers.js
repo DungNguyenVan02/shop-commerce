@@ -82,6 +82,10 @@ class ProductControllers {
 			];
 		}
 
+		if (queries?.brand) {
+			formatQuery.brand = { $regex: queries.brand, $options: "i" };
+		}
+
 		if (queries?.color) {
 			delete formatQuery.color;
 			const colorArr = queries.color?.split(",");

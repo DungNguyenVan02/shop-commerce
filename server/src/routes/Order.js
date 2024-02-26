@@ -20,6 +20,12 @@ router.get(
 
 router.get("/admin", verifyAccessToken, isAdmin, orderControllers.getOrders);
 router.get(
+	"/admin/all-orders",
+	verifyAccessToken,
+	isAdmin,
+	orderControllers.getAllOrders
+);
+router.get(
 	"/admin/canceled",
 	verifyAccessToken,
 	isAdmin,
