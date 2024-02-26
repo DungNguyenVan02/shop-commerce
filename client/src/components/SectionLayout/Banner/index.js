@@ -27,7 +27,7 @@ function Banner() {
 				className="mySwiper"
 			>
 				{slider.map((item) => (
-					<SwiperSlide key={item._id}>
+					<SwiperSlide key={item.id}>
 						<div className="rounded-lg overflow-hidden">
 							<img
 								src={item.src}

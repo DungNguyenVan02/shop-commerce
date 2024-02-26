@@ -67,9 +67,13 @@ import {
 	HiOutlineChevronRight,
 } from "react-icons/hi2";
 import { TbUserEdit, TbUserX } from "react-icons/tb";
-import { MdOutlineScreenSearchDesktop } from "react-icons/md";
+import {
+	MdOutlineScreenSearchDesktop,
+	MdOutlineLocalShipping,
+} from "react-icons/md";
 import { TbTruckReturn } from "react-icons/tb";
 import { TfiWrite } from "react-icons/tfi";
+import { GrMoney } from "react-icons/gr";
 
 const icons = {
 	FaLaptop,
@@ -151,9 +155,12 @@ const icons = {
 	LiaFileInvoiceDollarSolid,
 
 	MdOutlineScreenSearchDesktop,
+	MdOutlineLocalShipping,
 
 	TbTruckReturn,
 	TfiWrite,
+
+	GrMoney,
 };
 
 export default icons;
