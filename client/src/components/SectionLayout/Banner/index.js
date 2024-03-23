@@ -6,9 +6,26 @@ import { slider } from "~/utils/contains";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { useEffect, useState } from "react";
 function Banner() {
+	const [widthScreen, setWidthScreen] = useState(window.innerWidth);
+
+	const setWidth = (e) => {
+		setWidthScreen(e.target.innerWidth);
+	};
+
+	useEffect(() => {
+		window.addEventListener("resize", setWidth);
+		return (e) => {
+			window.removeEventListener("resize", setWidth);
+		};
+	}, [widthScreen]);
 	return (
-		<div className="max-w-[600px]">
+		<div
+			className={`${
+				widthScreen > 640 ? "max-w-[600px]" : " max-w-[428px] "
+			} `}
+		>
 			<Swiper
 				modules={[Navigation, Pagination, Autoplay]}
 				loop={true}
@@ -38,6 +55,11 @@ function Banner() {
 					</SwiperSlide>
 				))}
 			</Swiper>
+			<img
+				className="rounded-md mt-2"
+				src="https://clickbuy.com.vn/uploads/media/612-lhAyF.png"
+				alt=""
+			/>
 		</div>
 	);
 }

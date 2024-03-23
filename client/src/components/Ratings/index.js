@@ -20,7 +20,7 @@ function Ratings({ data, dispatch, navigate }) {
 
 	const fetchOrder = async () => {
 		const response = await apiGetHistoryOrder();
-		if (response.success) {
+		if (response?.success) {
 			setHistoryOrders(response.listOrder);
 		}
 	};

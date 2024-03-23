@@ -21,7 +21,7 @@ function FormInput() {
 
 	const onSubmit = async (value, actions) => {
 		setAnimate(true);
-		actions.resetForm();
+		// actions.resetForm();
 		const response = await apiRegister(value);
 		if (response?.success) {
 			Swal.fire(

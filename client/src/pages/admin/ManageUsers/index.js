@@ -62,7 +62,7 @@ function ManageUsers({ location, dispatch, navigate }) {
 			...params,
 			limit: process.env.REACT_APP_LIMIT,
 		});
-		if (response.success) {
+		if (response?.success) {
 			setUsers(response);
 		}
 	};

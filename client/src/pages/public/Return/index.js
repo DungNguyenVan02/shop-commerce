@@ -7,7 +7,7 @@ const Return = () => {
 
 	const fetchOrder = async () => {
 		const response = await apiGetReturnOrder();
-		if (response.success) {
+		if (response?.success) {
 			setOrders(response.listOrder);
 		}
 	};

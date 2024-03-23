@@ -1,35 +1,19 @@
+import React from "react";
+
+import { footerList } from "~/utils/contains";
 import icons from "~/utils/icons";
-function Footer() {
+
+const Footer = () => {
 	const {
-		IoIosMail,
-		FaPhoneAlt,
-		GiPositionMarker,
-		FaLinkedinIn,
 		FaFacebookF,
+		FaFlickr,
+		FaLinkedinIn,
 		FaTwitter,
 		FaPinterest,
-		FaFlickr,
 		IoLogoGoogleplus,
+
+		IoIosMail,
 	} = icons;
-
-	const ABOUT_US = [
-		{
-			icon: GiPositionMarker,
-			title: "Address",
-			description: "474 Ontario St Toronto, ON M4X 1M7 Canada",
-		},
-		{
-			icon: FaPhoneAlt,
-			title: "Phone",
-			description: "(+1234)56789xxx",
-		},
-		{
-			icon: IoIosMail,
-			title: "Mail",
-			description: "tadathemes@gmail.com",
-		},
-	];
-
 	return (
 		<footer className="w-full">
 			<div className="h-[100px] w-full bg-main flex items-center">
@@ -53,112 +37,80 @@ function Footer() {
 					</div>
 				</div>
 			</div>
-			<div className="w-full bg-[#191919]">
-				<div className="max-w-main w-full mx-auto flex justify-between items-center text-white text-[13px] py-[34px]">
-					<div className="grid wide">
-						<div className="row">
-							<div className="col g-l-5">
-								<h3 className="uppercase font-bold text-[15px] border-l-[3px] px-3 border-main mb-4">
-									About Us
-								</h3>
-
-								{ABOUT_US.map((item, index) => {
-									const Icon = item.icon;
-									return (
-										<div
-											key={index}
-											className="flex items-center gap-2 font-[300]"
-										>
-											<Icon size={16} />
-											<span className="my-1 font-[500]">
-												{item.title}:{" "}
-											</span>
-											<span className="my-1 opacity-75">
-												{item.description}
-											</span>
-										</div>
-									);
-								})}
-								<div className="flex gap-2 mt-3">
-									<span className="cursor-pointer hover:bg-gray-500 w-[40px] h-[40px] bg-gray-700 rounded-sm flex items-center justify-center">
-										<FaFacebookF />
-									</span>
-									<span className="cursor-pointer hover:bg-gray-500 w-[40px] h-[40px] bg-gray-700 rounded-sm flex items-center justify-center">
-										<FaTwitter />
-									</span>
-									<span className="cursor-pointer hover:bg-gray-500 w-[40px] h-[40px] bg-gray-700 rounded-sm flex items-center justify-center">
-										<FaPinterest />
-									</span>
-									<span className="cursor-pointer hover:bg-gray-500 w-[40px] h-[40px] bg-gray-700 rounded-sm flex items-center justify-center">
-										<IoLogoGoogleplus />
-									</span>
-									<span className="cursor-pointer hover:bg-gray-500 w-[40px] h-[40px] bg-gray-700 rounded-sm flex items-center justify-center">
-										<FaLinkedinIn />
-									</span>
-									<span className="cursor-pointer hover:bg-gray-500 w-[40px] h-[40px] bg-gray-700 rounded-sm flex items-center justify-center">
-										<FaFlickr />
-									</span>
-								</div>
-							</div>
-							<div className="col g-l-7">
-								<div className="row">
-									<div className="col g-l-4">
-										<h3 className="uppercase font-bold text-[15px] border-l-[3px] px-3 border-main mb-4">
-											INFORMATION
-										</h3>
-										<div className="flex flex-col gap-2 text-gray-300">
-											<span className="hover:text-white cursor-pointer">
-												Typography
-											</span>
-											<span className="hover:text-white cursor-pointer">
-												Gallery
-											</span>
-											<span className="hover:text-white cursor-pointer">
-												Store Location
-											</span>
-											<span className="hover:text-white cursor-pointer">
-												Today's Deals
-											</span>
-											<span className="hover:text-white cursor-pointer">
-												Contact
-											</span>
-										</div>
-									</div>
-									<div className="col g-l-4">
-										<h3 className="uppercase font-bold text-[15px] border-l-[3px] px-3 border-main mb-4">
-											WHO WE ARE
-										</h3>
-										<div className="flex flex-col gap-2 text-gray-300">
-											<span className="hover:text-white cursor-pointer">
-												Help
-											</span>
-											<span className="hover:text-white cursor-pointer">
-												Free Shipping
-											</span>
-											<span className="hover:text-white cursor-pointer">
-												FAQs
-											</span>
-											<span className="hover:text-white cursor-pointer">
-												Return & Exchange
-											</span>
-											<span className="hover:text-white cursor-pointer">
-												Testimonials
-											</span>
-										</div>
-									</div>
-									<div className="col g-l-4">
-										<h3 className="uppercase font-bold text-[15px] border-l-[3px] px-3 border-main mb-4">
-											#DIGITALWORLDSTORE
-										</h3>
-									</div>
-								</div>
+			<div className="max-w-main w-full mx-auto">
+				<div className="grid wide">
+					<div className="row">
+						<div className="co g-l-3 g-m-6 g-c-12 p-3">
+							<h3 className="text-[24px] font-semibold mb-5">
+								Hệ thống
+							</h3>
+							<ul className="flex flex-col gap-2">
+								<li className="text-[14px] hover:opacity-100 opacity-60 cursor-pointer">
+									Địa chỉ: Duyên hải, Hưng hà, Thái bình
+								</li>
+								<li className="text-[14px] hover:opacity-100 opacity-60 cursor-pointer">
+									Số điện thoại:{" "}
+									<a href="tel:0268.368.6868">
+										0268.368.6868
+									</a>
+								</li>
+								<li className="text-[14px] hover:opacity-100 opacity-60 cursor-pointer">
+									Email:{" "}
+									<a href="mailto:nguyenvandung12112002@gmail.com">
+										nguyenvandung12112002@gmail.com
+									</a>
+								</li>
+							</ul>
+							<div className="flex gap-2 mt-3">
+								<span className="cursor-pointer hover:bg-gray-200 w-[40px] h-[40px] bg-[#f5f5f5]  rounded-md flex items-center justify-center">
+									<FaFacebookF />
+								</span>
+								<span className="cursor-pointer hover:bg-gray-200 w-[40px] h-[40px] bg-[#f5f5f5]  rounded-md flex items-center justify-center">
+									<FaTwitter />
+								</span>
+								<span className="cursor-pointer hover:bg-gray-200 w-[40px] h-[40px] bg-[#f5f5f5]  rounded-md flex items-center justify-center">
+									<FaPinterest />
+								</span>
+								<span className="cursor-pointer hover:bg-gray-200 w-[40px] h-[40px] bg-[#f5f5f5]  rounded-md flex items-center justify-center">
+									<IoLogoGoogleplus />
+								</span>
+								<span className="cursor-pointer hover:bg-gray-200 w-[40px] h-[40px] bg-[#f5f5f5]  rounded-md flex items-center justify-center">
+									<FaLinkedinIn />
+								</span>
+								<span className="cursor-pointer hover:bg-gray-200 w-[40px] h-[40px] bg-[#f5f5f5]  rounded-md flex items-center justify-center">
+									<FaFlickr />
+								</span>
 							</div>
 						</div>
+						{footerList.map((item, i) => {
+							return (
+								<div
+									key={i}
+									className="co g-l-3 g-m-6 g-c-12 p-3"
+								>
+									<h3 className="text-[24px] font-semibold mb-5">
+										{item.title}
+									</h3>
+									<ul className="flex flex-col gap-2">
+										{item.sub.map((sub, index) => {
+											return (
+												<li
+													className="text-[14px] hover:opacity-100 opacity-60 cursor-pointer"
+													key={index}
+												>
+													{sub}
+												</li>
+											);
+										})}
+									</ul>
+								</div>
+							);
+						})}
 					</div>
 				</div>
 			</div>
 		</footer>
 	);
-}
+};
 
 export default Footer;

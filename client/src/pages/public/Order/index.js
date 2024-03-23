@@ -10,7 +10,7 @@ const Order = () => {
 
 	const fetchOrder = async () => {
 		const response = await apiGetOrder();
-		if (response.success) {
+		if (response?.success) {
 			setOrders(response.listOrder);
 		}
 	};
@@ -38,7 +38,7 @@ const Order = () => {
 						{ status: "Canceled" },
 						oid
 					);
-					if (response.success) {
+					if (response?.success) {
 						setIsRerender(!isRerender);
 					} else {
 						toast.warning(response.message);
@@ -63,7 +63,7 @@ const Order = () => {
 					{ status: "Return" },
 					oid
 				);
-				if (response.success) {
+				if (response?.success) {
 					setIsRerender(!isRerender);
 				} else {
 					toast.warning(response.message);
@@ -87,7 +87,7 @@ const Order = () => {
 					{ status: "Success" },
 					order._id
 				);
-				if (response.success) {
+				if (response?.success) {
 					const data = {
 						arrProduct: order?.products?.map((od) => ({
 							quantity: od.quantity,

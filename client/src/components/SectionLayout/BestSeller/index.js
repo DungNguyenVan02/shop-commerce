@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { getNewProducts } from "~/redux/asyncActions";
 import { useSelector } from "react-redux";
 import { newProductSelector } from "~/redux/selector";
+import { SwiperSlide } from "swiper/react";
+import { Product } from "~/components/Product";
 
 function BestSeller() {
 	const dispatch = useDispatch();
@@ -14,7 +16,7 @@ function BestSeller() {
 
 	const fetchProducts = async () => {
 		const response = await apiGetProducts({ sort: "-sold" });
-		if (response.success) {
+		if (response?.success) {
 			setBestSeller(response.products);
 			setProducts(response.products);
 		}
@@ -37,17 +39,17 @@ function BestSeller() {
 	const section = [
 		{
 			id: 0,
-			title: "BEST SELLER",
+			title: "Sản phẩm bán chạy",
 		},
 		{
 			id: 1,
-			title: "NEW ARRIVALS",
+			title: "Sản phẩm mới",
 		},
 	];
 
 	return (
 		<div>
-			<ul className="m-0 pb-2 flex gap-6 border-b-2 border-main">
+			<ul className="m-0 pb-2 flex gap-6 border-b-2 border-main ">
 				{section.map((el, i) => {
 					return (
 						<li
@@ -63,12 +65,22 @@ function BestSeller() {
 					);
 				})}
 			</ul>
-			<div className="mt-4">
-				<Slider
-					products={products}
-					active={active}
-					defaultViewShow={3}
-				/>
+			<div className="mt-4 ">
+				<Slider showLg={4} showMd={2} showSm={1}>
+					{products?.map((item) => {
+						return (
+							<SwiperSlide key={item._id}>
+								<div className="w-full">
+									<Product
+										data={item}
+										active={active}
+										border
+									/>
+								</div>
+							</SwiperSlide>
+						);
+					})}
+				</Slider>
 			</div>
 		</div>
 	);

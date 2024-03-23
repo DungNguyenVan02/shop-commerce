@@ -26,7 +26,7 @@ function ManageBlogs({ location, navigate }) {
 			...params,
 			limit: process.env.REACT_APP_LIMIT,
 		});
-		if (response.success) {
+		if (response?.success) {
 			setBlogs(response);
 		}
 	};
@@ -76,7 +76,7 @@ function ManageBlogs({ location, navigate }) {
 					icon: "success",
 				}).then(async () => {
 					const response = await apiDeleteBlog(bid);
-					if (response.success) {
+					if (response?.success) {
 						setIsRerender(!isRerender);
 					} else {
 						toast.warning(response.message);

@@ -1,46 +1,51 @@
 import { Sidebar } from "~/layouts/components/user/Sidebar";
 import {
-	HotCollection,
-	NewArrivals,
 	FeaturedProduct,
 	Blog,
 	Banner,
 	BestSeller,
 	SubBanner,
+	BrandProduct,
+	AboutShop,
 } from "~/components/SectionLayout";
 import DailySale from "~/components/DailySale";
 
 function Home() {
 	return (
-		<div className="max-w-main w-full h-full mt-7 mx-auto flex flex-col gap-6">
-			<div className="grid wide">
+		<>
+			<div className="max-w-main w-full h-full mt-7 mx-auto flex flex-col gap-6">
+				<div className="grid wide">
+					<div className="row">
+						<div className="col g-l-3 g-m-3 g-c-0">
+							<Sidebar />
+						</div>
+						<div className="col g-l-6 g-m-6 g-c-12">
+							<Banner />
+						</div>
+						<div className="col g-l-3 g-m-3 g-c-0">
+							<SubBanner />
+						</div>
+					</div>
+				</div>
 				<div className="row">
-					<div className="col g-l-3">
-						<Sidebar />
+					<div className="col g-l-3 g-m-3 g-c-12">
+						<DailySale />
 					</div>
-					<div className="col g-l-6">
-						<Banner />
-					</div>
-					<div className="col g-l-3">
-						<SubBanner />
+					<div className="col g-l-9 g-m-9 g-c-12 ">
+						<BestSeller />
 					</div>
 				</div>
-			</div>
-			<div className="flex">
-				<div className="flex flex-col gap-5 max-w-[24%] w-full">
-					<DailySale />
+				<div>
+					<FeaturedProduct />
 				</div>
-				<div className="flex flex-col gap-5 max-w-[76%] w-full pl-5">
-					<BestSeller />
-				</div>
+				<BrandProduct category="Điện thoại" />
+				<BrandProduct category="Tablet" />
+				<BrandProduct category="Phụ kiện" />
+
+				<Blog />
 			</div>
-			<div>
-				<FeaturedProduct />
-			</div>
-			<NewArrivals />
-			<HotCollection />
-			<Blog />
-		</div>
+			<AboutShop />
+		</>
 	);
 }
 

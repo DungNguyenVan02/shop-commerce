@@ -40,7 +40,7 @@ function ManageProducts({ location, navigate }) {
 
 	const fetchProducts = async (queries) => {
 		const response = await apiGetProducts({ ...queries });
-		if (response.success) {
+		if (response?.success) {
 			setProducts(response);
 		}
 	};

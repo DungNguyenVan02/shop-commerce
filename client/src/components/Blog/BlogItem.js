@@ -12,7 +12,7 @@ const BlogItem = ({ data }) => {
 			<div className="grid wide">
 				<div className="row">
 					<div className="col g-l-5 g-c-5 g-m-12">
-						<div className="w-full rounded-xl overflow-hidden">
+						<div className="max-w-full rounded-xl overflow-hidden">
 							<img
 								className="w-full object-cover "
 								src={data?.image}

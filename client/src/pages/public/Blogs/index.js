@@ -10,7 +10,7 @@ function Blogs() {
 	const [blogs, setBlogs] = useState();
 	const fetchBlogs = async () => {
 		const response = await apiGetBlogs();
-		if (response.success) {
+		if (response?.success) {
 			setBlogs(response.blogs);
 		}
 	};
@@ -20,9 +20,9 @@ function Blogs() {
 		window.scrollTo(0, 0);
 	}, []);
 	return (
-		<div>
-			<div className="bg-[#f5f5f5]">
-				<div className="max-w-main w-full mx-auto py-[20px]">
+		<div className="px-[24px]">
+			<div className="bg-[#f5f5f5] mx-[-24px]">
+				<div className="max-w-main w-full mx-auto py-[20px] ">
 					<div className="flex items-center gap-1 text-[14px] font-[400] ">
 						<NavLink
 							to={routes.home}

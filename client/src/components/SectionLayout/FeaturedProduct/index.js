@@ -11,7 +11,7 @@ function FeaturedProduct() {
 			limit: 9,
 			sort: "-totalRatings",
 		});
-		if (response.success) {
+		if (response?.success) {
 			setProducts(response.products);
 		}
 	};
@@ -21,8 +21,8 @@ function FeaturedProduct() {
 
 	return (
 		<>
-			<h3 className="text-[20px] mb-4 text-[#151515] uppercase font-bold border-b-2 border-main pb-[15px]">
-				Featured Product
+			<h3 className="text-[28px] mb-4 text-gradient uppercase font-semibold border-b-2 border-main">
+				Sản phẩm nổi bật
 			</h3>
 			<div className="grid wide">
 				<div className="row">
@@ -31,7 +31,7 @@ function FeaturedProduct() {
 					})}
 				</div>
 			</div>
-			<div className="grid grid-cols-4 grid-rows-2 gap-4">
+			{/* <div className="grid grid-cols-4 grid-rows-2 gap-4">
 				<img
 					className="w-full h-full col-span-2 row-span-2"
 					src={images.banner1Home}
@@ -52,7 +52,7 @@ function FeaturedProduct() {
 					src={images.banner3Home}
 					alt="banner"
 				/>
-			</div>
+			</div> */}
 		</>
 	);
 }

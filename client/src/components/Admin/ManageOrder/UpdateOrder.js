@@ -34,7 +34,7 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 					dataUpdate._id
 				);
 			}
-			if (response.success) {
+			if (response?.success) {
 				onHide({ isUpdate: false, data: [] });
 				onRerender((prev) => !prev);
 				toast.success(response.mes);

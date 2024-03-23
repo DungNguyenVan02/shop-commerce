@@ -60,7 +60,7 @@ const ButtonWrapper = ({
 					actions.order.capture().then(async (response) => {
 						if (response.status === "COMPLETED") {
 							const response = await apiCreateOrder(payload);
-							if (response.success) {
+							if (response?.success) {
 								onSuccess(true);
 								setTimeout(() => {
 									Swal.fire(

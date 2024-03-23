@@ -18,7 +18,9 @@ module.exports = {
 				star: "#f1b400",
 			},
 			boxShadow: {
-				custom: "0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15)",
+				custom: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;",
+				custom_1:
+					"rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;",
 			},
 
 			keyframes: {

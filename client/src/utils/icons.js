@@ -1,6 +1,5 @@
 import {
 	FaTabletAlt,
-	FaLaptop,
 	FaCameraRetro,
 	FaList,
 	FaHeart,
@@ -20,24 +19,17 @@ import {
 } from "react-icons/fa";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 
-import {
-	BsSpeaker,
-	BsList,
-	BsSortDown,
-	BsSortDownAlt,
-	BsCart3,
-} from "react-icons/bs";
+import { BsList, BsSortDown, BsSortDownAlt, BsCart3 } from "react-icons/bs";
 
 import {
 	FaStar,
 	FaRegStar,
 	FaRegStarHalfStroke,
 	FaCircleUser,
-	FaHeadphonesSimple,
 	FaAngleDown,
 	FaCheck,
 } from "react-icons/fa6";
-import { CiSearch, CiCamera } from "react-icons/ci";
+import { CiSearch } from "react-icons/ci";
 import {
 	IoMdArrowDropdown,
 	IoIosPhonePortrait,
@@ -52,9 +44,11 @@ import {
 	IoArrowUndo,
 	IoSaveOutline,
 	IoTrashBinOutline,
+	IoPhonePortraitOutline,
 } from "react-icons/io5";
-import { SlScreenDesktop } from "react-icons/sl";
-import { AiFillPrinter, AiOutlineHistory } from "react-icons/ai";
+
+import {} from "react-icons/sl";
+import { AiOutlineHistory } from "react-icons/ai";
 import { GoDotFill, GoClock, GoChecklist } from "react-icons/go";
 import { GiPositionMarker } from "react-icons/gi";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
@@ -71,16 +65,16 @@ import {
 	MdOutlineScreenSearchDesktop,
 	MdOutlineLocalShipping,
 } from "react-icons/md";
-import { TbTruckReturn } from "react-icons/tb";
+import { TbTruckReturn, TbDeviceAirpods } from "react-icons/tb";
+
 import { TfiWrite } from "react-icons/tfi";
 import { GrMoney } from "react-icons/gr";
 
 const icons = {
-	FaLaptop,
 	FaTabletAlt,
 	FaCameraRetro,
 	FaCircleUser,
-	FaHeadphonesSimple,
+
 	FaList,
 	FaHeart,
 	FaRegEye,
@@ -105,6 +99,7 @@ const icons = {
 	CiSearch,
 
 	IoMdArrowDropdown,
+	IoPhonePortraitOutline,
 	IoIosPhonePortrait,
 	IoShieldCheckmark,
 	IoIosArrowForward,
@@ -117,16 +112,9 @@ const icons = {
 
 	IoCloseOutline,
 
-	SlScreenDesktop,
-
-	AiFillPrinter,
-
-	BsSpeaker,
 	BsList,
 	BsSortDown,
 	BsSortDownAlt,
-
-	CiCamera,
 
 	GiPositionMarker,
 
@@ -145,6 +133,7 @@ const icons = {
 
 	TbUserEdit,
 	TbUserX,
+	TbDeviceAirpods,
 
 	BiCustomize,
 	BiUser,

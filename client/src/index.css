@@ -178,3 +178,69 @@ div.swiper-pagination {
 	height: 3px;
 	width: 100%;
 }
+
+.tagDiscount {
+	background-color: #fff86e;
+	box-shadow: 0 1px 0 0 rgba(60, 64, 67, 0.102),
+		0 2px 3px 2px rgba(60, 64, 67, 0.149);
+	color: #000;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 22px;
+	padding: 1px 10px;
+	position: absolute;
+	right: -6px;
+	top: 6px;
+	z-index: 2;
+}
+
+.tagDiscount::after {
+	border-right: 7px solid transparent;
+	border-top: 4px solid #d5ca00;
+	bottom: -4px;
+	content: "";
+	display: block;
+	height: 0;
+	position: absolute;
+	right: -1px;
+	width: 0;
+}
+
+.text-gradient {
+	background: linear-gradient(75deg, #ff0101 60%, #8f2727 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-weight: 600;
+}
+.transitionAll {
+	transition: all ease-in-out 0.3s;
+}
+
+.headroom {
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1;
+}
+.headroom--unfixed {
+	position: relative;
+	transform: translateY(0);
+}
+.headroom--scrolled {
+	transition: transform 200ms ease-in-out;
+}
+.headroom--unpinned {
+	position: fixed;
+	transform: translateY(-100%);
+}
+.headroom--pinned {
+	position: fixed;
+	transform: translateY(0%);
+}
+
+.bg-gradient-custom-2 {
+	background: linear-gradient(148deg, #0198ff2e, #0000);
+	outline: none;
+	transition: all ease-in-out 0.4s;
+}

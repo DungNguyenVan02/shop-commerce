@@ -13,8 +13,8 @@ const SubBanner = ({ navigate }) => {
 				}
 			>
 				<img
-					className="w-full object-cover hover:scale-110 ease-in-out duration-200"
-					src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:10/plain/https://dashboard.cellphones.com.vn/storage/samsung-s23-th1-right.png"
+					className="w-full object-contain hover:scale-110 ease-in-out duration-200"
+					src="https://clickbuy.com.vn/uploads/media/581-yyCOV.png"
 					alt=""
 				/>
 			</div>

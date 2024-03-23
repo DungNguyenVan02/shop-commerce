@@ -5,34 +5,29 @@ function Navigation() {
 	const NAVIGATION = [
 		{
 			id: 1,
-			name: "HOME",
+			name: "Trang chủ",
 			path: routes.home,
 		},
 		{
 			id: 2,
-			name: "PRODUCT",
-			path: "/all-products",
+			name: "Sản phẩm",
+			path: routes.products,
 		},
 		{
 			id: 3,
-			name: "BLOGS",
+			name: "Bài viết",
 			path: routes.blogs,
 		},
 		{
 			id: 4,
-			name: "OUR SERVICES",
+			name: "Dịch vụ",
 			path: routes.services,
 		},
-		// {
-		// 	id: 5,
-		// 	name: "FAQs",
-		// 	path: routes.FAQs,
-		// },
 	];
 
 	const { IoMdArrowDropdown } = icons;
 	return (
-		<nav className="max-w-main w-full px-5 h-[48px] text-sm border-b flex items-center gap-7 mt-[148px]">
+		<nav className="max-w-main w-full px-5 h-[48px] text-sm border-b flex items-center gap-7">
 			{NAVIGATION.map((item) => (
 				<NavLink
 					to={item.path}

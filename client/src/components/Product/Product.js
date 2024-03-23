@@ -19,6 +19,7 @@ function Product({
 	productPageDetail,
 	navigate,
 	dispatch,
+	border,
 }) {
 	const { FaHeart, FaCartPlus, FaRegEye } = icons;
 
@@ -29,7 +30,7 @@ function Product({
 		switch (click) {
 			case "heart":
 				const response = await apiUpdateWishlist(data._id);
-				if (response.success) {
+				if (response?.success) {
 					toast.success(response.mes);
 					dispatch(getCurrentUser());
 				} else {
@@ -59,7 +60,7 @@ function Product({
 						quantity: 1,
 						thumbnail: data.thumb,
 					});
-					if (response.success) {
+					if (response?.success) {
 						toast.success("Has been added to your cart!");
 						dispatch(getCurrentUser());
 					} else {
@@ -93,8 +94,13 @@ function Product({
 					}/${data?._id}/${data?.name}`
 				)
 			}
-			className="p-[15px] border border-gray-300 block shadow-lg"
+			className={`relative p-2 w-full rounded-lg cursor-pointer ${
+				border ? "border" : "shadow-custom"
+			} bg-white`}
 		>
+			{data?.discount > 0 && (
+				<span className="tagDiscount">{data?.discount} %</span>
+			)}
 			<div className="w-full h-full mx-auto relative product-parent">
 				<div className="product-child absolute bottom-0 left-[50%] justify-center gap-4 py-1 animate-slideTop">
 					<span
@@ -129,24 +135,44 @@ function Product({
 					</span>
 				</div>
 				<img
-					src={data?.thumb || images.defaultProduct}
+					className="max-w-[230px] w-full object-cover mx-auto"
+					src={data?.thumb || images.noProductImage}
 					alt=""
-					className="max-w-[280px] w-full h-full object-contain mx-auto"
 				/>
 				{active === 0 ? (
 					<span className="tagTrending">Trending</span>
-				) : (
+				) : active === 1 ? (
 					<span className="tagNew">New</span>
+				) : (
+					""
 				)}
 			</div>
-			<div className="flex flex-col text-[16px] mt-6 gap-2">
-				<div className="flex gap-1 h-4">
-					{renderStar(data?.totalRatings)?.map((star, i) => {
-						return <i key={i}>{star}</i>;
-					})}
+			<div>
+				<div>
+					<h3 className="line-clamp-1 text-[18px] font-medium">
+						{data?.name}
+					</h3>
+					<p className="opacity-80 font-light text-[12px]">
+						{data?.brand}
+					</p>
 				</div>
-				<h3 className="line-clamp-1">{data?.name}</h3>
-				<span className="">{formatMoney(data?.price)}</span>
+				<div className="flex items-center gap-1">
+					{renderStar(data?.totalRatings).map((item, i) => (
+						<i key={i}>{item}</i>
+					))}
+				</div>
+				<div className="text-[13px] mb-3 h-[34px] flex items-center justify-between">
+					<h4 className="text-[14px] font-medium ">
+						{formatMoney(
+							data?.price * ((100 - data?.discount) / 100)
+						)}
+					</h4>
+					{data?.discount > 0 && (
+						<h4 className="line-through text-[12px] opacity-60 font-medium">
+							{formatMoney(data?.price)}
+						</h4>
+					)}
+				</div>
 			</div>
 		</div>
 	);

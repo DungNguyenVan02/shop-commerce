@@ -26,7 +26,7 @@ function Search({ location, navigate }) {
 
 	const fetchProducts = async (queries) => {
 		const response = await apiGetProducts({ ...queries });
-		if (response.success) {
+		if (response?.success) {
 			setIsLoading(false);
 			setSearchResult(response.products);
 		} else {
@@ -74,7 +74,7 @@ function Search({ location, navigate }) {
 	const handleShowResult = (attrs) => {
 		return (
 			<div
-				className="w-[800px] max-h-[70vh] overflow-y-auto bg-white rounded-lg shadow-lg py-3"
+				className="w-[880px] max-h-[70vh] overflow-y-auto bg-white rounded-lg shadow-lg py-3"
 				tabIndex="-1"
 				{...attrs}
 			>
@@ -113,44 +113,46 @@ function Search({ location, navigate }) {
 		setIsShow(false);
 	};
 	return (
-		<HeadlessTippy
-			visible={isShow && searchResult.length > 0}
-			onClickOutside={handleHideResults}
-			interactive
-			render={handleShowResult}
-			placement="bottom"
-			offset={[0, 0]}
-		>
-			<div className="flex flex-[2] items-center border border-[#e26273] w-[300px] pr-4 rounded-full">
-				<input
-					ref={inputRef}
-					value={searchText}
-					className="placeholder:text-gray-400a placeholder:text-[14px] h-full w-full pl-4 pr-2 py-2 outline-none bg-transparent"
-					placeholder="Search products..."
-					onChange={handleChangeInput}
-					onFocus={() => setIsShow(true)}
-				/>
-				<div className="border-r pr-3 mr-[10px] h-full">
-					{searchText.length > 0 && !isLoading && (
-						<span
-							className="cursor-pointer hover:opacity-80"
-							onClick={() => {
-								setSearchResult([]);
-								setSearchText("");
-							}}
-						>
-							<IoCloseOutline size={20} />
-						</span>
-					)}
-					{isLoading && <SpinnerAnimation />}
+		<div className="flex-[2]">
+			<HeadlessTippy
+				visible={isShow && searchResult.length > 0}
+				onClickOutside={handleHideResults}
+				interactive
+				render={handleShowResult}
+				placement="bottom"
+				offset={[0, 0]}
+			>
+				<div className="flex items-center border border-[#e26273] w-full pr-4 rounded-full">
+					<input
+						ref={inputRef}
+						value={searchText}
+						className="placeholder:text-gray-400a placeholder:text-[14px] h-full w-full pl-4 pr-2 py-2 outline-none bg-transparent"
+						placeholder="Tìm kiếm sản phẩm"
+						onChange={handleChangeInput}
+						onFocus={() => setIsShow(true)}
+					/>
+					<div className="border-r pr-3 mr-[10px] h-full">
+						{searchText.length > 0 && !isLoading && (
+							<span
+								className="cursor-pointer hover:opacity-80"
+								onClick={() => {
+									setSearchResult([]);
+									setSearchText("");
+								}}
+							>
+								<IoCloseOutline size={20} />
+							</span>
+						)}
+						{isLoading && <SpinnerAnimation />}
+					</div>
+					<CiSearch
+						className="cursor-pointer"
+						size={24}
+						color="#e26273"
+					/>
 				</div>
-				<CiSearch
-					className="cursor-pointer"
-					size={24}
-					color="#e26273"
-				/>
-			</div>
-		</HeadlessTippy>
+			</HeadlessTippy>
+		</div>
 	);
 }
 

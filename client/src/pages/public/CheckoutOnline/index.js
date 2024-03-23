@@ -21,7 +21,7 @@ const CheckoutOnline = ({ dispatch }) => {
 	const fetchProduct = async () => {
 		const response = await apiGetProduct(checkouts[0]?.pid);
 
-		if (response.success) {
+		if (response?.success) {
 			setProductCheckout([
 				{
 					...response.getProduct,
@@ -31,22 +31,25 @@ const CheckoutOnline = ({ dispatch }) => {
 		}
 	};
 
+	console.log(checkouts);
+
 	useEffect(() => {
 		dispatch(getCurrentUser());
 		const products = [];
-		if (!checkouts.cid) {
-			fetchProduct();
-		} else {
+		if (checkouts[0]?.cid) {
 			currentUser?.cart.forEach((item) => {
 				checkouts.forEach((el) => {
 					if (
 						el.color === item.color &&
 						el.pid === item.product._id
 					) {
+						console.log(item);
 						products.push(item);
 					}
 				});
 			});
+		} else {
+			fetchProduct();
 		}
 		setProductCheckout(products);
 
@@ -58,7 +61,7 @@ const CheckoutOnline = ({ dispatch }) => {
 			arrProduct: productCheckout.map((item) => item._id),
 		});
 
-		if (response.success) {
+		if (response?.success) {
 			dispatch(checkoutsSlice([]));
 			dispatch(getCurrentUser());
 		}

@@ -22,7 +22,7 @@ const Cart = ({ dispatch }) => {
 
 	const fetchUpdateCart = async (data) => {
 		const response = await apiUpdateQuantityCart(data?.pid, data);
-		if (response.success) {
+		if (response?.success) {
 			dispatch(getCurrentUser());
 		} else {
 			toast.error(response.mes);
@@ -96,7 +96,7 @@ const Cart = ({ dispatch }) => {
 		}
 
 		const response = await apiRemoveCart(payload);
-		if (response.success) {
+		if (response?.success) {
 			dispatch(getCurrentUser());
 			setCheckList([]);
 		} else {

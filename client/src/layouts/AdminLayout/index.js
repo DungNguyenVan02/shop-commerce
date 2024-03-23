@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { userSelector } from "~/redux/selector";
 import { Link } from "react-router-dom";
 import routes from "~/config/routes";
+import Logo from "~/components/Logo";
 
 function AdminLayout({ children }) {
 	const { currentUser } = useSelector(userSelector);
@@ -11,11 +12,7 @@ function AdminLayout({ children }) {
 		<div className="relative">
 			<header className="fixed top-0 left-0 right-0 z-[9999] h-[50px] flex justify-between items-center bg-blue-500 shadow-sm px-5">
 				<Link to={routes.home}>
-					<img
-						className="w-[200px] h-[30px]"
-						src={images.logo}
-						alt="logo"
-					/>
+					<Logo />
 				</Link>
 				<div className="flex items-center text-[14px] text-white gap-2">
 					<img

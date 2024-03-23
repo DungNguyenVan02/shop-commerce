@@ -4,8 +4,10 @@ import { extraInfo } from "~/utils/contains";
 
 function OurService() {
 	return (
-		<div>
-			<BreadcrumbHeader category="OurService" slug="services" />
+		<div className="px-[24px]">
+			<div className="mx-[-24px]">
+				<BreadcrumbHeader category="OurService" slug="services" />
+			</div>
 			<div className="max-w-main w-full mx-auto my-7">
 				<div className="grid wide">
 					<div className="row">

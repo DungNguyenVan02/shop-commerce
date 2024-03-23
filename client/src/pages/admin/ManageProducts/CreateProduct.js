@@ -94,7 +94,7 @@ function CreateProduct() {
 
 		setIsUploading(true);
 		const response = await apiCreateProduct(formData);
-		if (response.success) {
+		if (response?.success) {
 			actions.resetForm();
 			setIsUploading(false);
 			toast.success("Created product successfully!");

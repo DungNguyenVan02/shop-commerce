@@ -29,7 +29,7 @@ function DailySale({ dispatch, navigate }) {
 			page: Math.floor(Math.random() * 5),
 			sort: "-totalRatings",
 		});
-		if (response.success) {
+		if (response?.success) {
 			dispatch(
 				getDeadDaily({
 					data: response.products[0],
@@ -121,15 +121,15 @@ function DailySale({ dispatch, navigate }) {
 				</span>
 			</div>
 			<div className="flex justify-center items-center gap-4">
-				<CountDown unit="Hours" number={hours} />
-				<CountDown unit="Minutes" number={minutes} />
-				<CountDown unit="Seconds" number={seconds} />
+				<CountDown unit="Giờ" number={hours} />
+				<CountDown unit="Phút" number={minutes} />
+				<CountDown unit="Giây" number={seconds} />
 			</div>
 			<button
 				onClick={handleBuyNow}
 				className="mt-4 bg-main w-full py-2 px-3 text-white text-[14px] rounded hover:bg-gray-500"
 			>
-				Buy Now
+				Mua ngay
 			</button>
 		</div>
 	);

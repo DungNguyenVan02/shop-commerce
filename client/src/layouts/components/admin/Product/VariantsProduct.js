@@ -99,7 +99,7 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 			formData,
 			variantsProduct._id
 		);
-		if (response.success) {
+		if (response?.success) {
 			setIsUploading(false);
 			toast.success("Created variants product successfully!");
 		} else {

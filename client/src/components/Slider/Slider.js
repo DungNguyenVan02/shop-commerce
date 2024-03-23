@@ -1,42 +1,26 @@
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper } from "swiper/react";
 import { Pagination, Navigation, Autoplay } from "swiper";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Product } from "~/components/Product";
 import { memo } from "react";
 
-function Slider({
-	products,
-	active,
-	show,
-	defaultViewShow,
-	productPageDetail,
-}) {
-	const handleShowSlider = () => {
-		return products?.map((item) => (
-			<SwiperSlide key={item._id}>
-				<Product
-					data={item}
-					active={active}
-					productPageDetail={productPageDetail && productPageDetail}
-				/>
-			</SwiperSlide>
-		));
-	};
-
+function Slider({ showLg, showMd, showSm, isLoop = true, children }) {
 	return (
 		<div>
 			<Swiper
 				modules={[Navigation, Pagination, Autoplay]}
-				spaceBetween={15}
 				loop={true}
-				autoplay={{
-					delay: 3500,
-					disableOnInteraction: false,
-				}}
+				autoplay={
+					isLoop
+						? {
+								delay: 2000,
+								disableOnInteraction: false,
+						  }
+						: false
+				}
 				pagination={{
 					dynamicBullets: true,
 				}}
@@ -46,25 +30,23 @@ function Slider({
 				navigation={true}
 				breakpoints={{
 					0: {
-						slidesPerView: 1,
-						allowTouchMove: true,
-						navigation: false,
-						autoplay: {
-							delay: 3000,
-							disableOnInteraction: false,
-						},
+						slidesPerView: showSm || 1,
+						spaceBetween: 5,
 					},
-					600: {
-						slidesPerView: 2,
-						allowTouchMove: true,
+					// when window width is >= 480px
+					480: {
+						slidesPerView: showMd || 2,
+						spaceBetween: 10,
 					},
-					1040: {
-						slidesPerView: defaultViewShow || show,
+					// when window width is >= 640px
+					1000: {
+						slidesPerView: showLg || 4,
+						spaceBetween: 15,
 					},
 				}}
 				className="mySwiper"
 			>
-				{handleShowSlider()}
+				{children}
 			</Swiper>
 		</div>
 	);

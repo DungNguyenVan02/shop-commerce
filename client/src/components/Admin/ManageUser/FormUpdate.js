@@ -18,7 +18,7 @@ function FormUpdate({ useEdit, dispatch }) {
 			useEdit?._id
 		);
 		dispatch(showModal({ isShowModal: false }));
-		if (response.success) {
+		if (response?.success) {
 			Swal.fire("Notifications", "Update user successfully", "success");
 		} else {
 			Swal.fire(

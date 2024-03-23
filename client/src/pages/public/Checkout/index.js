@@ -30,7 +30,7 @@ const Checkout = ({ dispatch, navigate }) => {
 
 	const fetchProduct = async () => {
 		const response = await apiGetProduct(checkouts[0]?.pid);
-		if (response.success) {
+		if (response?.success) {
 			setProductCheckout([
 				{
 					...response.getProduct,
@@ -45,10 +45,7 @@ const Checkout = ({ dispatch, navigate }) => {
 			const products = [];
 			if (!checkouts[0].cid) {
 				fetchProduct();
-				console.log(123);
 			} else {
-				console.log(321);
-
 				currentUser?.cart.forEach((item) => {
 					checkouts.forEach((el) => {
 						if (
@@ -73,7 +70,7 @@ const Checkout = ({ dispatch, navigate }) => {
 	const handleSubmit = async () => {
 		if (address.length >= 10) {
 			const response = await apiUpdateAddress({ address });
-			if (!response.success) {
+			if (!response?.success) {
 				toast.error("Address update failed! please try again");
 			}
 		}
@@ -92,12 +89,12 @@ const Checkout = ({ dispatch, navigate }) => {
 			method: "Cash On Delivery",
 		};
 		const response = await apiCreateOrder(payload);
-		if (response.success) {
+		if (response?.success) {
 			const response = await apiRemoveCart({
 				arrProduct: productCheckout.map((item) => item._id),
 			});
 
-			if (response.success) {
+			if (response?.success) {
 				setIsSuccess(true);
 				dispatch(checkoutsSlice([]));
 				dispatch(getCurrentUser());
@@ -265,7 +262,7 @@ const Checkout = ({ dispatch, navigate }) => {
 								>
 									<Button
 										title="Payment Online"
-										handleClick={handleSubmit}
+										handleClick={() => handleSubmit()}
 									/>
 								</Link>
 							)}

@@ -241,7 +241,7 @@ const UpdateProduct = ({ dataUpdate, onHandleHide }) => {
 
 		setIsUploading(true);
 		const response = await apiUpdateProduct(formData, dataUpdate._id);
-		if (response.success) {
+		if (response?.success) {
 			actions.resetForm();
 			setIsUploading(false);
 			toast.success("Update product successfully!");

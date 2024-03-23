@@ -8,3 +8,4 @@ export { default as MarkdownEditor } from "./MarkdownEditor";
 export { default as Paypal } from "./Paypal";
 export { default as Congratulations } from "./Congratulations";
 export { default as Search } from "./Search";
+export { default as AboutOurCard } from "./AboutOurCard";

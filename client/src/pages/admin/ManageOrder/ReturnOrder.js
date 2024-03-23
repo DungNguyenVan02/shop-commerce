@@ -26,7 +26,7 @@ function ReturnOrder({ location, navigate }) {
 			...params,
 			limit: process.env.REACT_APP_LIMIT,
 		});
-		if (response.success) {
+		if (response?.success) {
 			setOrders(response);
 		}
 	};
@@ -77,7 +77,7 @@ function ReturnOrder({ location, navigate }) {
 					icon: "success",
 				}).then(async () => {
 					const response = await apiDeleteOrder(oid);
-					if (response.success) {
+					if (response?.success) {
 						setIsRerender(!isRerender);
 					} else {
 						toast.warning(response.message);

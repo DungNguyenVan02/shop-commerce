@@ -114,7 +114,7 @@ const UpdateBlog = ({ dataUpdate, onHandleHide }) => {
 
 		setIsUploading(true);
 		const response = await apiUpdateBlog(dataUpdate._id, formData);
-		if (response.success) {
+		if (response?.success) {
 			actions.resetForm();
 			setIsUploading(false);
 			toast.success("Update blog successfully!");

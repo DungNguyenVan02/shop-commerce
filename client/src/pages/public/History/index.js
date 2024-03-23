@@ -6,7 +6,7 @@ const History = () => {
 	const [orders, setOrders] = useState([]);
 	const fetchOrder = async () => {
 		const response = await apiGetHistoryOrder();
-		if (response.success) {
+		if (response?.success) {
 			setOrders(response.listOrder);
 		}
 	};

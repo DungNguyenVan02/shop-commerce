@@ -63,7 +63,7 @@ function CreateBlog({ navigate }) {
 
 		setIsUploading(true);
 		const response = await apiCreateBlog(formData);
-		if (response.success) {
+		if (response?.success) {
 			actions.resetForm();
 			navigate(routes.admin_manage_blogs);
 			setIsUploading(false);

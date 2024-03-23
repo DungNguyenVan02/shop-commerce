@@ -58,7 +58,7 @@ function Personal({ dispatch }) {
 			}
 			setIsUploading(true);
 			const response = await apiUpdateUser(formData);
-			if (response.success) {
+			if (response?.success) {
 				setIsUploading(false);
 				toast.success(response.mes);
 				dispatch(getCurrentUser());

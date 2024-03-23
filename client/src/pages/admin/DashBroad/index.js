@@ -20,7 +20,7 @@ function DashBroad() {
 	const fetchGetOrders = async () => {
 		const response = await apiGetAllOrder();
 
-		if (response.success) {
+		if (response?.success) {
 			setOrders(response.listOrder);
 		}
 	};

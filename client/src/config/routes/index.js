@@ -1,7 +1,10 @@
 const routes = {
 	all: "*",
 	home: "/",
-	products: "/:category",
+	products: "/products",
+	products_slug: "/products/:slug",
+	products_slug_brand: "/products/:slug/:brand",
+
 	login: "/login",
 	register: "/register",
 	blogs: "/blogs",

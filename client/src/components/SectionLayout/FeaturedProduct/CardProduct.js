@@ -9,7 +9,7 @@ function CardProduct({ data }) {
 				to={`${data?.category.toLowerCase()}/${data?._id}/${
 					data?.name
 				}`}
-				className="flex items-center border p-2 mb-4 gap-4 shadow-md"
+				className="flex items-center p-2 mb-4 gap-4 shadow-custom_1 rounded-md hover:translate-y-[-2px] transitionAll"
 			>
 				<img
 					className="w-[86px] h-[86px] object-cover"

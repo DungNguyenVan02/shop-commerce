@@ -150,7 +150,7 @@ function DetailProduct({ navigate, dispatch, location }) {
 				time: `${date.getHours()}:${date.getMinutes()}`,
 			};
 			const response = await apiRatingProduct(payload);
-			if (response.success) {
+			if (response?.success) {
 				setUpdateRating(!updateRating);
 			}
 		},
@@ -182,11 +182,11 @@ function DetailProduct({ navigate, dispatch, location }) {
 			const response = await apiAddCart({
 				pid,
 				thumbnail: thumbSrc,
-				color: selectVariants.color,
+				color: selectVariants.color || "Unknown",
 				quantity,
 				price: selectVariants.price,
 			});
-			if (response.success) {
+			if (response?.success) {
 				toast.success("Has been added to your cart!");
 				dispatch(getCurrentUser());
 			} else {
