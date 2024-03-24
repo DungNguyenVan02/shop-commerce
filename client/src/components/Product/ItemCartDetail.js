@@ -12,8 +12,6 @@ const ItemCartDetail = ({
 }) => {
 	const [quantity, setQuantity] = useState(data?.quantity);
 
-	// console.log(debounceQuantity);
-
 	useEffect(() => {
 		onUpdateCart({ pid: data?.product._id, color: data?.color, quantity });
 		// eslint-disable-next-line react-hooks/exhaustive-deps

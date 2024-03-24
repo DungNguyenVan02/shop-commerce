@@ -1,4 +1,4 @@
-import { createSearchParams, useParams } from "react-router-dom";
+import { Link, createSearchParams, useParams } from "react-router-dom";
 import {
 	apiAddCart,
 	apiGetProduct,
@@ -13,7 +13,12 @@ import { createSlug, formatMoney, renderStar } from "~/utils/helper";
 import { extraInfo } from "~/utils/contains";
 import images from "~/assets/images";
 import { SelectQuantity, ExtraInfo, Button } from "~/components/common";
-import { ProInforMation, Variants } from "~/components/Product";
+import {
+	ProInforMation,
+	Product,
+	VariantsColor,
+	VariantsVersion,
+} from "~/components/Product";
 import { Slider, SliderSubProduct } from "~/components/Slider";
 import { BreadcrumbHeader } from "~/components/SectionLayout";
 import Ratings from "~/components/Ratings";
@@ -43,6 +48,8 @@ function DetailProduct({ navigate, dispatch, location }) {
 		id: "",
 		color: null,
 		price: null,
+		ram: null,
+		internalMemory: null,
 	});
 
 	const fetchProductData = async () => {
@@ -53,6 +60,8 @@ function DetailProduct({ navigate, dispatch, location }) {
 				price: response?.getProduct?.price,
 				color: response?.getProduct?.color,
 				quantity: response?.getProduct?.quantity,
+				ram: response?.getProduct?.ram,
+				internalMemory: response?.getProduct?.internalMemory,
 			});
 			setProduct(response?.getProduct);
 			setThumbSrc(response?.getProduct?.thumb);
@@ -64,7 +73,10 @@ function DetailProduct({ navigate, dispatch, location }) {
 	};
 
 	const fetchRelateProductData = async () => {
-		const response = await apiGetProducts({ category: product?.category });
+		const response = await apiGetProducts({
+			category: product?.category,
+			brand: product?.brand,
+		});
 		if (response?.success) {
 			setRelateProduct(response?.products);
 		}
@@ -241,7 +253,7 @@ function DetailProduct({ navigate, dispatch, location }) {
 								{formatMoney(selectVariants?.price)}
 							</h3>
 							<div className="flex items-center gap-5 my-5 mt-[10px]">
-								<span className="flex">
+								<span className="flex gap-1">
 									{renderStar(product?.totalRatings)?.map(
 										(star, i) => (
 											<i key={i}>{star}</i>
@@ -251,11 +263,11 @@ function DetailProduct({ navigate, dispatch, location }) {
 								<span className="w-[1px] h-full bg-red-300 text-transparent">
 									|
 								</span>
-								<span>{product?.ratings.length} Ratings</span>
+								<span>{product?.ratings.length} Đánh giá</span>
 								<span className="w-[1px] h-full bg-red-300 text-transparent">
 									|
 								</span>
-								<span>{product?.sold} Sold</span>
+								<span>{product?.sold} Lượt bán</span>
 							</div>
 							<ul className="flex flex-col gap-[5px]">
 								{product?.description.length > 1 ? (
@@ -281,16 +293,28 @@ function DetailProduct({ navigate, dispatch, location }) {
 							</ul>
 							<div className="my-3">
 								<h3 className="text-[16px] font-semibold text-gray-800">
-									Color:
+									Phiên bản khác:
 								</h3>
 								<div className="flex flex-wrap">
-									<Variants
+									<VariantsVersion
+										data={product}
+										active={selectVariants.id}
+										onClickActive={setSelectVariants}
+									/>
+								</div>
+							</div>
+							<div className="my-3">
+								<h3 className="text-[16px] font-semibold text-gray-800">
+									Màu sắc:
+								</h3>
+								<div className="flex flex-wrap">
+									<VariantsColor
 										data={product}
 										active={selectVariants.id}
 										onClickActive={setSelectVariants}
 									/>
 									{product?.variants?.map((item) => (
-										<Variants
+										<VariantsColor
 											key={item.sku}
 											data={item}
 											active={selectVariants.id}
@@ -300,26 +324,26 @@ function DetailProduct({ navigate, dispatch, location }) {
 								</div>
 							</div>
 							<div className="flex items-center gap-2">
-								<span>Quantity</span>
+								<span>Số lượng</span>
 								<SelectQuantity
 									quantity={quantity}
 									handleQuantity={handleQuantity}
 									handleChangeQuantity={handleChangeQuantity}
 								/>
 								<span>
-									{selectVariants?.quantity} pieces available
+									{selectVariants?.quantity} sản phẩm còn lại
 								</span>
 							</div>
 							<div className="flex gap-4">
 								<Button
 									handleClick={handleAddCart}
-									title="ADD TO CART"
+									title="Thêm vào giỏ hàng"
 									leftICon={<FaCartPlus />}
 									styleCustom="rounded-sm bg-red-300 border border-red-600 text-white hover:opacity-80 px-4 py3"
 								/>
 								<Button
 									handleClick={handleBuyNow}
-									title="BUY NOW"
+									title="Mua ngay"
 									styleCustom="rounded-sm bg-main text-white hover:opacity-80 px-4 py-3"
 								/>
 							</div>
@@ -346,10 +370,31 @@ function DetailProduct({ navigate, dispatch, location }) {
 				<Ratings data={product} />
 			</div>
 			<div className="max-w-main w-full mx-auto my-[20px]">
-				<h3 className="text-[20px] mb-4 text-[#151515] uppercase font-bold border-b-2 border-main pb-[15px]">
-					YOU MAY ALSO LIKE
-				</h3>
-				<Slider products={relateProduct} productPageDetail show={4} />
+				<div className="flex justify-between underline-heading border-b-2 border-main">
+					<h3 className="text-[28px] mb-4 text-gradient uppercase font-semibold">
+						Các sản phẩm tương tự
+					</h3>
+					<Link
+						to={`${routes.products}/brand/${product?.brand}`}
+						className="hover:underline hover:text-blue-500"
+					>
+						Tất cả
+					</Link>
+				</div>
+				<div className="grid wide">
+					<div className="row">
+						{relateProduct?.map((pro) => {
+							return (
+								<div
+									key={pro._id}
+									className="col g-l-2-4 g-m-3 g-c-2 mt-3 hover:translate-y-[-2px] transitionAll"
+								>
+									<Product data={pro} />
+								</div>
+							);
+						})}
+					</div>
+				</div>
 			</div>
 		</div>
 	);

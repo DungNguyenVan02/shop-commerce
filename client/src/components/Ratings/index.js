@@ -11,6 +11,7 @@ import { userSelector } from "~/redux/selector";
 import routes from "~/config/routes";
 import { apiGetHistoryOrder } from "~/apis";
 import withBaseComponent from "../hocs/withBaseComponent";
+import images from "~/assets/images";
 
 function Ratings({ data, dispatch, navigate }) {
 	const { isLogin } = useSelector(userSelector);
@@ -63,7 +64,7 @@ function Ratings({ data, dispatch, navigate }) {
 	return (
 		<div className="border p-3 rounded-md shadow-md">
 			<h3 className="font-semibold mb-3">
-				Reviews & comments of {data?.name}
+				Nhận xét & đánh giá sản phẩm {data?.name}
 			</h3>
 			<div className="">
 				<div className="grid">
@@ -81,7 +82,7 @@ function Ratings({ data, dispatch, navigate }) {
 									)}
 								</span>
 								<span className="text-blue-500">
-									{`${data?.ratings.length} reviewers`}
+									{`${data?.ratings.length} đánh giá`}
 								</span>
 							</div>
 						</div>
@@ -104,7 +105,7 @@ function Ratings({ data, dispatch, navigate }) {
 						<div className="col g-l-12 g-m-12 g-c-12 border-b">
 							<div className="flex flex-col items-center p-[20px] gap-2">
 								<h3 className="text-gray-400">
-									How do you rate this product?
+									Bạn nghĩ sao về sản phẩm này?
 								</h3>
 								<Button
 									isDisabled={!isSold}
@@ -120,11 +121,28 @@ function Ratings({ data, dispatch, navigate }) {
 						</div>
 						<div className="col g-l-12 g-m-12 g-c-12">
 							<div className="flex flex-col-reverse gap-3 mt-2 ">
-								{data?.ratings.map((item) => {
-									return (
-										<Comment key={item._id} data={item} />
-									);
-								})}
+								{data?.ratings?.length > 0 ? (
+									data.ratings?.map((item) => {
+										return (
+											<Comment
+												key={item._id}
+												data={item}
+											/>
+										);
+									})
+								) : (
+									<div className="flex flex-col items-center w-full">
+										<h3 className="text-[34px] font-semibold text-gradient">
+											Hiện tại chưa có đánh giá nào về sản
+											phẩm này
+										</h3>
+										<img
+											className="w-[400px] object-cover"
+											src={images.review}
+											alt=""
+										/>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

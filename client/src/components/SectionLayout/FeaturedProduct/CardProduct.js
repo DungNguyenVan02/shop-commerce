@@ -1,14 +1,13 @@
 import { formatMoney, renderStar } from "~/utils/helper";
 import images from "~/assets/images";
 import { Link } from "react-router-dom";
+import routes from "~/config/routes";
 
 function CardProduct({ data }) {
 	return (
 		<div className="col g-l-4 g-m-6 g-c-12 cursor-pointer">
 			<Link
-				to={`${data?.category.toLowerCase()}/${data?._id}/${
-					data?.name
-				}`}
+				to={`/${routes.detailProduct}/${data?.category}/${data?._id}/${data?.name}`}
 				className="flex items-center p-2 mb-4 gap-4 shadow-custom_1 rounded-md hover:translate-y-[-2px] transitionAll"
 			>
 				<img

@@ -30,7 +30,7 @@ function VoteBar({ number, ratingCount, ratingTotal }) {
 					></span>
 				</div>
 			</div>
-			<div>{`${ratingTotal || 0} reviewers`}</div>
+			<div>{`${ratingTotal || 0} đánh giá`}</div>
 		</div>
 	);
 }

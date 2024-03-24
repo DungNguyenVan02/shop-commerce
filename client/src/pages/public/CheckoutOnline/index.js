@@ -31,8 +31,6 @@ const CheckoutOnline = ({ dispatch }) => {
 		}
 	};
 
-	console.log(checkouts);
-
 	useEffect(() => {
 		dispatch(getCurrentUser());
 		const products = [];
@@ -43,7 +41,6 @@ const CheckoutOnline = ({ dispatch }) => {
 						el.color === item.color &&
 						el.pid === item.product._id
 					) {
-						console.log(item);
 						products.push(item);
 					}
 				});

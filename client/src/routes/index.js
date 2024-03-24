@@ -28,7 +28,10 @@ const publicRoutes = [
 		path: routes.home,
 		component: Home,
 	},
-
+	{
+		path: routes.products,
+		component: Products,
+	},
 	{
 		path: routes.products_slug,
 		component: Products,

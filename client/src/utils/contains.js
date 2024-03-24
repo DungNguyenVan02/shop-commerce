@@ -44,43 +44,43 @@ export const extraInfo = [
 	{
 		id: 1,
 		icon: <IoShieldCheckmark size={22} color="white" />,
-		title: "Guarantee",
-		subTitle: "Quality Checked",
+		title: "Bảo đảm",
+		subTitle: "Sản phẩm chính hãng 100%",
 	},
 	{
 		id: 2,
 		icon: <FaShippingFast size={22} color="white" />,
-		title: "Free Shipping",
-		subTitle: "Free On All Products",
+		title: "Miễn phí vận chuyển",
+		subTitle: "Miễn phí vận chuyển cho đơn hàng từ 10 triệu",
 	},
 	{
 		id: 3,
 		icon: <IoGift size={22} color="white" />,
-		title: "Special Gift Cards",
-		subTitle: "Special Gift Cards",
+		title: "Quà tặng khuyến mại",
+		subTitle: "Quà tặng hấp dẫn",
 	},
 	{
 		id: 4,
 		icon: <IoArrowUndo size={22} color="white" />,
-		title: "Free Return",
-		subTitle: "Within 7 Days",
+		title: "Miễn phí trả hàng",
+		subTitle: "Trả hàng miễn phí trong vòng 7 ngày",
 	},
 	{
 		id: 5,
 		icon: <FaPhoneAlt size={22} color="white" />,
-		title: "Free Return",
-		subTitle: "Within 7 Days",
+		title: "Tư vấn",
+		subTitle: "SẴn sàng tư vấn 24/7",
 	},
 ];
 
 export const tabs = [
 	{
 		id: 1,
-		tab: "Description",
+		tab: "Mô tả sản phẩm",
 	},
 	{
 		id: 2,
-		tab: "Warranty",
+		tab: "Cam kết sản phẩm",
 		content: `
 			WARRANTY INFORMATION
 			LIMITED WARRANTIES
@@ -93,7 +93,7 @@ export const tabs = [
 	},
 	{
 		id: 3,
-		tab: "Delivery",
+		tab: "Vận chuyển",
 		content: `
 			PURCHASING & DELIVERY
 			Before you make your purchase, it’s helpful to know the measurements of the area you plan to place the furniture. You should also measure any doorways and hallways through which the furniture will pass to get to its final destination.
@@ -106,7 +106,7 @@ export const tabs = [
 	},
 	{
 		id: 4,
-		tab: "Payment",
+		tab: "Thanh toán",
 		content: `
 			PURCHASING & DELIVERY
 			Before you make your purchase, it’s helpful to know the measurements of the area you plan to place the furniture. You should also measure any doorways and hallways through which the furniture will pass to get to its final destination.

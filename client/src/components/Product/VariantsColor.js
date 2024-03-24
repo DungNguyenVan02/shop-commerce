@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { formatMoney } from "~/utils/helper";
 
-const Variants = ({ data, active, onClickActive }) => {
+const VariantsColor = ({ data, active, onClickActive }) => {
 	const idSelected = data?.sku || data?._id;
 
 	return (
@@ -39,4 +39,4 @@ const Variants = ({ data, active, onClickActive }) => {
 	);
 };
 
-export default memo(Variants);
+export default memo(VariantsColor);

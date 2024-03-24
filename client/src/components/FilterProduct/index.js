@@ -77,8 +77,6 @@ const FilterProduct = ({ location, navigate }) => {
 			dataSelected.category = categoryChecked.join(",");
 		}
 
-		console.log(dataSelected);
-
 		navigate({
 			pathname: location.pathname,
 			search: createSearchParams(dataSelected).toString(),
@@ -88,16 +86,32 @@ const FilterProduct = ({ location, navigate }) => {
 
 	return (
 		<div className="w-full">
-			<h3 className="text-[20px] font-semibold">Lọc sản phẩm theo</h3>
-			<div className=" flex flex-col   mt-9 w-full">
+			<div className="flex justify-between items-center">
+				<h3 className="text-[20px] font-semibold">Lọc sản phẩm theo</h3>
+				<span
+					className="cursor-pointer hover:text-blue-500"
+					onClick={() => {
+						setBrand([]);
+						setColor([]);
+						setCategoryChecked([]);
+						setPrice([]);
+					}}
+				>
+					Reset
+				</span>
+			</div>
+			<div className=" flex flex-col mt-5 w-full">
 				<div className="border-b py-5">
 					<h3 className="text-[16px] uppercase font-semibold">
 						Giá sản phẩm
 					</h3>
 					<div className="flex gap-3 flex-col justify-between w-full">
 						<div className="flex justify-between w-full">
-							<span>0 selected</span>
-							<span className="cursor-pointer hover:text-blue-500">
+							<span>{`${price.length} lựa chọn`}</span>
+							<span
+								className="cursor-pointer hover:text-blue-500"
+								onClick={() => setPrice([])}
+							>
 								Reset
 							</span>
 						</div>
@@ -113,7 +127,9 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedPrice(e)}
 									type="checkbox"
 								/>
-								<label htmlFor="price-1">Dưới 3 triệu</label>
+								<label className="text-black" htmlFor="price-1">
+									Dưới 3 triệu
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
@@ -126,7 +142,7 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedPrice(e)}
 									type="checkbox"
 								/>
-								<label htmlFor="price-2">
+								<label className="text-black" htmlFor="price-2">
 									Từ 3 triệu đến 7 triệu
 								</label>
 							</div>
@@ -141,7 +157,7 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedPrice(e)}
 									type="checkbox"
 								/>
-								<label htmlFor="price-3">
+								<label className="text-black" htmlFor="price-3">
 									Từ 7 triệu đến 10 triệu
 								</label>
 							</div>
@@ -156,7 +172,7 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedPrice(e)}
 									type="checkbox"
 								/>
-								<label htmlFor="price-4">
+								<label className="text-black" htmlFor="price-4">
 									Từ 10 triệu đến 15 triệu
 								</label>
 							</div>
@@ -171,7 +187,9 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedPrice(e)}
 									type="checkbox"
 								/>
-								<label htmlFor="price-5">Trên 15 triệu</label>
+								<label className="text-black" htmlFor="price-5">
+									Trên 15 triệu
+								</label>
 							</div>
 						</div>
 					</div>
@@ -182,8 +200,11 @@ const FilterProduct = ({ location, navigate }) => {
 					</h3>
 					<div className="flex gap-3 flex-col justify-between w-full">
 						<div className="flex justify-between w-full">
-							<span>0 selected</span>
-							<span className="cursor-pointer hover:text-blue-500">
+							<span>{`${categoryChecked.length} lựa chọn`}</span>
+							<span
+								className="cursor-pointer hover:text-blue-500"
+								onClick={() => setCategoryChecked([])}
+							>
 								Reset
 							</span>
 						</div>
@@ -195,18 +216,32 @@ const FilterProduct = ({ location, navigate }) => {
 									value="Điện thoại"
 									onChange={(e) => handleCheckedCategory(e)}
 									type="checkbox"
+									checked={categoryChecked?.includes(
+										"Điện thoại"
+									)}
 								/>
-								<label htmlFor="category-1">Điện thoại</label>
+								<label
+									className="text-black"
+									htmlFor="category-1"
+								>
+									Điện thoại
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
 									id="category-2"
 									className="w-[18px] h-[18px]"
-									value="Ipad"
+									value="Tablet"
 									onChange={(e) => handleCheckedCategory(e)}
 									type="checkbox"
+									checked={categoryChecked?.includes(
+										"Tablet"
+									)}
 								/>
-								<label htmlFor="category-2">
+								<label
+									className="text-black"
+									htmlFor="category-2"
+								>
 									Máy tính bảng
 								</label>
 							</div>
@@ -218,7 +253,12 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedCategory(e)}
 									type="checkbox"
 								/>
-								<label htmlFor="category-3">Phụ kiện</label>
+								<label
+									className="text-black"
+									htmlFor="category-3"
+								>
+									Phụ kiện
+								</label>
 							</div>
 						</div>
 					</div>
@@ -229,8 +269,11 @@ const FilterProduct = ({ location, navigate }) => {
 					</h3>
 					<div className="flex gap-3 flex-col justify-between w-full">
 						<div className="flex justify-between w-full">
-							<span>0 selected</span>
-							<span className="cursor-pointer hover:text-blue-500">
+							<span>{`${brand.length} lựa chọn`}</span>
+							<span
+								className="cursor-pointer hover:text-blue-500"
+								onClick={() => setBrand([])}
+							>
 								Reset
 							</span>
 						</div>
@@ -242,8 +285,11 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedBrand(e)}
 									className="w-[18px] h-[18px]"
 									type="checkbox"
+									checked={brand?.includes("Apple")}
 								/>
-								<label htmlFor="brand-1">Apple</label>
+								<label className="text-black" htmlFor="brand-1">
+									Apple
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
@@ -252,18 +298,11 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedBrand(e)}
 									className="w-[18px] h-[18px]"
 									type="checkbox"
+									checked={brand?.includes("Samsung")}
 								/>
-								<label htmlFor="brand-2">Samsung</label>
-							</div>
-							<div className="flex items-center gap-1">
-								<input
-									id="brand-3"
-									value="Vivo"
-									onChange={(e) => handleCheckedBrand(e)}
-									className="w-[18px] h-[18px]"
-									type="checkbox"
-								/>
-								<label htmlFor="brand-3">Vivo</label>
+								<label className="text-black" htmlFor="brand-2">
+									Samsung
+								</label>
 							</div>
 						</div>
 					</div>
@@ -274,8 +313,11 @@ const FilterProduct = ({ location, navigate }) => {
 					</h3>
 					<div className="flex gap-3 flex-col justify-between w-full">
 						<div className="flex justify-between w-full">
-							<span>0 selected</span>
-							<span className="cursor-pointer hover:text-blue-500">
+							<span>{`${color.length} lựa chọn`}</span>
+							<span
+								className="cursor-pointer hover:text-blue-500"
+								onClick={() => setColor([])}
+							>
 								Reset
 							</span>
 						</div>
@@ -285,80 +327,125 @@ const FilterProduct = ({ location, navigate }) => {
 									onChange={(e) => handleCheckedColor(e)}
 									value="Đen"
 									id="black-checkbox"
-									className="w-[18px] h-[18px] appearance-none checked:appearance-auto rounded-sm  bg-black  accent-black"
+									className="w-[18px] h-[18px]  checked:appearance-auto rounded-sm  bg-black  accent-black"
 									type="checkbox"
+									checked={color?.includes("Đen")}
 								/>
-								<label htmlFor="black-checkbox">Black</label>
+								<label
+									className="text-black"
+									htmlFor="black-checkbox"
+								>
+									Black
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
 									onChange={(e) => handleCheckedColor(e)}
 									value="Xanh dương"
 									id="blue-checkbox"
-									className="w-[18px] h-[18px] appearance-none checked:appearance-auto rounded-sm  bg-blue-700  accent-bg-blue-700"
+									className="w-[18px] h-[18px]  checked:appearance-auto rounded-sm  bg-blue-700  accent-bg-blue-700"
 									type="checkbox"
+									checked={color?.includes("Xanh dương")}
 								/>
-								<label htmlFor="blue-checkbox">Blue</label>
+								<label
+									className="text-blue-700"
+									htmlFor="blue-checkbox"
+								>
+									Blue
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
 									onChange={(e) => handleCheckedColor(e)}
 									value="Xanh lam"
 									id="green-checkbox"
-									className="w-[18px] h-[18px] appearance-none checked:appearance-auto rounded-sm  bg-green-700  accent-green-700"
+									className="w-[18px] h-[18px]  checked:appearance-auto rounded-sm  bg-green-700  accent-green-700"
 									type="checkbox"
+									checked={color?.includes("Xanh lam")}
 								/>
-								<label htmlFor="green-checkbox">Green</label>
+								<label
+									className="text-green-700"
+									htmlFor="green-checkbox"
+								>
+									Green
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
 									onChange={(e) => handleCheckedColor(e)}
 									value="Xám"
 									id="gray-checkbox"
-									className="w-[18px] h-[18px] appearance-none checked:appearance-auto rounded-sm  bg-gray-700  accent-gray-700"
+									className=" w-[18px] h-[18px]  checked:appearance-auto rounded-sm  bg-gray-700  accent-gray-700"
 									type="checkbox"
+									checked={color?.includes("Xám")}
 								/>
-								<label htmlFor="gray-checkbox">Gray</label>
+								<label
+									className="text-gray-700"
+									htmlFor="gray-checkbox"
+								>
+									Gray
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
 									onChange={(e) => handleCheckedColor(e)}
 									value="Đỏ"
 									id="red-checkbox"
-									className="w-[18px] h-[18px] appearance-none checked:appearance-auto rounded-sm  bg-red-700  accent-red-700"
+									className="w-[18px] h-[18px]  checked:appearance-auto rounded-sm  bg-red-700  accent-red-700"
 									type="checkbox"
+									checked={color?.includes("Đỏ")}
 								/>
-								<label htmlFor="red-checkbox">Red</label>
+								<label
+									className="text-red-700"
+									htmlFor="red-checkbox"
+								>
+									Red
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
 									onChange={(e) => handleCheckedColor(e)}
 									value="Hồng"
 									id="pink-checkbox"
-									className="w-[18px] h-[18px] border appearance-none checked:appearance-auto rounded-sm  bg-pink-500  accent-pink-500"
+									className="w-[18px] h-[18px] border  checked:appearance-auto rounded-sm  bg-pink-500  accent-pink-500"
 									type="checkbox"
+									checked={color?.includes("Hồng")}
 								/>
-								<label htmlFor="pink-checkbox">Pink</label>
+								<label
+									className="text-pink-500"
+									htmlFor="pink-checkbox"
+								>
+									Pink
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
 									onChange={(e) => handleCheckedColor(e)}
 									value="Vàng"
 									id="yellow-checkbox"
-									className="w-[18px] h-[18px] border appearance-none checked:appearance-auto rounded-sm  bg-yellow-300  accent-yellow-300"
+									className="w-[18px] h-[18px] border  checked:appearance-auto rounded-sm  bg-yellow-300  accent-yellow-300"
 									type="checkbox"
+									checked={color?.includes("Vàng")}
 								/>
-								<label htmlFor="yellow-checkbox">Yellow</label>
+								<label
+									className="text-yellow-400"
+									htmlFor="yellow-checkbox"
+								>
+									Yellow
+								</label>
 							</div>
 							<div className="flex items-center gap-1">
 								<input
 									onChange={(e) => handleCheckedColor(e)}
 									value="Trắng"
 									id="white-checkbox"
-									className="w-[18px] h-[18px] border appearance-none checked:appearance-auto rounded-sm  bg-white  accent-white"
+									className="w-[18px] h-[18px] border  checked:appearance-auto rounded-sm  bg-white  accent-white"
 									type="checkbox"
+									checked={color?.includes("Trắng")}
 								/>
-								<label htmlFor="white-checkbox">White</label>
+								<label className="" htmlFor="white-checkbox">
+									White
+								</label>
 							</div>
 						</div>
 					</div>

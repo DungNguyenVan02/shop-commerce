@@ -11,6 +11,7 @@ import routes from "~/config/routes";
 import { apiAddCart, apiUpdateWishlist } from "~/apis";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 function Product({
 	data,
@@ -85,95 +86,90 @@ function Product({
 
 	return (
 		<div
-			onClick={() =>
-				navigate(
-					`${
-						productPage || productPageDetail
-							? "/" + data?.category?.toLowerCase()
-							: data?.category?.toLowerCase()
-					}/${data?._id}/${data?.name}`
-				)
-			}
 			className={`relative p-2 w-full rounded-lg cursor-pointer ${
 				border ? "border" : "shadow-custom"
 			} bg-white`}
 		>
-			{data?.discount > 0 && (
-				<span className="tagDiscount">{data?.discount} %</span>
-			)}
-			<div className="w-full h-full mx-auto relative product-parent">
-				<div className="product-child absolute bottom-0 left-[50%] justify-center gap-4 py-1 animate-slideTop">
-					<span
-						title="Add wishlist"
-						onClick={(e) => handleClickOptions(e, "heart")}
-					>
-						<SelectOptions
-							icon={
-								<FaHeart
-									color={
-										currentUser?.wishlist?.find(
-											(item) => item._id === data._id
-										)
-											? "red"
-											: ""
-									}
-								/>
-							}
-						/>
-					</span>
-					<span
-						title="Add your cart"
-						onClick={(e) => handleClickOptions(e, "addCart")}
-					>
-						<SelectOptions icon={<FaCartPlus />} />
-					</span>
-					<span
-						title="Show detail"
-						onClick={(e) => handleClickOptions(e, "quickView")}
-					>
-						<SelectOptions icon={<FaRegEye />} />
-					</span>
-				</div>
-				<img
-					className="max-w-[230px] w-full object-cover mx-auto"
-					src={data?.thumb || images.noProductImage}
-					alt=""
-				/>
-				{active === 0 ? (
-					<span className="tagTrending">Trending</span>
-				) : active === 1 ? (
-					<span className="tagNew">New</span>
-				) : (
-					""
+			<Link
+				to={`/${routes.detailProduct}/${data?.category}/${data?._id}/${data?.name}`}
+			>
+				{data?.discount > 0 && (
+					<span className="tagDiscount">{data?.discount} %</span>
 				)}
-			</div>
-			<div>
-				<div>
-					<h3 className="line-clamp-1 text-[18px] font-medium">
-						{data?.name}
-					</h3>
-					<p className="opacity-80 font-light text-[12px]">
-						{data?.brand}
-					</p>
-				</div>
-				<div className="flex items-center gap-1">
-					{renderStar(data?.totalRatings).map((item, i) => (
-						<i key={i}>{item}</i>
-					))}
-				</div>
-				<div className="text-[13px] mb-3 h-[34px] flex items-center justify-between">
-					<h4 className="text-[14px] font-medium ">
-						{formatMoney(
-							data?.price * ((100 - data?.discount) / 100)
-						)}
-					</h4>
-					{data?.discount > 0 && (
-						<h4 className="line-through text-[12px] opacity-60 font-medium">
-							{formatMoney(data?.price)}
-						</h4>
+				<div className="w-full h-full mx-auto relative product-parent">
+					<div className="product-child absolute bottom-0 left-[50%] justify-center gap-4 py-1 animate-slideTop">
+						<span
+							title="Add wishlist"
+							onClick={(e) => handleClickOptions(e, "heart")}
+						>
+							<SelectOptions
+								icon={
+									<FaHeart
+										color={
+											currentUser?.wishlist?.find(
+												(item) => item._id === data._id
+											)
+												? "red"
+												: ""
+										}
+									/>
+								}
+							/>
+						</span>
+						<span
+							title="Add your cart"
+							onClick={(e) => handleClickOptions(e, "addCart")}
+						>
+							<SelectOptions icon={<FaCartPlus />} />
+						</span>
+						<span
+							title="Show detail"
+							onClick={(e) => handleClickOptions(e, "quickView")}
+						>
+							<SelectOptions icon={<FaRegEye />} />
+						</span>
+					</div>
+					<img
+						className="max-w-[230px] w-full object-cover mx-auto"
+						src={data?.thumb || images.noProductImage}
+						alt=""
+					/>
+					{active === 0 ? (
+						<span className="tagTrending">Trending</span>
+					) : active === 1 ? (
+						<span className="tagNew">New</span>
+					) : (
+						""
 					)}
 				</div>
-			</div>
+				<div>
+					<div>
+						<h3 className="line-clamp-1 text-[18px] font-medium">
+							{data?.name}
+						</h3>
+						<p className="opacity-80 font-light text-[12px]">
+							{data?.brand}
+						</p>
+					</div>
+					<div className="flex items-center gap-1">
+						{renderStar(data?.totalRatings).map((item, i) => (
+							<i key={i}>{item}</i>
+						))}
+					</div>
+					<div className="text-[13px] mb-3 h-[34px] flex items-center justify-between">
+						<h4 className="text-[14px] font-medium ">
+							{formatMoney(
+								data?.price * ((100 - data?.discount) / 100)
+							)}
+						</h4>
+						{data?.discount > 0 && (
+							<h4 className="line-through text-[12px] opacity-60 font-medium">
+								{formatMoney(data?.price)}
+							</h4>
+						)}
+					</div>
+				</div>
+			</Link>
 		</div>
 	);
 }

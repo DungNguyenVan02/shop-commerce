@@ -14,7 +14,8 @@ const routes = {
 	cart: "/cart",
 	resetpassword: "/resetpassword",
 	resetpassword_email: "/resetpassword/:email",
-	detailProduct_category_pid_name: "/:category/:pid/:name",
+	detailProduct: "detail-product",
+	detailProduct_category_pid_name: "detail-product/:category/:pid/:name",
 	checkout: "/checkout",
 	checkoutOnline: "/checkout-online",
 

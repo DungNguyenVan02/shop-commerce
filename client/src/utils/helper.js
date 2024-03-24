@@ -3,12 +3,31 @@ import icons from "./icons";
 const { FaStar, FaRegStar, FaRegStarHalfStroke } = icons;
 
 export const createSlug = (string) => {
-	return string
-		.toLowerCase()
-		.normalize("NFD")
-		.replace(/[\u0300-\u036f]/g, "")
-		.split(" ")
-		.join("-");
+	//Đổi ký tự có dấu thành không dấu
+	string = string.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, "a");
+	string = string.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, "e");
+	string = string.replace(/i|í|ì|ỉ|ĩ|ị/gi, "i");
+	string = string.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, "o");
+	string = string.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, "u");
+	string = string.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, "y");
+	string = string.replace(/đ/gi, "d");
+	//Xóa các ký tự đặt biệt
+	string = string.replace(
+		/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi,
+		""
+	);
+	//Đổi khoảng trắng thành ký tự gạch ngang
+	string = string.replace(/ /gi, "-");
+	//Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
+	//Phòng trường hợp người nhập vào quá nhiều ký tự trắng
+	string = string.replace(/\-\-\-\-\-/gi, "-");
+	string = string.replace(/\-\-\-\-/gi, "-");
+	string = string.replace(/\-\-\-/gi, "-");
+	string = string.replace(/\-\-/gi, "-");
+	//Xóa các ký tự gạch ngang ở đầu và cuối
+	string = "@" + string + "@";
+	string = string.replace(/\@\-|\-\@|\@/gi, "");
+	return string;
 };
 
 export const formatMoney = (money) => {

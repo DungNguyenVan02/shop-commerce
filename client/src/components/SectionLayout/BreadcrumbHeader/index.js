@@ -18,11 +18,12 @@ function BreadcrumbHeader({ name, slug, category }) {
 					</Link>
 					<IoIosArrowForward />
 					<Link
-						to={`/${slug}`}
+						to={`${routes.products}/${slug}`}
 						className="cursor-pointer hover:text-main text-[#1c1d1d]"
 					>
-						{category}
+						{category.toUpperCase()}
 					</Link>
+					<IoIosArrowForward />
 					<span className="text-[#505050]">{name}</span>
 				</div>
 			</div>

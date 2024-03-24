@@ -16,7 +16,8 @@ function Products() {
 				category:
 					slug?.slice(0, 1)?.toLocaleUpperCase() + slug?.slice(1),
 			};
-		} else {
+		}
+		if (slug === "brand") {
 			q = {
 				brand,
 			};
@@ -33,7 +34,7 @@ function Products() {
 
 	return (
 		<div className="px-[14px] bg-gray-100">
-			<div className="max-w-main w-full mx-auto my-7">
+			<div className="max-w-main w-full mx-auto py-7">
 				<div className="grid wide">
 					<div className="row">
 						<div className="col g-l-3">

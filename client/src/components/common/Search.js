@@ -6,6 +6,7 @@ import withBaseComponent from "../hocs/withBaseComponent";
 import { apiGetProducts } from "~/apis";
 import { createSearchParams, useSearchParams } from "react-router-dom";
 import { SpinnerAnimation } from "../Animation";
+import routes from "~/config/routes";
 
 function Search({ location, navigate }) {
 	const [searchQueries] = useSearchParams();
@@ -66,10 +67,6 @@ function Search({ location, navigate }) {
 			setSearchText(searchValue);
 		}
 	};
-	const handleShowDetail = (path) => {
-		fnClear();
-		navigate(path);
-	};
 
 	const handleShowResult = (attrs) => {
 		return (
@@ -85,13 +82,12 @@ function Search({ location, navigate }) {
 				<div className="mt-2">
 					{searchResult.map((item) => (
 						<div
-							onClick={() =>
-								handleShowDetail(
-									`/${item.category.toLowerCase()}/${
-										item._id
-									}/${item.name}`
-								)
-							}
+							onClick={() => {
+								navigate(
+									`/${routes.detailProduct}/${item?.category}/${item?._id}/${item?.name}`
+								);
+								setIsShow(false);
+							}}
 							key={item._id}
 							className="flex items-center p-2 gap-3 mt-2 hover:cursor-pointer hover:bg-gray-50"
 						>

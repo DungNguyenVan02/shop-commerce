@@ -14,6 +14,8 @@ const images = {
 	slide2: require("./slide_home_2.png"),
 	slide3: require("./slide_home_3.png"),
 	slide4: require("./slide_home_4.png"),
+
+	review: require("./review.png"),
 };
 
 export default images;
