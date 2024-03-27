@@ -49,7 +49,7 @@ const ItemCart = ({ data, dispatch }) => {
 						className="text-[14px] hover:text-main"
 						onClick={handleRemove}
 					>
-						Remove
+						Xóa
 					</span>
 				</div>
 			</div>

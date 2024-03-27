@@ -30,7 +30,7 @@ function FormInput() {
 			email: emailForgotpassword,
 		});
 		if (response?.success) {
-			Swal.fire("Congratulation", response.mes, "success");
+			Swal.fire("Hệ thống thông báo", response.mes, "success");
 			setIsAnimation(false);
 			navigate(`${routes.resetpassword}/${emailForgotpassword}`);
 		} else {
@@ -41,9 +41,9 @@ function FormInput() {
 
 	const onSubmit = async (value, actions) => {
 		setIsAnimation(true);
-		actions.resetForm();
 		const response = await apiLogin(value);
 		if (response?.success) {
+			actions.resetForm();
 			dispatch(
 				login({
 					isLogin: true,
@@ -52,7 +52,9 @@ function FormInput() {
 				})
 			);
 			setTimeout(() => {
-				toast.info("Welcome to digital world!", { theme: "colored" });
+				toast.info("Chào mừng bạn đã đến website của chúng tôi !", {
+					theme: "colored",
+				});
 				setIsAnimation(false);
 				navigate(
 					searchParams.get("redirect")
@@ -90,7 +92,7 @@ function FormInput() {
 				className="bg-white rounded min-w-[400px] px-[30px] shadow shadow-blue-500/40"
 			>
 				<h3 className="py-[22px] text-[22px] font-semibold text-main text-center">
-					Log in
+					Đăng nhập
 				</h3>
 				<div className="flex flex-col gap-4 items-center py-[30px] pb-[16px] pt-0">
 					<div className="w-full relative">
@@ -111,7 +113,7 @@ function FormInput() {
 									? "border-main"
 									: ""
 							}`}
-							placeholder="Enter your email"
+							placeholder="Nhập email của bạn"
 						/>
 						{errors.email && touched.email && (
 							<p className="text-[12px] text-main my-1">
@@ -124,7 +126,7 @@ function FormInput() {
 							htmlFor="password"
 							className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
 						>
-							Password
+							Mật khẩu
 						</label>
 						<div className="relative">
 							<input
@@ -138,7 +140,7 @@ function FormInput() {
 										? "border-main"
 										: ""
 								}`}
-								placeholder="Enter your password"
+								placeholder="Nhập mật khẩu của bạn"
 							/>
 							<i
 								className="absolute top-[50%] right-3 translate-y-[-50%] opacity-80 cursor-pointer"
@@ -160,7 +162,7 @@ function FormInput() {
 					<Button
 						isDisabled={isSubmitting}
 						type="submit"
-						title="Log in"
+						title="Đăng nhập"
 						rightAnimation={isAnimation && <SpinnerAnimation />}
 					/>
 				</div>
@@ -170,13 +172,13 @@ function FormInput() {
 							className="cursor-pointer hover:text-main"
 							onClick={() => setIsForgotpassword(true)}
 						>
-							Forgot your password?
+							Lấy lại mật khẩu?
 						</span>
 						<Link
 							to={routes.register}
 							className="cursor-pointer hover:text-main"
 						>
-							Create Account
+							Đăng ký
 						</Link>
 					</div>
 				</div>
@@ -196,18 +198,18 @@ function FormInput() {
 						>
 							{<IoCloseOutline size={24} />}
 						</i>
-						<h3>Enter your email</h3>
+						<h3>Nhập email đăng ký</h3>
 						<input
 							required
 							value={emailForgotpassword}
 							onChange={(e) =>
 								setEmailForgotpassword(e.target.value)
 							}
-							placeholder="Exp: email@gmail.com"
+							placeholder="VD: email@gmail.com"
 							className="outline-none w-full border h-[34px] rounded-md px-4 placeholder:text-[14px]"
 						/>
 						<Button
-							title="Submit"
+							title="Gửi"
 							handleClick={handleForgotPassword}
 							rightAnimation={isAnimation && <SpinnerAnimation />}
 						/>

@@ -142,18 +142,14 @@ const VariantsProduct = ({ variantsProduct, onHandleHide }) => {
 											<CustomInput
 												name="price"
 												type="number"
-												label="Price product"
-												placeholder="Enter price product"
+												label="Giá sản phẩm"
+												placeholder="Nhập giá sản phẩm"
 											/>
 										</div>
-										<div className="col g-l-4">
-											<CustomInput
-												name="color"
-												label="Color product"
-												placeholder="Enter color product"
-											/>
+										<div className="col g-l-6">
+											<label>Màu sắc</label>
 										</div>
-										<div className="col g-l-4">
+										<div className="col g-l-2">
 											<CustomInput
 												name="quantity"
 												type="number"

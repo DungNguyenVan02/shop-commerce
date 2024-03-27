@@ -1,56 +1,30 @@
 import { useEffect, useState } from "react";
-import { apiDeleteUser, apiGetAllUser } from "~/apis/user";
+import {
+	apiDeleteUser,
+	apiGetAllUser,
+	apiUpdateUserByAdmin,
+} from "~/apis/user";
 import moment from "moment";
 import icons from "~/utils/icons";
 import { useDebounce } from "~/components/hooks";
 import Pagination from "~/components/Pagination";
 import { useSearchParams, createSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import Modal from "~/components/Modal";
 import { useSelector } from "react-redux";
 import { appSelector } from "~/redux/selector";
-import { showModal } from "~/redux/appSlice";
-import { FormUpdate } from "~/components/Admin/ManageUser";
 import withBaseComponent from "~/components/hocs/withBaseComponent";
 
-function ManageUsers({ location, dispatch, navigate }) {
+function ManageUsers({ location, navigate }) {
 	const [params] = useSearchParams();
 
 	const { isShowModal } = useSelector(appSelector);
 
-	const { TbUserEdit, TbUserX, CiSearch } = icons;
+	const { CiSearch, ImBin, LiaUserTimesSolid, LiaUserCheckSolid } = icons;
 
-	const [editEl, setEditEl] = useState(null);
-	const [isRerender, setIsRender] = useState(false);
+	const [isRerender, setIsRerender] = useState(false);
+
 	const [users, setUsers] = useState([]);
 	const [queries, setQueries] = useState({ q: "" });
-
-	const handleDeleteUser = (uid) => {
-		Swal.fire({
-			title: "Are you sure?",
-			text: "Are you really want remove this user?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonText: "Yes, delete it!",
-			cancelButtonText: "No, cancel!",
-			reverseButtons: true,
-		}).then((result) => {
-			if (result.isConfirmed) {
-				Swal.fire({
-					title: "Deleted!",
-					text: "Your user has been deleted.",
-					icon: "success",
-				}).then(async () => {
-					await apiDeleteUser(uid);
-					setIsRender(!isRerender);
-					navigate({
-						pathname: location.pathname,
-						search: createSearchParams("").toString(),
-					});
-				});
-			}
-		});
-	};
 
 	const debouncedValue = useDebounce(queries.q, 500);
 	useEffect(() => {
@@ -101,25 +75,88 @@ function ManageUsers({ location, dispatch, navigate }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedValue, params, isRerender]);
 
+	const handleRemove = (uid) => {
+		Swal.fire({
+			title: "Bạn có chắc chắn muốn xóa tài khoản này?",
+			text: "Tài khoản này sẽ bị xóa khỏi hệ thống",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Xác nhận xóa",
+		}).then(async (result) => {
+			if (result.isConfirmed) {
+				const response = await apiDeleteUser(uid);
+				if (response.success) {
+					setIsRerender((prev) => !prev);
+					Swal.fire({
+						title: "Xóa thành công!",
+						text: "Tài khoản đã bị xóa",
+						icon: "success",
+					});
+				} else {
+					Swal.fire({
+						title: "Hệ thống thông báo",
+						text: "Có lỗi xảy ra, vui lòng thử lại sau",
+						icon: "warning",
+					});
+				}
+			}
+		});
+	};
+
+	const handleToggleBlocked = (uid, isBlocked) => {
+		Swal.fire({
+			title: `${
+				!isBlocked
+					? "Bạn có chắc chắn muốn mở khóa tài khoản này?"
+					: "Bạn có chắc chắn muốn khóa tài khoản này?"
+			}`,
+			text: `${
+				!isBlocked
+					? "Tài khoản sẽ được hoạt động bình thường"
+					: "Tài khoản sẽ không sử dụng được tại hệ thống"
+			}`,
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Xác nhận",
+		}).then(async (result) => {
+			if (result.isConfirmed) {
+				const response = await apiUpdateUserByAdmin(uid, isBlocked);
+				if (response.success) {
+					setIsRerender((prev) => !prev);
+					Swal.fire({
+						title: "Cập nhật thành công!",
+						text: `Tài khoản đã được ${isBlocked ? "khóa" : "mở"}`,
+						icon: "success",
+					});
+				} else {
+					Swal.fire({
+						title: "Hệ thống thông báo",
+						text: "Có lỗi xảy ra, vui lòng thử lại sau",
+						icon: "warning",
+					});
+				}
+			}
+		});
+	};
+
 	return (
-		<>
-			{isShowModal && (
-				<Modal>
-					<FormUpdate useEdit={editEl} />
-				</Modal>
-			)}
-			<div className="flex items-center h-[40px] bg-gray-600 text-white px-3">
-				Manage user
-			</div>
-			<div className="px-3 bg-gray-100 h-screen">
+		<div className="p-5 bg-[#f6f8fb] min-h-screen">
+			<div className="p-3 bg-white border rounded-lg shadow-custom_1 min-h-[600px]">
+				<h3 className="flex items-center text-black font-semibold text-[24px]">
+					Quản lý người dùng
+				</h3>
 				<div className="flex h-[60px] items-center py-3 gap-5">
-					<div className="h-full flex items-center border rounded-md ">
+					<div className="h-full flex items-center border rounded-md shadow-custom ">
 						<input
 							type="text"
 							value={queries.q}
 							onChange={handleSearchText}
-							placeholder="Enter search user by name or email"
-							className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
+							placeholder="Tìm kiếm theo tên hoặc số điện thoại"
+							className="w-[300px] pl-3 h-full outline-none bg-transparent placeholder:text-[14px]"
 						/>
 						<CiSearch
 							size={20}
@@ -129,40 +166,38 @@ function ManageUsers({ location, dispatch, navigate }) {
 				</div>
 				<div className="overflow-x-auto shadow-md sm:rounded-lg">
 					<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-						<thead className="text-xs text-white uppercase bg-gray-800 dark:bg-gray-700 dark:text-gray-400">
+						<thead className="text-xs text-white uppercase bg-blue-500 dark:bg-gray-700 dark:text-gray-400">
 							<tr>
 								<th scope="col" className="px-6 py-3">
 									#
 								</th>
+
 								<th scope="col" className="px-6 py-3">
-									First name
-								</th>
-								<th scope="col" className="px-6 py-3">
-									Last name
+									Họ tên
 								</th>
 								<th scope="col" className="px-6 py-3">
 									Email
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Phone number
+									Số điện thoại
 								</th>
 
 								<th scope="col" className="px-6 py-3">
-									Role
+									Quyền tài khoản
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Status
+									Tình trạng
 								</th>
 								<th scope="col" className="px-6 py-3">
-									createdAt
+									Ngày tạo
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Actions
+									Lựa chọn
 								</th>
 							</tr>
 						</thead>
 						<tbody>
-							{users?.users?.map((user, index) => {
+							{users?.data?.map((user, index) => {
 								return (
 									<tr
 										key={user._id}
@@ -175,11 +210,9 @@ function ManageUsers({ location, dispatch, navigate }) {
 												1}
 										</td>
 										<td className="px-6 py-3">
-											{user?.firstName}
+											{user?.fullName}
 										</td>
-										<td className="px-6 py-3">
-											{user?.lastName}
-										</td>
+
 										<td className="px-6 py-3">
 											{user?.email}
 										</td>
@@ -203,34 +236,51 @@ function ManageUsers({ location, dispatch, navigate }) {
 											)}
 										</td>
 										<td className="px-6 py-3">
-											<div className="flex items-center gap-3">
+											<div className="flex items-center justify-center gap-3">
+												{user?.isBlocked ? (
+													<i
+														className="cursor-pointer opacity-80 hover:opacity-100"
+														onClick={() =>
+															handleToggleBlocked(
+																user._id,
+																{
+																	isBlocked: false,
+																}
+															)
+														}
+													>
+														<LiaUserCheckSolid
+															size={22}
+															color="#22ba40"
+														/>
+													</i>
+												) : (
+													<i
+														className="cursor-pointer opacity-80 hover:opacity-100"
+														onClick={() =>
+															handleToggleBlocked(
+																user._id,
+																{
+																	isBlocked: true,
+																}
+															)
+														}
+													>
+														<LiaUserTimesSolid
+															size={22}
+															color="#ba8925"
+														/>
+													</i>
+												)}
 												<i
-													className="cursor-pointer opacity-75 hover:opacity-100"
-													onClick={() => {
-														setEditEl(user);
-														dispatch(
-															showModal({
-																isShowModal: true,
-															})
-														);
-													}}
-												>
-													<TbUserEdit
-														size={20}
-														color="blue"
-													/>
-												</i>
-												<i
-													className="cursor-pointer opacity-75 hover:opacity-100"
+													className="cursor-pointer opacity-80 hover:opacity-100"
 													onClick={() =>
-														handleDeleteUser(
-															user._id
-														)
+														handleRemove(user._id)
 													}
 												>
-													<TbUserX
+													<ImBin
 														size={20}
-														color="red"
+														color="#de3737"
 													/>
 												</i>
 											</div>
@@ -245,7 +295,7 @@ function ManageUsers({ location, dispatch, navigate }) {
 					<Pagination totalCount={users.counts} />
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
 export default withBaseComponent(ManageUsers);

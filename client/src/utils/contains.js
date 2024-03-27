@@ -204,11 +204,11 @@ export const sortBys = [
 export const voteOptions = [
 	{
 		id: 1,
-		vote: "Terrible",
+		vote: "Rất tệ",
 	},
 	{
 		id: 2,
-		vote: "Poor",
+		vote: "Tệ",
 	},
 	{
 		id: 3,
@@ -233,62 +233,62 @@ export const adminSlideBar = [
 	},
 	{
 		id: 1,
-		title: "Manage users",
+		title: "Quản lý người dùng",
 		icon: <TiGroupOutline />,
 		path: routes.admin_manage_users,
 	},
 	{
 		id: 2,
-		title: "Manage product",
+		title: "Quản lý sản phẩm",
 		icon: <RiProductHuntLine />,
 		children: [
 			{
 				id: 0,
-				title: "Create product",
+				title: "Thêm sản phẩm",
 				path: routes.admin_create_product,
 			},
 			{
 				id: 1,
-				title: "Manage products",
+				title: "Danh sách sản phẩm",
 				path: routes.admin_manage_products,
 			},
 		],
 	},
 	{
 		id: 3,
-		title: "Manage order",
+		title: "Quản lý đơn hàng",
 		icon: <HiOutlineClipboardDocumentList />,
 		children: [
 			{
 				id: 0,
-				title: "List orders",
+				title: "Dánh sách đơn hàng",
 				path: routes.admin_manage_orders,
 			},
 			{
 				id: 1,
-				title: "Return and refund",
+				title: "Danh sách đơn hoàn",
 				path: routes.admin_manage_return,
 			},
 			{
 				id: 2,
-				title: "Canceled",
+				title: "Danh sách đơn hủy",
 				path: routes.admin_manage_canceled,
 			},
 		],
 	},
 	{
 		id: 4,
-		title: "Manage blog",
+		title: "Quản lý bài viết",
 		icon: <TfiWrite size={16} />,
 		children: [
 			{
 				id: 0,
-				title: "Write blog",
+				title: "Thêm baif viết",
 				path: routes.admin_create_blog,
 			},
 			{
 				id: 1,
-				title: "Manage blogs",
+				title: "Danh sách bài viết",
 				path: routes.admin_manage_blogs,
 			},
 		],
@@ -298,38 +298,38 @@ export const adminSlideBar = [
 export const memberSlideBar = [
 	{
 		id: 0,
-		title: "Personal",
+		title: "Profile",
 		icon: <BiUser />,
 		path: routes.member_personal,
 	},
 	{
 		id: 1,
-		title: "Wishlist",
+		title: "Danh sách yêu thích",
 		icon: <GoChecklist />,
 		path: routes.member_wishlist,
 	},
 	{
 		id: 2,
-		title: "My cart",
+		title: "Giỏ hàng",
 		icon: <BsCart3 />,
 		path: routes.member_cart,
 	},
 	{
 		id: 3,
-		title: "My order",
+		title: "Đơn đặt hàng",
 		icon: <LiaFileInvoiceDollarSolid />,
 		path: routes.member_order,
 	},
 
 	{
 		id: 4,
-		title: "Return and refund",
+		title: "Trả hàng hoàn tiền",
 		icon: <TbTruckReturn />,
 		path: routes.member_return,
 	},
 	{
 		id: 5,
-		title: "History order",
+		title: "Lịch sử mua hàng",
 		icon: <AiOutlineHistory />,
 		path: routes.member_history,
 	},
@@ -352,4 +352,15 @@ export const slider = [
 		id: 4,
 		src: images.slide4,
 	},
+];
+
+export const optionsRam = ["4 GB", "6 GB", "8 GB", "16 GB", "32 GB", "64 GB"];
+
+export const optionsInternalMemory = [
+	"32 GB",
+	"64 GB",
+	"128 GB",
+	"256 GB",
+	"512 GB",
+	"1 T",
 ];

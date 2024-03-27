@@ -20,10 +20,10 @@ function AdminLayout({ children }) {
 						alt="admin"
 						className="w-[34px] h-[34px] rounded-full object-cover"
 					/>
-					<h3>{`${currentUser.firstName} ${currentUser.lastName}`}</h3>
+					<h3>{currentUser.fullName}</h3>
 				</div>
 			</header>
-			<div className="w-full min-h-screen mt-[50px] flex">
+			<div className="w-full mt-[50px] flex">
 				<div className="bg-white shadow-lg fixed top-0 left-0 bottom-0 w-[240px] mt-[50px] z-30">
 					<Sidebar />
 				</div>

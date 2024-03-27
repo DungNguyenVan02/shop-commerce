@@ -4,22 +4,20 @@ import { Editor } from "@tinymce/tinymce-react";
 function MarkdownEditor({
 	label,
 	value,
-
 	onChangeValue,
 	invalidField,
 	setInvalidField,
-	// descriptionProduct,
 }) {
 	return (
 		<>
 			{label && (
-				<label className="text-[14px] font-medium ml-2">{label}</label>
+				<label className="text-[16px] font-medium ml-2">{label}</label>
 			)}
 			<Editor
 				apiKey={process.env.REACT_APP_TINYMCE_KEY}
-				initialValue={value.description}
+				initialValue={value || ""}
 				init={{
-					height: 400,
+					height: 500,
 					menubar: true,
 					plugins: [
 						"advlist",
@@ -59,7 +57,7 @@ function MarkdownEditor({
 				}
 			/>
 			{invalidField.description && (
-				<p className="text-main">Invalid field</p>
+				<p className="text-main">Vui lòng nhập trường này</p>
 			)}
 		</>
 	);

@@ -11,17 +11,9 @@ import routes from "~/config/routes";
 import { apiAddCart, apiUpdateWishlist } from "~/apis";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, createSearchParams } from "react-router-dom";
 
-function Product({
-	data,
-	active,
-	productPage,
-	productPageDetail,
-	navigate,
-	dispatch,
-	border,
-}) {
+function Product({ data, active, navigate, location, dispatch, border }) {
 	const { FaHeart, FaCartPlus, FaRegEye } = icons;
 
 	const { currentUser } = useSelector(userSelector);
@@ -41,16 +33,21 @@ function Product({
 			case "addCart":
 				if (!currentUser) {
 					Swal.fire({
-						title: "Notification!",
-						text: "You need to log in to continue",
+						title: "Hệ thống thông báo!",
+						text: "Bạn cần đăng nhập vào hệ thống trước khi thêm sản phẩm vào giỏ hàng",
 						icon: "warning",
 						showCancelButton: true,
-						confirmButtonText: "Go to login!",
-						cancelButtonText: "No, cancel!",
+						confirmButtonText: "Đăng nhập",
+						cancelButtonText: "Thoát",
 						reverseButtons: true,
 					}).then((result) => {
 						if (result.isConfirmed) {
-							navigate(routes.login);
+							navigate({
+								pathname: routes.login,
+								search: createSearchParams({
+									redirect: location.pathname,
+								}).toString(),
+							});
 						}
 					});
 				} else {
@@ -62,21 +59,12 @@ function Product({
 						thumbnail: data.thumb,
 					});
 					if (response?.success) {
-						toast.success("Has been added to your cart!");
+						toast.success("Sản phẩm đã được thêm vào giỏ hàng");
 						dispatch(getCurrentUser());
 					} else {
 						toast.error(response.mes);
 					}
 				}
-				break;
-			case "quickView":
-				navigate(
-					`${
-						productPage || productPageDetail
-							? "/" + data?.category?.toLowerCase()
-							: data?.category?.toLowerCase()
-					}/${data?._id}/${data?.name}`
-				);
 				break;
 
 			default:
@@ -90,86 +78,85 @@ function Product({
 				border ? "border" : "shadow-custom"
 			} bg-white`}
 		>
-			<Link
-				to={`/${routes.detailProduct}/${data?.category}/${data?._id}/${data?.name}`}
-			>
-				{data?.discount > 0 && (
-					<span className="tagDiscount">{data?.discount} %</span>
+			{data?.discount > 0 && (
+				<span className="tagDiscount">{data?.discount} %</span>
+			)}
+			<div className="w-full h-full mx-auto relative product-parent">
+				<div className="product-child absolute bottom-0 left-[50%] justify-center gap-4 py-1 animate-slideTop">
+					<span
+						title="Add wishlist"
+						onClick={(e) => handleClickOptions(e, "heart")}
+					>
+						<SelectOptions
+							icon={
+								<FaHeart
+									color={
+										currentUser?.wishlist?.find(
+											(item) => item._id === data._id
+										)
+											? "red"
+											: ""
+									}
+								/>
+							}
+						/>
+					</span>
+					<span
+						title="Add your cart"
+						onClick={(e) => {
+							e.stopPropagation();
+							handleClickOptions(e, "addCart");
+						}}
+					>
+						<SelectOptions icon={<FaCartPlus />} />
+					</span>
+					<Link
+						to={`/${routes.detailProduct}/${data?.category}/${data?._id}/${data?.name}`}
+						title="Show detail"
+					>
+						<SelectOptions icon={<FaRegEye />} />
+					</Link>
+				</div>
+				<img
+					className="max-w-[230px] w-full object-cover mx-auto"
+					src={data?.thumb || images.noProductImage}
+					alt=""
+				/>
+				{active === 0 ? (
+					<span className="tagTrending">Trending</span>
+				) : active === 1 ? (
+					<span className="tagNew">New</span>
+				) : (
+					""
 				)}
-				<div className="w-full h-full mx-auto relative product-parent">
-					<div className="product-child absolute bottom-0 left-[50%] justify-center gap-4 py-1 animate-slideTop">
-						<span
-							title="Add wishlist"
-							onClick={(e) => handleClickOptions(e, "heart")}
-						>
-							<SelectOptions
-								icon={
-									<FaHeart
-										color={
-											currentUser?.wishlist?.find(
-												(item) => item._id === data._id
-											)
-												? "red"
-												: ""
-										}
-									/>
-								}
-							/>
-						</span>
-						<span
-							title="Add your cart"
-							onClick={(e) => handleClickOptions(e, "addCart")}
-						>
-							<SelectOptions icon={<FaCartPlus />} />
-						</span>
-						<span
-							title="Show detail"
-							onClick={(e) => handleClickOptions(e, "quickView")}
-						>
-							<SelectOptions icon={<FaRegEye />} />
-						</span>
-					</div>
-					<img
-						className="max-w-[230px] w-full object-cover mx-auto"
-						src={data?.thumb || images.noProductImage}
-						alt=""
-					/>
-					{active === 0 ? (
-						<span className="tagTrending">Trending</span>
-					) : active === 1 ? (
-						<span className="tagNew">New</span>
-					) : (
-						""
+			</div>
+			<div>
+				<div>
+					<h3 className="line-clamp-1 text-[18px] font-medium">
+						{data?.name}
+					</h3>
+					<p className="opacity-80 font-light text-[12px]">
+						{data?.brand}
+					</p>
+				</div>
+				<div className="flex items-center gap-1">
+					{renderStar(data?.totalRatings).map((item, i) => (
+						<i key={i}>{item}</i>
+					))}
+				</div>
+				<div className="text-[13px] mb-3 h-[34px] flex items-center justify-between">
+					<h4 className="text-[14px] font-medium ">
+						{formatMoney(
+							data?.price * ((100 - data?.discount) / 100)
+						)}
+					</h4>
+					{data?.discount > 0 && (
+						<h4 className="line-through text-[12px] opacity-60 font-medium">
+							{formatMoney(data?.price)}
+						</h4>
 					)}
 				</div>
-				<div>
-					<div>
-						<h3 className="line-clamp-1 text-[18px] font-medium">
-							{data?.name}
-						</h3>
-						<p className="opacity-80 font-light text-[12px]">
-							{data?.brand}
-						</p>
-					</div>
-					<div className="flex items-center gap-1">
-						{renderStar(data?.totalRatings).map((item, i) => (
-							<i key={i}>{item}</i>
-						))}
-					</div>
-					<div className="text-[13px] mb-3 h-[34px] flex items-center justify-between">
-						<h4 className="text-[14px] font-medium ">
-							{formatMoney(
-								data?.price * ((100 - data?.discount) / 100)
-							)}
-						</h4>
-						{data?.discount > 0 && (
-							<h4 className="line-through text-[12px] opacity-60 font-medium">
-								{formatMoney(data?.price)}
-							</h4>
-						)}
-					</div>
-				</div>
-			</Link>
+			</div>
 		</div>
 	);
 }

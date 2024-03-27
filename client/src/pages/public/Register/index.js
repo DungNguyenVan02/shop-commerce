@@ -1,17 +1,17 @@
-import { Link } from "react-router-dom";
 import routes from "~/config/routes";
-import images from "~/assets/images";
 import FormInput from "./FormInput";
+import { Link } from "react-router-dom";
+import Logo from "~/components/Logo";
 function Register() {
 	return (
 		<>
 			<header className="w-full">
-				<div className="flex justify-between max-w-main w-full mx-auto py-6">
+				<div className="flex justify-between items-center max-w-main w-full mx-auto py-6">
 					<Link to={routes.home}>
-						<img src={images.logo} alt="logo" />
+						<Logo />
 					</Link>
 					<span className="cursor-pointer hover:text-main">
-						Need help?
+						Cần hỗ trợ
 					</span>
 				</div>
 			</header>

@@ -62,10 +62,7 @@ const publicRoutes = [
 		path: routes.services,
 		component: OurService,
 	},
-	// {
-	// 	path: routes.FAQs,
-	// 	component: FAQs,
-	// },
+
 	{
 		path: routes.cart,
 		component: Cart,

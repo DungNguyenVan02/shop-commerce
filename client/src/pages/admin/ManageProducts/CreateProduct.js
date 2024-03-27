@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Form, Formik } from "formik";
 import { useSelector } from "react-redux";
 import {
@@ -12,102 +12,123 @@ import { schemasValidProduct } from "~/utils/schemasValid";
 import { toast } from "react-toastify";
 import icons from "~/utils/icons";
 import { apiCreateProduct } from "~/apis";
-import { ChooseImages } from "~/components/Admin/ManageProducts";
 import { DotsAnimation } from "~/components/Animation";
 import Swal from "sweetalert2";
+import { optionsInternalMemory, optionsRam } from "~/utils/contains";
 
 function CreateProduct() {
-	const { IoCloseOutline } = icons;
+	const { IoCloseOutline, FaUpload } = icons;
 	const { categories } = useSelector(appSelector);
-	const [isUploading, setIsUploading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [color, setColor] = useState("");
 	const [brands, setBrands] = useState([]);
-	const [descriptionProduct, setDescriptionProduct] = useState("");
-	const [files, setFiles] = useState({
-		thumb: "",
+
+	const [description, setDescription] = useState("");
+
+	const [resetImages, setResetImages] = useState(false);
+
+	const [images, setImages] = useState({
+		thumb: null,
 		images: [],
 	});
+
+	const [preview, setPreview] = useState({
+		thumb: null,
+		images: [],
+	});
+
 	// Thể hiện trạng thái validate form
 	const [invalidField, setInvalidField] = useState({
 		description: false,
 		thumb: false,
 		images: false,
+		color: false,
 	});
-	const [preview, setPreview] = useState({
-		thumb: null,
-		images: null,
-	});
+
+	const inputFileRef = useRef();
 
 	// get data từ MarkDown
 	const onChangeValue = useCallback(
 		(value) => {
-			setDescriptionProduct(value);
+			setDescription(value);
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[descriptionProduct]
+		[description]
 	);
 
 	const initialValues = {
 		name: "",
 		price: "",
-		color: "",
 		quantity: "",
 		category: "",
+		brand: "",
+		ram: "",
+		internalMemory: "",
+	};
+
+	const handleValidateFrom = () => {
+		let result = true;
+		if (!color) {
+			result = false;
+			setInvalidField((prev) => ({ ...prev, color: true }));
+		}
+		if (!description) {
+			result = false;
+			setInvalidField((prev) => ({ ...prev, description: true }));
+		}
+		if (!images.thumb) {
+			result = false;
+			setInvalidField((prev) => ({ ...prev, thumb: true }));
+		}
+		if (images.images.length === 0) {
+			result = false;
+			setInvalidField((prev) => ({ ...prev, images: true }));
+		}
+		return result;
 	};
 
 	const onSubmit = async (data, actions) => {
-		if (descriptionProduct === "") {
-			setInvalidField((prev) => ({
-				...prev,
-				description: true,
-			}));
-		}
-		if (files.thumb === "") {
-			setInvalidField((prev) => ({
-				...prev,
-				thumb: true,
-			}));
-		}
-		if (files.images.length === 0) {
-			setInvalidField((prev) => ({
-				...prev,
-				images: true,
-			}));
-		}
-		if (
-			descriptionProduct === "" ||
-			files.thumb === "" ||
-			files.images.length === 0
-		)
-			return;
-		const mergeObjects = { ...data, description: descriptionProduct };
+		const invalidFields = handleValidateFrom();
+		if (invalidFields) {
+			const payload = {
+				...data,
+				description: description,
+				color: color,
+			};
 
-		const formData = new FormData();
-		for (let i of Object.entries(mergeObjects)) {
-			formData.append(i[0], i[1]);
-		}
-		if (files.thumb) formData.append("thumb", files.thumb);
-		if (files.images) {
-			for (let i of files.images) {
-				formData.append("images", i);
+			const formData = new FormData();
+
+			for (let i of Object.entries(payload)) {
+				formData.append(i[0], i[1]);
 			}
-		}
-
-		setIsUploading(true);
-		const response = await apiCreateProduct(formData);
-		if (response?.success) {
-			actions.resetForm();
-			setIsUploading(false);
-			toast.success("Created product successfully!");
-			setPreview({ thumb: null, images: null });
-			setFiles({ thumb: "", images: [] });
-			setDescriptionProduct("");
-		} else {
-			setIsUploading(false);
-			Swal.fire(
-				"Notifications",
-				"Something went wrong, please try again",
-				"error"
-			);
+			if (images?.thumb) formData.append("thumb", images.thumb);
+			if (images.images) {
+				for (let i of images.images) {
+					formData.append("images", i);
+				}
+			}
+			setIsLoading(true);
+			const response = await apiCreateProduct(formData);
+			if (response?.success) {
+				setIsLoading(false);
+				actions.resetForm();
+				const resetImages = {
+					thumb: null,
+					images: [],
+				};
+				setColor("");
+				setImages(resetImages);
+				setPreview(resetImages);
+				setDescription("");
+				toast.success("Sản phẩm đã được tạo mới");
+			} else {
+				setIsLoading(false);
+				Swal.fire({
+					title: "Hệ thống thông báo",
+					text: "Có lỗi sảy ra, vui lòng thử lại sau",
+					icon: "error",
+				});
+			}
 		}
 	};
 
@@ -118,78 +139,69 @@ function CreateProduct() {
 		if (result) setBrands(result[0]?.brand);
 	};
 
-	const handleUploadImages = useCallback(
-		(event) => {
-			const checkInvalidFiles = Array.from(event.target.files).some(
-				(file) => {
-					return (
-						file.type === "image/jpeg" ||
-						file.type === "image/png" ||
-						file.type === "image/jpg"
-					);
-				}
+	const handleChooseThumb = (e) => {
+		const checkInvalidFiles = Array.from(e.target.files).some((file) => {
+			return (
+				file.type === "image/jpeg" ||
+				file.type === "image/png" ||
+				file.type === "image/jpg"
 			);
-
-			if (checkInvalidFiles) {
-				setFiles((prev) => ({
-					...prev,
-					images: [...prev.images, ...event.target.files],
-				}));
-			} else {
-				toast.warning("File not supported");
-			}
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[files.images]
-	);
-
-	const handleUploadThumb = useCallback(
-		(event) => {
-			const checkInvalidFiles = Array.from(event.target.files).some(
-				(file) => {
-					return (
-						file.type === "image/jpeg" ||
-						file.type === "image/png" ||
-						file.type === "image/jpg"
-					);
-				}
+		});
+		if (checkInvalidFiles) {
+			setImages((prev) => ({ ...prev, thumb: e.target.files[0] }));
+			setPreview((prev) => ({
+				...prev,
+				thumb: URL.createObjectURL(e.target.files[0]),
+			}));
+		} else {
+			toast.warning("Định dạng file chưa được hỗ trợ, vui lòng chọn lại");
+		}
+	};
+	const handleChooseImages = (e) => {
+		const checkInvalidFiles = Array.from(e.target.files).some((file) => {
+			return (
+				file.type === "image/jpeg" ||
+				file.type === "image/png" ||
+				file.type === "image/jpg"
 			);
-			if (checkInvalidFiles) {
-				setFiles((prev) => ({
-					...prev,
-					thumb: event.target.files[0],
-				}));
-			} else {
-				toast.warning("File not supported");
+		});
+
+		if (checkInvalidFiles) {
+			setResetImages(!resetImages);
+
+			setImages((prev) => ({
+				...prev,
+				images: [...e.target.files],
+			}));
+
+			const previewImg = [];
+			for (let i of e.target.files) {
+				const createLink = URL.createObjectURL(i);
+				previewImg.push({ name: i.name, path: createLink });
 			}
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[files.thumb]
-	);
+
+			setPreview((prev) => ({
+				...prev,
+				images: previewImg,
+			}));
+		} else {
+			toast.warning("Định dạng file chưa được hỗ trợ, vui lòng chọn lại");
+		}
+	};
 
 	useEffect(() => {
-		if (files.thumb !== "") {
-			setPreview((prev) => ({
-				...prev,
-				thumb: URL.createObjectURL(files.thumb),
-			}));
-		}
-		if (files.images) {
-			const arr = [];
-			for (let i of files.images) {
-				const createSrcImg = URL.createObjectURL(i);
-				arr.push({ name: i.name, path: createSrcImg });
-			}
-			setPreview((prev) => ({
-				...prev,
-				images: arr,
-			}));
-		}
-	}, [files]);
+		images.thumb && setInvalidField((prev) => ({ ...prev, thumb: false }));
+		images.images.length > 0 &&
+			setInvalidField((prev) => ({ ...prev, images: false }));
+		color && setInvalidField((prev) => ({ ...prev, color: false }));
+		description &&
+			setInvalidField((prev) => ({ ...prev, description: false }));
+	}, [description, images, color]);
 
 	useEffect(() => {
 		return () => preview.thumb && URL.revokeObjectURL(preview.thumb);
-	}, [preview.thumb]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [images.thumb]);
 
 	useEffect(() => {
 		return () => {
@@ -200,27 +212,31 @@ function CreateProduct() {
 			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [preview.images]);
+	}, [resetImages]);
 
 	const handleRemoveFile = (file) => {
-		setFiles((prev) => ({
+		URL.revokeObjectURL(file.path);
+
+		inputFileRef.current.value = "";
+
+		setImages((prev) => ({
 			...prev,
 			images: prev.images.filter((item) => item.name !== file.name),
 		}));
 
-		const finalPreview = preview.images.filter(
-			(files) => files !== file.path
-		);
 		setPreview((prev) => ({
 			...prev,
-			images: finalPreview,
+			images: prev.images.filter((item) => item.name !== file.name),
 		}));
-		URL.revokeObjectURL(file.path);
+	};
+	const handleCheckedColor = (e) => {
+		const colorChecked = e.target.value;
+		setColor(colorChecked);
 	};
 
 	return (
-		<div>
-			{isUploading && (
+		<div className="p-5 bg-[#f6f8fb] min-h-screen">
+			{isLoading && (
 				<div className="fixed top-0 right-0 bottom-0 left-0 bg-overlay z-[99999999] flex items-center justify-center">
 					<h3 className="text-[20px] text-white">
 						Uploading, please wait a moment!
@@ -230,78 +246,261 @@ function CreateProduct() {
 					</i>
 				</div>
 			)}
-			<div className="flex items-center h-[40px] bg-gray-600 text-white px-3">
-				Manage create new product
-			</div>
-			<div className="p-3 bg-gray-100 min-h-screen w-full">
-				<Formik
-					initialValues={initialValues}
-					validationSchema={schemasValidProduct}
-					onSubmit={onSubmit}
-				>
-					{({ handleSubmit }) => (
-						<Form onSubmit={handleSubmit}>
-							<div className="grid wide">
-								<div className="row">
-									<div className="col g-l-3">
-										<CustomInput
-											name="name"
-											label="Name product"
-											placeholder="Enter name product"
-										/>
-									</div>
-									<div className="col g-l-3">
-										<CustomInput
-											name="price"
-											type="number"
-											label="Price product"
-											placeholder="Enter price product"
-										/>
-									</div>
-									<div className="col g-l-3">
-										<CustomInput
-											name="quantity"
-											type="number"
-											label="Quantity product"
-											placeholder="Enter quantity product"
-										/>
-									</div>
-									<div className="col g-l-3">
-										<CustomInput
-											name="color"
-											label="Color product"
-											placeholder="Enter color product"
-										/>
-									</div>
-									<div className="col g-l-3">
-										<CustomSelect
-											name="category"
-											label="Category product"
-											getIdChoose={getIdChoose}
-										>
-											<option value="">
-												--Choose category for product--
-											</option>
-											{categories?.map((cate) => (
-												<option
-													key={cate._id}
-													value={cate.name}
-												>
-													{cate.name}
+			<div className="p-3 bg-white border rounded-lg shadow-custom_1 min-h-[600px]">
+				<h3 className="flex items-center text-black font-semibold text-[24px]">
+					Thêm sản phẩm
+				</h3>
+				<div className="p-3  min-h-screen w-full">
+					<Formik
+						initialValues={initialValues}
+						validationSchema={schemasValidProduct}
+						onSubmit={onSubmit}
+					>
+						{({ handleSubmit }) => (
+							<Form onSubmit={handleSubmit}>
+								<div className="grid wide">
+									<div className="row">
+										<div className="col g-l-4">
+											<CustomInput
+												name="name"
+												label="Tên sản phẩm"
+												placeholder="Nhập tên sản phẩm"
+											/>
+										</div>
+										<div className="col g-l-4">
+											<CustomInput
+												name="price"
+												type="number"
+												label="Giá sản phẩm"
+												placeholder="Nhập giá sản phẩm"
+											/>
+										</div>
+										<div className="col g-l-4">
+											<CustomInput
+												name="quantity"
+												type="number"
+												label="Số lượng"
+												placeholder="Nhập số lượng"
+											/>
+										</div>
+										<div className="col g-l-6">
+											<label className="text-[16px] font-medium ml-2">
+												Màu sắc
+											</label>
+											<div
+												className={`flex items-center h-[34px] border gap-2 px-2  rounded-md ${
+													invalidField.color
+														? "bg-red-100 border-main"
+														: "bg-white"
+												}`}
+											>
+												<div className="flex items-center gap-1">
+													<input
+														onChange={(e) =>
+															handleCheckedColor(
+																e
+															)
+														}
+														checked={
+															color === "Đen"
+														}
+														value="Đen"
+														id="black-checkbox"
+														className="w-[20px] h-[20px]  rounded-full  bg-black  accent-black"
+														type="radio"
+													/>
+													<label htmlFor="black-checkbox">
+														Black
+													</label>
+												</div>
+												<div className="flex items-center gap-1">
+													<input
+														onChange={(e) =>
+															handleCheckedColor(
+																e
+															)
+														}
+														checked={
+															color ===
+															"Xanh dương"
+														}
+														value="Xanh dương"
+														id="blue-checkbox"
+														className="w-[20px] h-[20px]  rounded-full  bg-blue-700  accent-bg-blue-700"
+														type="radio"
+													/>
+													<label htmlFor="blue-checkbox">
+														Blue
+													</label>
+												</div>
+												<div className="flex items-center gap-1">
+													<input
+														onChange={(e) =>
+															handleCheckedColor(
+																e
+															)
+														}
+														checked={
+															color === "Xanh lam"
+														}
+														value="Xanh lam"
+														id="green-checkbox"
+														className="w-[20px] h-[20px]   bg-green-700  accent-green-700"
+														type="radio"
+													/>
+													<label htmlFor="green-checkbox">
+														Green
+													</label>
+												</div>
+												<div className="flex items-center gap-1">
+													<input
+														onChange={(e) =>
+															handleCheckedColor(
+																e
+															)
+														}
+														checked={
+															color === "Xám"
+														}
+														value="Xám"
+														id="gray-checkbox"
+														className="w-[20px] h-[20px]  rounded-full  bg-gray-700  accent-gray-700"
+														type="radio"
+													/>
+													<label htmlFor="gray-checkbox">
+														Gray
+													</label>
+												</div>
+												<div className="flex items-center gap-1">
+													<input
+														onChange={(e) =>
+															handleCheckedColor(
+																e
+															)
+														}
+														checked={color === "Đỏ"}
+														value="Đỏ"
+														id="red-checkbox"
+														className="w-[20px] h-[20px]  rounded-full  bg-red-700  accent-red-700"
+														type="radio"
+													/>
+													<label htmlFor="red-checkbox">
+														Red
+													</label>
+												</div>
+												<div className="flex items-center gap-1">
+													<input
+														onChange={(e) =>
+															handleCheckedColor(
+																e
+															)
+														}
+														checked={
+															color === "Hồng"
+														}
+														value="Hồng"
+														id="pink-checkbox"
+														className="w-[20px] h-[20px] border  rounded-full  bg-pink-500  accent-pink-500"
+														type="radio"
+													/>
+													<label htmlFor="pink-checkbox">
+														Pink
+													</label>
+												</div>
+												<div className="flex items-center gap-1">
+													<input
+														onChange={(e) =>
+															handleCheckedColor(
+																e
+															)
+														}
+														checked={
+															color === "Vàng"
+														}
+														value="Vàng"
+														id="yellow-checkbox"
+														className="w-[20px] h-[20px] border  rounded-full  bg-yellow-300  accent-yellow-300"
+														type="radio"
+													/>
+													<label htmlFor="yellow-checkbox">
+														Yellow
+													</label>
+												</div>
+												<div className="flex items-center gap-1">
+													<input
+														onChange={(e) =>
+															handleCheckedColor(
+																e
+															)
+														}
+														checked={
+															color === "Trắng"
+														}
+														value="Trắng"
+														id="white-checkbox"
+														className="w-[20px] h-[20px] border   rounded-full  bg-white  accent-white"
+														type="radio"
+													/>
+													<label htmlFor="white-checkbox">
+														White
+													</label>
+												</div>
+											</div>
+											{invalidField.color && (
+												<p className="ml-1 mt-[2px] text-[14px] text-red-600">
+													Vui lòng chọn trường này!
+												</p>
+											)}
+										</div>
+										<div className="col g-l-3">
+											<CustomSelect
+												name="category"
+												label="Danh mục sản phẩm"
+												getIdChoose={getIdChoose}
+											>
+												<option value="">
+													--Chọn danh mục sản phẩm--
 												</option>
-											))}
-										</CustomSelect>
-									</div>
-									<div className="col g-l-3">
-										<CustomSelect
-											name="brand"
-											label="Brand product (optional)"
-										>
-											<option>
-												--Choose brand for product--
-											</option>
-											{brands?.length > 0 &&
-												brands?.map((brand) => (
+												{categories?.map((cate) => (
+													<option
+														key={cate._id}
+														value={cate.name}
+													>
+														{cate.name}
+													</option>
+												))}
+											</CustomSelect>
+										</div>
+										<div className="col g-l-3">
+											<CustomSelect
+												name="brand"
+												label="Thương hiệu sản phẩm"
+											>
+												<option>
+													--Chọn thương hiệu sản
+													phẩm--
+												</option>
+												{brands?.length > 0 &&
+													brands?.map((brand) => (
+														<option
+															key={brand}
+															value={brand}
+														>
+															{brand}
+														</option>
+													))}
+											</CustomSelect>
+										</div>
+
+										<div className="col g-l-3">
+											<CustomSelect
+												name="ram"
+												label="Dung lượng RAM"
+											>
+												<option>
+													--Chọn dung lượng RAM--
+												</option>
+												{optionsRam?.map((brand) => (
 													<option
 														key={brand}
 														value={brand}
@@ -309,85 +508,156 @@ function CreateProduct() {
 														{brand}
 													</option>
 												))}
-										</CustomSelect>
+											</CustomSelect>
+										</div>
+										<div className="col g-l-3">
+											<CustomSelect
+												name="internalMemory"
+												label="Dung lượng bộ nhớ trong"
+											>
+												<option>
+													--Chọn dung lượng bộ nhớ
+													trong--
+												</option>
+												{optionsInternalMemory?.map(
+													(internalMemory) => (
+														<option
+															key={internalMemory}
+															value={
+																internalMemory
+															}
+														>
+															{internalMemory}
+														</option>
+													)
+												)}
+											</CustomSelect>
+										</div>
 									</div>
 								</div>
-							</div>
 
-							<div className="row">
-								<div className="col g-l-4">
-									<ChooseImages
-										invalidField={invalidField}
-										id="thumb"
-										files={files}
-										onUpload={handleUploadThumb}
-										selected={preview.thumb ? 1 : 0}
-									/>
-									{preview.thumb && (
-										<img
-											className="w-[140px] my-3 rounded-sm object-cover"
-											src={preview.thumb}
-											alt="previewThumb"
-											accept="image/jpeg, image/png"
-										/>
-									)}
-								</div>
-								<div className="col g-l-8">
-									<ChooseImages
-										invalidField={invalidField}
-										id="images"
-										files={files}
-										onUpload={handleUploadImages}
-										multiple
-										selected={preview.images?.length || 0}
-									/>
-									{preview.images && (
-										<div className="flex items-center gap-3 w-[806px] overflow-x-scroll">
-											{preview.images.map((file) => (
-												<div
-													key={file.name}
-													className="relative min-w-[140px] max-w-[140px]"
-												>
-													<i
-														className="absolute top-3 right-0 p-1 cursor-pointer hover:opacity-70"
-														onClick={() =>
-															handleRemoveFile(
-																file
-															)
-														}
-													>
-														<IoCloseOutline
-															size={22}
-															color="gray"
-														/>
-													</i>
-													<img
-														className="w-full h-full my-3 rounded-sm object-cover"
-														src={file.path}
-														alt="previewImages"
-													/>
-												</div>
-											))}
+								<div className="row">
+									<div className="col g-l-4">
+										<h4 className=" font-medium px-3 text-[16px]">
+											Thumbnail
+										</h4>
+										<label
+											htmlFor="selectThumb"
+											className={`cursor-pointer border h-[40px] flex items-center ${
+												invalidField.thumb
+													? "bg-red-100 border-main"
+													: "bg-white"
+											} px-5 rounded-md`}
+										>
+											<FaUpload />
+											<span className="ml-2">{`Đã chọn ${
+												preview.thumb ? 1 : 0
+											}`}</span>
+											<input
+												id="selectThumb"
+												type="file"
+												onChange={handleChooseThumb}
+												className="hidden"
+											/>
+										</label>
+										{invalidField.thumb && (
+											<p className="ml-1 mt-[2px] text-[14px] text-red-600">
+												Vui lòng nhập trường này!
+											</p>
+										)}
+										<div className="mt-5">
+											{preview?.thumb && (
+												<img
+													className="w-[140px] object-cover"
+													src={preview?.thumb}
+													alt=""
+												/>
+											)}
 										</div>
-									)}
+									</div>
+									<div className="col g-l-8">
+										<h4 className=" font-medium px-3 text-[16px]">
+											Hình ảnh sản phẩm
+										</h4>
+										<label
+											htmlFor="selectImages"
+											className={`cursor-pointer border h-[40px] flex items-center ${
+												invalidField.images
+													? "bg-red-100 border-main"
+													: "bg-white"
+											} px-5 rounded-md`}
+										>
+											<FaUpload />
+											<span className=" ml-2">{`Đã chọn ${preview.images.length}`}</span>
+											<input
+												ref={inputFileRef}
+												id="selectImages"
+												className="hidden"
+												type="file"
+												multiple
+												onChange={handleChooseImages}
+											/>
+										</label>
+										{invalidField.images && (
+											<p className="ml-1 mt-[2px] text-[14px] text-red-600">
+												Vui lòng nhập trường này!
+											</p>
+										)}
+										<div className="mt-5 flex gap-3 overflow-x-auto w-full">
+											{images.images.length > 0 &&
+												preview.images.map(
+													(image, i) => {
+														return (
+															<div
+																key={i}
+																className="relative min-w-[140px]"
+															>
+																<img
+																	className="w-[140px] object-cover"
+																	src={
+																		image.path
+																	}
+																	alt=""
+																/>
+																<i
+																	className="absolute top-0 right-[10px] cursor-pointer hover:opacity-90"
+																	onClick={() =>
+																		handleRemoveFile(
+																			image
+																		)
+																	}
+																>
+																	<IoCloseOutline
+																		size={
+																			20
+																		}
+																	/>
+																</i>
+															</div>
+														);
+													}
+												)}
+										</div>
+									</div>
 								</div>
-							</div>
-							<MarkdownEditor
-								label="Description product"
-								value={{ description: "" }}
-								onChangeValue={onChangeValue}
-								invalidField={invalidField}
-								setInvalidField={setInvalidField}
-								descriptionProduct={descriptionProduct}
-							/>
-							<Button
-								styleCustom="px-3 py-1 bg-green-500 text-white rounded hover:opacity-80 my-[24px]"
-								type="submit"
-								title="Create new product"
-							/>
-						</Form>
-					)}
-				</Formik>
+								<MarkdownEditor
+									label="Mô tả sản phẩm"
+									value={{ description: "" }}
+									onChangeValue={onChangeValue}
+									invalidField={invalidField}
+									setInvalidField={setInvalidField}
+									description={description}
+								/>
+								<Button
+									styleCustom="px-3 py-1 bg-green-500 text-white rounded hover:opacity-80 my-[24px]"
+									type="submit"
+									title="Tạo sản phẩm"
+									handleClick={handleValidateFrom}
+								/>
+							</Form>
+						)}
+					</Formik>
+				</div>
 			</div>
 		</div>
 	);

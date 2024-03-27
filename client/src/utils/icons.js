@@ -17,7 +17,11 @@ import {
 	FaRegEdit,
 	FaPen,
 } from "react-icons/fa";
-import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
+import {
+	LiaFileInvoiceDollarSolid,
+	LiaUserTimesSolid,
+	LiaUserCheckSolid,
+} from "react-icons/lia";
 
 import { BsList, BsSortDown, BsSortDownAlt, BsCart3 } from "react-icons/bs";
 
@@ -69,6 +73,8 @@ import { TbTruckReturn, TbDeviceAirpods } from "react-icons/tb";
 
 import { TfiWrite } from "react-icons/tfi";
 import { GrMoney } from "react-icons/gr";
+
+import { ImBin } from "react-icons/im";
 
 const icons = {
 	FaTabletAlt,
@@ -150,6 +156,10 @@ const icons = {
 	TfiWrite,
 
 	GrMoney,
+
+	ImBin,
+	LiaUserTimesSolid,
+	LiaUserCheckSolid,
 };
 
 export default icons;

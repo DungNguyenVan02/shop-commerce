@@ -38,8 +38,7 @@ const userSlice = createSlice({
 				state.currentUser = null;
 				state.isLogin = false;
 				state.token = null;
-				state.mes =
-					"Your login session has expired, please log in again";
+				state.mes = "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại !";
 			});
 	},
 });

@@ -18,7 +18,6 @@ function Header() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [isHover, setIsHover] = useState(false);
-	const [isGim, setIsGim] = useState(false);
 	const { BsCart3, FaCircleUser } = icons;
 	const { isLogin, currentUser, mes } = useSelector(userSelector);
 
@@ -45,8 +44,6 @@ function Header() {
 	return (
 		<div className="w-full z-[99999999999999999]">
 			<Headroom
-				onPin={() => setIsGim(true)}
-				onUnpin={() => setIsGim(false)}
 				style={{
 					WebkitTransition: "all .5s ease-in-out",
 					MozTransition: "all .5s ease-in-out",
@@ -69,7 +66,7 @@ function Header() {
 									onMouseLeave={() => setIsHover(false)}
 								>
 									<FaCircleUser size={24} />
-									<h2>{`${currentUser?.firstName} ${currentUser?.lastName}`}</h2>
+									<h2>{currentUser?.fullName}</h2>
 									{isHover && (
 										<ul
 											className="absolute top-[30px] min-w-[200px] right-0 py-2 bg-white
@@ -80,13 +77,13 @@ function Header() {
 													to={routes.admin_dashboard}
 												>
 													<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
-														Admin workspace
+														Quản lý hệ thống
 													</li>
 												</Link>
 											)}
 											<Link to={routes.member_personal}>
 												<li className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400">
-													My account
+													Tài khoản của tôi
 												</li>
 											</Link>
 
@@ -94,7 +91,7 @@ function Header() {
 												onClick={handleLogout}
 												className="px-3 py-2 hover:bg-slate-100 cursor-pointer hover:text-blue-400"
 											>
-												Logout
+												Đăng xuất
 											</li>
 										</ul>
 									)}
@@ -105,14 +102,14 @@ function Header() {
 										to={routes.register}
 										className="cursor-pointer hover:opacity-70"
 									>
-										Sign up
+										Đăng ký
 									</Link>
 									<span className="opacity-60">|</span>
 									<Link
 										to={routes.login}
 										className="cursor-pointer hover:opacity-70"
 									>
-										Login
+										Đăng nhập
 									</Link>
 								</div>
 							)}

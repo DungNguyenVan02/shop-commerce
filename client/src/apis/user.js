@@ -15,7 +15,7 @@ export const apiGetAllUser = (params) => {
 	});
 };
 
-export const apiUpdateUserByAdmin = (data, uid) => {
+export const apiUpdateUserByAdmin = (uid, data) => {
 	return axios({
 		url: "/user/" + uid,
 		method: "PUT",

@@ -25,8 +25,8 @@ function FormInput() {
 		const response = await apiRegister(value);
 		if (response?.success) {
 			Swal.fire(
-				"Notifications",
-				"Please check your email and verify with us",
+				"Hệ thống thông báo",
+				"Vui lòng kiểm tra email của bạn và nhập mã xác nhận tài khoản",
 				"success"
 			).then(() => {
 				setIsConfirm(true);
@@ -41,10 +41,12 @@ function FormInput() {
 	const finalRegister = async () => {
 		const response = await apiFinalRegister({ codeVerified: valueConfirm });
 		if (response?.success) {
-			Swal.fire("Congratulation", response.mes, "success").then(() => {
-				setIsConfirm(false);
-				navigate(routes.login);
-			});
+			Swal.fire("Hệ thống thông báo", response.mes, "success").then(
+				() => {
+					setIsConfirm(false);
+					navigate(routes.login);
+				}
+			);
 		} else {
 			Swal.fire("Oops!", response.mes, "error");
 		}
@@ -60,8 +62,7 @@ function FormInput() {
 		handleSubmit,
 	} = useFormik({
 		initialValues: {
-			firstName: "",
-			lastName: "",
+			fullName: "",
 			phone: "",
 			email: "",
 			password: "",
@@ -75,61 +76,35 @@ function FormInput() {
 		<>
 			<form
 				onSubmit={handleSubmit}
-				className="bg-white rounded min-w-[400px] px-[30px] shadow shadow-blue-500/40"
+				className="bg-white rounded-xl min-w-[400px] px-[30px] shadow shadow-blue-500/40"
 			>
 				<h3 className="py-[22px] text-[22px] font-semibold text-main text-center">
-					Register
+					Đăng ký
 				</h3>
 				<div className="flex flex-col gap-4 items-center py-[30px] pb-[16px] pt-0">
 					<div className="w-full relative">
 						<label
-							htmlFor="firstName"
+							htmlFor="fullName"
 							className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
 						>
-							First name
+							Họ tên
 						</label>
 						<input
-							id="firstName"
+							id="fullName"
 							type="text"
-							value={values.firstName}
+							value={values.fullName}
 							onChange={handleChange}
 							onBlur={handleBlur}
-							className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
-								errors.firstName && touched.firstName
+							className={`w-full outline-none rounded-md border p-[10px] placeholder:text-[12px] text-[14px] ${
+								errors.fullName && touched.fullName
 									? "border-main"
 									: ""
 							}`}
-							placeholder="Enter your first name"
+							placeholder="Nhập họ tên của bạn"
 						/>
-						{errors.firstName && touched.firstName && (
+						{errors.fullName && touched.fullName && (
 							<p className="text-[12px] text-main my-1">
-								{errors.firstName}
-							</p>
-						)}
-					</div>
-					<div className="w-full relative">
-						<label
-							htmlFor="lastName"
-							className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
-						>
-							Last name
-						</label>
-						<input
-							id="lastName"
-							type="text"
-							value={values.lastName}
-							onChange={handleChange}
-							onBlur={handleBlur}
-							className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
-								errors.lastName && touched.lastName
-									? "border-main"
-									: ""
-							}`}
-							placeholder="Enter your last name"
-						/>
-						{errors.lastName && touched.lastName && (
-							<p className="text-[12px] text-main my-1">
-								{errors.lastName}
+								{errors.fullName}
 							</p>
 						)}
 					</div>
@@ -138,7 +113,7 @@ function FormInput() {
 							htmlFor="phone"
 							className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
 						>
-							Phone
+							Số điện thoại
 						</label>
 						<input
 							id="phone"
@@ -146,12 +121,12 @@ function FormInput() {
 							value={values.phone}
 							onChange={handleChange}
 							onBlur={handleBlur}
-							className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
+							className={`w-full outline-none  rounded-md border p-[10px] placeholder:text-[12px] text-[14px] ${
 								errors.phone && touched.phone
 									? "border-main"
 									: ""
 							}`}
-							placeholder="Enter your phone"
+							placeholder="Nhập số điện thoại của bạn"
 						/>
 						{errors.phone && touched.phone && (
 							<p className="text-[12px] text-main my-1">
@@ -172,12 +147,12 @@ function FormInput() {
 							value={values.email}
 							onChange={handleChange}
 							onBlur={handleBlur}
-							className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
+							className={`w-full outline-none rounded-md border p-[10px] placeholder:text-[12px] text-[14px] ${
 								errors.email && touched.email
 									? "border-main"
 									: ""
 							}`}
-							placeholder="Enter your email"
+							placeholder="Nhập email của bạn"
 						/>
 						{errors.email && touched.email && (
 							<p className="text-[12px] text-main my-1">
@@ -190,7 +165,7 @@ function FormInput() {
 							htmlFor="password"
 							className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
 						>
-							Password
+							Mật khẩu
 						</label>
 						<div className="relative">
 							<input
@@ -199,12 +174,12 @@ function FormInput() {
 								value={values.password}
 								onChange={handleChange}
 								onBlur={handleBlur}
-								className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
+								className={`w-full outline-none rounded-md border p-[10px] placeholder:text-[12px] text-[14px] ${
 									errors.password && touched.password
 										? "border-main"
 										: ""
 								}`}
-								placeholder="Enter your password"
+								placeholder="Nhập mật khẩu của bạn"
 							/>
 							<i
 								className="absolute top-[50%] right-3 translate-y-[-50%] opacity-80 cursor-pointer"
@@ -228,7 +203,7 @@ function FormInput() {
 							htmlFor="confirmPassword"
 							className="text-[12px] left-[10px] bg-white absolute top-[-10px] px-1 z-50"
 						>
-							Confirm password
+							Xác nhận mật khẩu
 						</label>
 						<div className="relative">
 							<input
@@ -237,13 +212,13 @@ function FormInput() {
 								value={values.confirmPassword}
 								onChange={handleChange}
 								onBlur={handleBlur}
-								className={`w-full outline-none border p-[10px] placeholder:text-[12px] text-[14px] ${
+								className={`w-full outline-none rounded-md border p-[10px] placeholder:text-[12px] text-[14px] ${
 									errors.confirmPassword &&
 									touched.confirmPassword
 										? "border-main"
 										: ""
 								}`}
-								placeholder="Enter confirm password"
+								placeholder="Nhập lại mật khẩu vừa nhập"
 							/>
 							<i
 								className="absolute top-[50%] right-3 translate-y-[-50%] opacity-80 cursor-pointer"
@@ -267,16 +242,18 @@ function FormInput() {
 					<Button
 						isDisabled={isSubmitting}
 						type="submit"
-						title="Register"
+						title="Đăng ký"
 						rightAnimation={isAnimate && <SpinnerAnimation />}
 					/>
-					<div className="flex justify-center text-[14px]">
-						<p className="text-gray-400 mr-1">Have an account?</p>
+					<div className="flex justify-center text-[16px]">
+						<p className="text-gray-400 mr-1">
+							Bạn đã có tài khoản? đăng nhập tại
+						</p>
 						<Link
 							to={routes.login}
-							className="cursor-pointer hover:text-main"
+							className="cursor-pointer hover:text-main text-blue-600 font-medium"
 						>
-							Go to login
+							đây
 						</Link>
 					</div>
 				</div>

@@ -4,10 +4,8 @@ import moment from "moment";
 import DOMPurify from "dompurify";
 import routes from "~/config/routes";
 import { Link } from "react-router-dom";
-// onClick={() => navigate(`${routes.blogs}/detail/${data?._id}`)}
 
 const BlogCard = ({ data, navigate }) => {
-	console.log(data);
 	return (
 		<article className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm">
 			<img alt="" src={data?.image} className=" w-full object-cover" />
