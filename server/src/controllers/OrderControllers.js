@@ -194,7 +194,7 @@ class OrderControllers {
 		// limit: số object lấy về trong 1 lần gọi api
 		// skip: số trang muốn bỏ qua
 		const page = +req.query.page || 1;
-		const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+		const limit = +req.query.limit || process.env.LIMIT;
 		const skip = (page - 1) * limit;
 		queryCommand.skip(skip).limit(limit);
 
@@ -279,7 +279,7 @@ class OrderControllers {
 		// limit: số object lấy về trong 1 lần gọi api
 		// skip: số trang muốn bỏ qua
 		const page = +req.query.page || 1;
-		const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+		const limit = +req.query.limit || process.env.LIMIT;
 		const skip = (page - 1) * limit;
 		queryCommand.skip(skip).limit(limit);
 
@@ -349,7 +349,7 @@ class OrderControllers {
 		// limit: số object lấy về trong 1 lần gọi api
 		// skip: số trang muốn bỏ qua
 		const page = +req.query.page || 1;
-		const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+		const limit = +req.query.limit || process.env.LIMIT;
 		const skip = (page - 1) * limit;
 		queryCommand.skip(skip).limit(limit);
 

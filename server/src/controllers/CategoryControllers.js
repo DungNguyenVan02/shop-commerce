@@ -1,13 +1,11 @@
 const Categories = require("../models/Categories");
 const asyncHandler = require("express-async-handler");
-const slugify = require("slugify");
+const generateSlug = require("../ultils/slugify");
 
 class CategoryControllers {
 	// [GET] /
 	getAllCategory = asyncHandler(async (req, res) => {
-		const response = await Categories.find().select(
-			"name _id brand slug image"
-		);
+		const response = await Categories.find().select("name _id brand slug");
 		return res.json({
 			success: response ? true : false,
 			getAllCategory: response ? response : "category product empty!",
@@ -16,9 +14,12 @@ class CategoryControllers {
 	// [POST] /
 	createCategory = asyncHandler(async (req, res) => {
 		const { name } = req.body;
+
 		if (req.body && req.body.name) {
-			req.body.slug = slugify(name);
+			req.body.slug = generateSlug(name);
 		}
+
+		console.log(generateSlug(name));
 
 		const response = await Categories.create(req.body);
 		return res.json({
@@ -38,7 +39,7 @@ class CategoryControllers {
 		}
 
 		if (req.body) {
-			req.body.slug = slugify(name);
+			req.body.slug = generateSlug(name);
 		}
 
 		const response = await Categories.findByIdAndUpdate(

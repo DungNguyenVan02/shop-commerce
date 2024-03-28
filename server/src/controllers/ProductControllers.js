@@ -71,7 +71,6 @@ class ProductControllers {
 			}
 		);
 		const formatQuery = JSON.parse(queryString);
-		let colorQueryObj = {};
 
 		// Filtering
 		if (queries?.q) {
@@ -79,13 +78,11 @@ class ProductControllers {
 			formatQuery["$or"] = [
 				{ name: { $regex: queries.q, $options: "i" } },
 				{ category: { $regex: queries.q, $options: "i" } },
+				{ brand: { $regex: queries.q, $options: "i" } },
 			];
 		}
 
-		if (queries?.brand) {
-			formatQuery.brand = { $regex: queries.brand, $options: "i" };
-		}
-
+		let colorQueryObj = {};
 		if (queries?.color) {
 			delete formatQuery.color;
 			const colorArr = queries.color?.split(",");
@@ -95,7 +92,32 @@ class ProductControllers {
 			colorQueryObj = { $or: colorQuery };
 		}
 
-		const q = { ...colorQueryObj, ...formatQuery };
+		let brandQueryObj = {};
+		if (queries?.brand) {
+			delete formatQuery.brand;
+			const brandArr = queries.brand?.split(",");
+			const brandQuery = brandArr.map((el) => ({
+				brand: { $regex: el, $options: "i" },
+			}));
+			brandQueryObj = { $or: brandQuery };
+		}
+
+		let categoryQueryObj = {};
+		if (queries?.category) {
+			delete formatQuery.category;
+			const categoryArr = queries.category?.split(",");
+			const categoryQuery = categoryArr.map((el) => ({
+				category: { $regex: el, $options: "i" },
+			}));
+			categoryQueryObj = { $or: categoryQuery };
+		}
+
+		const q = {
+			...categoryQueryObj,
+			...brandQueryObj,
+			...colorQueryObj,
+			...formatQuery,
+		};
 
 		let queryCommand = Product.find(q);
 
@@ -114,7 +136,7 @@ class ProductControllers {
 		// limit: số object lấy về trong 1 lần gọi api
 		// skip: số trang muốn bỏ qua
 		const page = +req.query.page || 1;
-		const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+		const limit = +req.query.limit || process.env.LIMIT;
 		const skip = (page - 1) * limit;
 		queryCommand.skip(skip).limit(limit);
 
@@ -125,7 +147,7 @@ class ProductControllers {
 			return res.status(200).json({
 				success: response ? true : false,
 				counts,
-				products: response ? response : "Cannot get products",
+				products: response ? response : "Lấy danh sachs thất bại",
 			});
 		});
 	});
@@ -133,8 +155,20 @@ class ProductControllers {
 	// [PUT] /:pid
 	updateProduct = asyncHandler(async (req, res) => {
 		const { pid } = req.params;
-		const { name, price, description, category, brand, quantity, color } =
-			req.body;
+		const {
+			name,
+			price,
+			description,
+			category,
+			brand,
+			quantity,
+			color,
+			ram,
+			internalMemory,
+			defaultImages,
+			defaultThumb,
+			discount,
+		} = req.body;
 		if (
 			!name ||
 			!price ||
@@ -142,41 +176,52 @@ class ProductControllers {
 			!category ||
 			!brand ||
 			!quantity ||
-			!color
+			!color ||
+			!ram ||
+			!internalMemory
 		) {
 			throw new Error("Missing inputs");
 		}
+
 		const files = req?.files;
 
-		if (files?.thumb) req.body.thumb = files?.thumb[0].path;
-		if (Array.isArray(req.body?.initImages)) {
-			if (files?.images) {
-				const imagesUpdate = files?.images?.map((el) => el.path);
+		let thumb;
+		let images;
 
-				req.body.images = req.body?.initImages.concat(imagesUpdate);
-			} else {
-				req.body.images = req.body?.initImages;
-			}
-		} else if (typeof req.body?.initImages === "string") {
-			if (files?.images) {
-				const payload = [req.body?.initImages];
+		if (defaultThumb) {
+			thumb = defaultThumb;
+		} else {
+			thumb = files?.thumb[0].path;
+		}
 
-				const imagesUpdate = files?.images?.map((el) => el.path);
-				for (let i of imagesUpdate) {
-					payload.push(i);
-				}
-				req.body.images = payload;
+		if (defaultImages) {
+			if (files?.images) {
+				const imagesNew = files?.images?.map((el) => el.path);
+				images = defaultImages.concat(imagesNew);
 			} else {
-				req.body.images = req.body?.initImages;
+				images = defaultImages;
 			}
 		} else {
-			req.body.images = files?.images?.map((el) => el.path);
+			images = files?.images?.map((el) => el.path);
 		}
 
-		if (name) {
-			req.body.slug = slugify(name);
-		}
-		const updatedProduct = await Product.findByIdAndUpdate(pid, req.body, {
+		const payload = {
+			name,
+			slugify: slugify(name),
+			category,
+			brand,
+			description,
+			color,
+			ram,
+			internalMemory,
+			quantity,
+			price,
+			thumb,
+			images,
+			discount,
+		};
+
+		const updatedProduct = await Product.findByIdAndUpdate(pid, payload, {
 			new: true,
 		});
 
@@ -286,14 +331,77 @@ class ProductControllers {
 		});
 	});
 
+	// [PUT] /variants-update/:pid/:sku
+	updateVariantsProduct = asyncHandler(async (req, res) => {
+		const { pid, sku } = req.params;
+		const {
+			color,
+			price,
+			quantity,
+			ram,
+			internalMemory,
+			discount,
+			defaultThumbnail,
+		} = req.body;
+
+		if (
+			!color ||
+			!price ||
+			!quantity ||
+			!ram ||
+			!internalMemory ||
+			!discount
+		) {
+			throw new Error("Missing input");
+		}
+
+		let thumbnail = defaultThumbnail;
+		if (req?.file) {
+			thumbnail = req.file.path;
+		}
+
+		const product = await Product.findById(pid);
+
+		const productUpdate = product.variants.find((item) => item.sku === sku);
+
+		if (productUpdate) {
+			await Product.updateOne(
+				{
+					variants: { $elemMatch: productUpdate },
+				},
+				{
+					$set: {
+						"variants.$.color": color,
+						"variants.$.ram": ram,
+						"variants.$.internalMemory": internalMemory,
+						"variants.$.price": price,
+						"variants.$.thumbnail": thumbnail,
+						"variants.$.discount": discount,
+						"variants.$.quantity": quantity,
+					},
+				},
+				{ new: true }
+			);
+			return res.status(200).json({
+				success: true,
+				mes: "Cập nhật biến thể thành công",
+			});
+		} else {
+			return res.status(200).json({
+				success: false,
+				mes: "Cập nhật biến thể thất bại",
+			});
+		}
+	});
+
 	// [PUT] /variants/:pid
 	addVariantsProduct = asyncHandler(async (req, res) => {
 		const { pid } = req.params;
-		const { color, price, quantity } = req.body;
+		const { color, price, quantity, ram, internalMemory } = req.body;
 
 		const thumb = req?.files?.thumb[0]?.path;
 
-		if (!color || !price || !thumb) {
+		if ((!color || !price || !thumb, !ram || !internalMemory)) {
 			throw new Error("Missing input");
 		}
 		const response = await Product.findByIdAndUpdate(
@@ -304,8 +412,10 @@ class ProductControllers {
 						sku: uuid(),
 						color,
 						price,
-						thumb,
+						thumbnail: thumb,
 						quantity,
+						ram,
+						internalMemory,
 					},
 				},
 			},
@@ -313,9 +423,28 @@ class ProductControllers {
 		);
 		return res.status(200).json({
 			success: response ? true : false,
-			variantsProduct: response
-				? response
-				: "Cannot add variants product",
+			data: response ? response : "Cannot add variants product",
+		});
+	});
+
+	// [DELETE] /variants-delete/:pid/:sku
+	deleteVariantsProduct = asyncHandler(async (req, res) => {
+		const { sku, pid } = req.params;
+
+		const response = await Product.findByIdAndUpdate(
+			pid,
+			{
+				$pull: {
+					variants: {
+						sku,
+					},
+				},
+			},
+			{ new: true }
+		);
+		return res.status(200).json({
+			success: response ? true : false,
+			data: response ? response : "Cannot delete variants product",
 		});
 	});
 

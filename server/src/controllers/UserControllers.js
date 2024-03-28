@@ -30,8 +30,8 @@ const scheduleAccountCleanup = () => {
 class UserControllers {
 	// [POST] /register
 	register = asyncHandler(async (req, res, next) => {
-		const { firstName, lastName, phone, email, password } = req.body;
-		if (!firstName || !lastName || !phone || !email || !password) {
+		const { fullName, phone, email, password } = req.body;
+		if (!fullName || !phone || !email || !password) {
 			return res.status(403).json({
 				success: false,
 				mes: "Missing required fields",
@@ -40,6 +40,7 @@ class UserControllers {
 		await User.deleteOne({ phone, isVerified: false });
 
 		const user = await User.findOne({ email, phone });
+
 		if (user) {
 			throw new Error("User has existed!");
 		} else {
@@ -211,6 +212,7 @@ class UserControllers {
 
 	getCurrent = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
+		console.log(_id);
 		const user = await User.findById(_id)
 			.select("-refreshToken -password")
 			.populate({
@@ -359,11 +361,15 @@ class UserControllers {
 			formatQuery["$or"] = [
 				{ firstName: { $regex: queries.q, $options: "i" } },
 				{ lastName: { $regex: queries.q, $options: "i" } },
-				{ email: { $regex: queries.q, $options: "i" } },
+				{ phone: { $regex: queries.q, $options: "i" } },
 			];
 		}
 
-		let queryCommand = User.find(formatQuery);
+		const q = {
+			...formatQuery,
+		};
+
+		let queryCommand = User.find(q);
 
 		// Sorting
 		if (req.query.sort) {
@@ -380,18 +386,18 @@ class UserControllers {
 		// limit: số object lấy về trong 1 lần gọi api
 		// skip: số trang muốn bỏ qua
 		const page = +req.query.page || 1;
-		const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+		const limit = +req.query.limit || process.env.LIMIT;
 		const skip = (page - 1) * limit;
 		queryCommand.skip(skip).limit(limit);
 
 		// execute query
 		queryCommand.exec(async (err, response) => {
 			if (err) throw new Error(err.message);
-			const counts = await User.find(formatQuery).countDocuments();
+			const counts = await User.find(q).countDocuments();
 			return res.status(200).json({
 				success: response ? true : false,
 				counts,
-				users: response ? response : "Cannot get users",
+				data: response ? response : "Lấy danh sách thất bại",
 			});
 		});
 	});
@@ -430,20 +436,25 @@ class UserControllers {
 
 	// [PUT] /:slug(_id)
 	updateUserByAdmin = asyncHandler(async (req, res) => {
-		const { role } = req.user;
 		const { uid } = req.params;
-		if (role !== 1974) {
-			throw new Error("You must be an admin");
-		}
-		if (!uid || Object.keys(req.body).length === 0) {
+		const { isBlocked } = req.body;
+
+		if (!uid) {
 			throw new Error("Missing inputs");
 		}
-		const response = await User.findByIdAndUpdate(uid, req.body, {
-			new: true,
-		}).select("-refreshToken -password -role");
+		const response = await User.findByIdAndUpdate(
+			uid,
+			{ isBlocked },
+			{
+				new: true,
+			}
+		).select("-refreshToken -password -role");
 		return res.status(200).json({
 			success: response ? true : false,
-			updatedUser: response ? response : "some thing went wrong",
+			dataUpdate: response,
+			updatedUser: response
+				? "Cập nhật thông tin người dùng thành công!"
+				: "Có lỗi xảy ra, vui lòng thử lại sau!",
 		});
 	});
 

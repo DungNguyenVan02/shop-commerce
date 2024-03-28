@@ -16,7 +16,7 @@ var productSchema = new mongoose.Schema(
 			lowercase: true,
 		},
 		description: {
-			type: Array,
+			type: String,
 			required: true,
 			trim: true,
 		},
@@ -42,7 +42,6 @@ var productSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
-
 		thumb: {
 			type: String,
 			required: true,
@@ -66,13 +65,26 @@ var productSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
+		discount: {
+			type: Number,
+			default: 0,
+		},
+		ram: String,
+		internalMemory: String,
 		variants: [
 			{
 				sku: String,
 				color: String,
 				price: Number,
-				thumb: String,
+				thumbnail: String,
+				discount: { type: Number, default: 0 },
+				sold: {
+					type: Number,
+					default: 0,
+				},
 				quantity: { type: Number, default: 0 },
+				ram: String,
+				internalMemory: String,
 			},
 		],
 	},

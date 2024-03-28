@@ -20,10 +20,6 @@ const categorySchema = new mongoose.Schema(
 			type: Array,
 			required: true,
 		},
-		image: {
-			type: String,
-			required: true,
-		},
 	},
 	{
 		timestamps: true,

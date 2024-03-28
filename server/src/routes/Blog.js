@@ -8,7 +8,7 @@ router.get("/:bid", verifyAccessToken, blogControllers.getBlog);
 
 router.put("/like/:bid", verifyAccessToken, blogControllers.likeBlog);
 router.put("/dislike/:bid", verifyAccessToken, blogControllers.dislikeBlog);
-router.get("/", verifyAccessToken, blogControllers.getAllBlog);
+router.get("/", blogControllers.getAllBlog);
 
 router.use(verifyAccessToken, isAdmin);
 

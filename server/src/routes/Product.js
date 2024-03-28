@@ -33,6 +33,15 @@ router.put(
 	]),
 	productControllers.addVariantsProduct
 );
+router.put(
+	"/variants-update/:pid/:sku",
+	uploader.single("thumbnail"),
+	productControllers.updateVariantsProduct
+);
+router.delete(
+	"/variants-delete/:pid/:sku",
+	productControllers.deleteVariantsProduct
+);
 router.put("/sold", productControllers.updateSold);
 router.put(
 	"/:pid",
