@@ -239,7 +239,7 @@ function CreateProduct() {
 			{isLoading && (
 				<div className="fixed top-0 right-0 bottom-0 left-0 bg-overlay z-[99999999] flex items-center justify-center">
 					<h3 className="text-[20px] text-white">
-						Uploading, please wait a moment!
+						Đang thêm sản phẩm
 					</h3>{" "}
 					<i className="mt-[10px] ml-[-8px]">
 						<DotsAnimation height={57} width={57} />

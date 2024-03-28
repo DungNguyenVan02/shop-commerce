@@ -57,10 +57,8 @@ export const schemasValidProduct = yup.object().shape({
 		.string()
 		.min(2, "Vui lòng nhập tên sản phẩm")
 		.required("Vui lòng nhập trường này"),
-	price: yup
-		.number()
-		.min(1, "Vui lòng nhập giá sản phẩm")
-		.required("Vui lòng nhập trường này"),
+	price: yup.number().required("Vui lòng nhập trường này"),
+	discount: yup.number().required("Vui lòng nhập trường này"),
 	quantity: yup
 		.number()
 		.min(1, "Vui lòng nhập số lượng")
@@ -81,10 +79,8 @@ export const schemasValidVariants = yup.object().shape({
 		.number()
 		.min(2, "Vui lòng nhập giá sản phẩm")
 		.required("Vui lòng nhập trường này"),
-	color: yup
-		.string()
-		.min(2, "Please enter color")
-		.required("Vui lòng nhập trường này"),
+	internalMemory: yup.string().required("Vui lòng chọn trường này"),
+	ram: yup.string().required("Vui lòng chọn trường này"),
 });
 
 export const schemasValidChangeProfile = yup.object().shape({

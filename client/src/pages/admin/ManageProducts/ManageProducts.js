@@ -8,23 +8,31 @@ import { useSearchParams, createSearchParams } from "react-router-dom";
 import { useDebounce } from "~/components/hooks";
 import Swal from "sweetalert2";
 import {
+	CreateVariants,
+	DetailProduct,
 	UpdateProduct,
-	VariantsProduct,
 } from "~/layouts/components/admin/Product";
 import withBaseComponent from "~/components/hocs/withBaseComponent";
 
 function ManageProducts({ location, navigate }) {
 	const [searchQueries] = useSearchParams();
-	const { CiSearch, FaRegEdit, IoTrashBinOutline, BiCustomize } = icons;
+	const { CiSearch, FaRegEdit, IoTrashBinOutline, BiCustomize, FaRegEye } =
+		icons;
 	const [searchText, setSearchText] = useState({ q: "" });
 	const [products, setProducts] = useState([]);
 	const [isRerender, setIsRender] = useState(false);
+
 	const [updateProduct, setUpdateProduct] = useState({
 		isUpdate: false,
 		data: null,
 	});
 	const [variantsProduct, setVariantsProduct] = useState({
 		isVariants: false,
+		data: null,
+	});
+
+	const [detailProduct, setDetailProduct] = useState({
+		isDetail: false,
 		data: null,
 	});
 
@@ -78,14 +86,14 @@ function ManageProducts({ location, navigate }) {
 			text: "Bạn có chắc muốn xóa sản phẩm này?",
 			icon: "warning",
 			showCancelButton: true,
-			confirmButtonText: "Yes, delete it!",
-			cancelButtonText: "No, cancel!",
+			confirmButtonText: "Đồng ý",
+			cancelButtonText: "Thoát",
 			reverseButtons: true,
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire({
-					title: "Deleted!",
-					text: "Your product has been deleted.",
+					title: "Đã xóa!",
+					text: "Sản phẩm đã được xóa",
 					icon: "success",
 				}).then(async () => {
 					await apiDeleteProduct(pid);
@@ -102,7 +110,9 @@ function ManageProducts({ location, navigate }) {
 	return (
 		<div className="p-5 bg-[#f6f8fb] min-h-screen">
 			{updateProduct.isUpdate && (
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-40 min-h-screen bg-[#f6f8fb]">
+				<div
+					className={`absolute top-0 right-0 bottom-0 left-0 z-40 min-h-screen bg-[#f6f8fb]`}
+				>
 					<UpdateProduct
 						dataUpdate={updateProduct?.data}
 						onHandleHide={setUpdateProduct}
@@ -110,10 +120,34 @@ function ManageProducts({ location, navigate }) {
 				</div>
 			)}
 			{variantsProduct.isVariants && (
-				<div className="absolute top-0 right-0 bottom-0 left-0 z-40 flex flex-col">
-					<VariantsProduct
+				<div
+					onClick={() =>
+						setVariantsProduct({
+							isVariants: false,
+							data: null,
+						})
+					}
+					className="absolute top-0 right-0 bottom-0 left-0 z-40  bg-[rgba(10,10,10,0.2)]"
+				>
+					<CreateVariants
 						variantsProduct={variantsProduct?.data}
 						onHandleHide={setVariantsProduct}
+					/>
+				</div>
+			)}
+			{detailProduct.isDetail && (
+				<div
+					onClick={() =>
+						setDetailProduct({
+							isDetail: false,
+							data: null,
+						})
+					}
+					className="absolute top-0 right-0 bottom-0 left-0 z-40  bg-[rgba(10,10,10,0.2)]"
+				>
+					<DetailProduct
+						detailProduct={detailProduct.data}
+						onRerender={setIsRender}
 					/>
 				</div>
 			)}
@@ -143,32 +177,32 @@ function ManageProducts({ location, navigate }) {
 								<th scope="col" className="px-6 py-3">
 									#
 								</th>
-								<th scope="col" className="px-6 py-3">
-									Thumbnail
-								</th>
-								<th scope="col" className="px-6 py-3">
-									Tên sản phẩm
+								<th scope="col" className="px-4 py-3">
+									Hình ảnh
 								</th>
 								<th scope="col" className="px-4 py-3">
-									Danh mục
+									Sản phẩm
 								</th>
+
 								<th scope="col" className="px-6 py-3">
 									Phiên bản
 								</th>
 								<th scope="col" className="px-4 py-3">
 									Giá
 								</th>
-
-								<th scope="col" className="px-2 py-3">
+								<th scope="col" className="p-3">
+									Giảm giá
+								</th>
+								<th scope="col" className="px-4 py-3">
 									Số lượng
 								</th>
-								<th scope="col" className="px-2 py-3">
+								<th scope="col" className="p-3">
 									Lượt bán
 								</th>
-								<th scope="col" className="px-2 py-3">
+								<th scope="col" className="p-3">
 									Đánh giá
 								</th>
-								<th scope="col" className="px-1 py-3">
+								<th scope="col" className="p-3">
 									Biến thể
 								</th>
 								<th
@@ -187,9 +221,15 @@ function ManageProducts({ location, navigate }) {
 								return (
 									<tr
 										key={product._id}
-										className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+										className="cursor-pointer hover:bg-[rgba(155,155,155,0.1)]  ease-in-out odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+										onClick={() =>
+											setDetailProduct({
+												isDetail: true,
+												data: product,
+											})
+										}
 									>
-										<td className="px-6 py-3">
+										<td className=" px-6 py-3">
 											{((+searchQueries.get("page") ||
 												1) -
 												1) *
@@ -197,20 +237,25 @@ function ManageProducts({ location, navigate }) {
 												index +
 												1}
 										</td>
-										<td className="px-6 py-3">
+										<td className=" px-4 py-3">
 											<img
-												className="w-[60px] object-cover"
+												className="w-[40px] object-cover"
 												src={product?.thumb}
 												alt={product?.name}
 											/>
 										</td>
-										<td className="px-6 py-3">
-											{product?.name}
+										<td className=" px-4 py-3">
+											<div className="flex flex-col gap-2">
+												<span className="line-clamp-2">
+													{product?.category}
+												</span>
+												<span className="line-clamp-2">
+													{product?.name}
+												</span>
+											</div>
 										</td>
-										<td className="px-4 py-3">
-											{product?.category}
-										</td>
-										<td className="px-6 py-3">
+
+										<td className=" px-6 py-3">
 											<div className="flex flex-col gap-1">
 												<span>
 													Màu sắc: {product?.color}
@@ -223,28 +268,36 @@ function ManageProducts({ location, navigate }) {
 											</div>
 										</td>
 
-										<td className="px-6 py-3">
+										<td className=" px-6 py-3">
 											{formatMoney(product?.price)}
 										</td>
-										<td className=" py-3 text-center">
+										<td className=" p-3">
+											{product?.discount}%
+										</td>
+										<td className="  py-3 text-center">
 											{product?.quantity}
 										</td>
-										<td className=" py-3 text-center">
+										<td className="  py-3 text-center">
 											{product?.sold}
 										</td>
-										<td className="py-3 text-center">
+										<td className=" py-3 text-center">
 											{product?.totalRatings}
 										</td>
-										<td className="py-3 text-center">
+										<td className=" px-6 py-3 text-center cursor-pointer">
 											{product?.variants.length}
 										</td>
-										<td className="px-5 py-3 text-center">
+										<td className=" px-5 py-3 text-center">
 											{moment(product.createdAt).format(
 												"DD.MM.YYYY"
 											)}
 										</td>
-										<td className="px-6 py-3">
-											<div className="flex items-center justify-center gap-3">
+										<td className=" px-6 py-3">
+											<div
+												onClick={(e) =>
+													e.stopPropagation()
+												}
+												className="flex items-center justify-center gap-3"
+											>
 												<span
 													className="cursor-pointer opacity-75 hover:opacity-100"
 													onClick={() =>

@@ -70,6 +70,7 @@ function UpdateProduct({ dataUpdate, onHandleHide }) {
 		brand: dataUpdate?.brand || "",
 		ram: dataUpdate?.ram || "",
 		internalMemory: dataUpdate?.internalMemory || "",
+		discount: dataUpdate?.discount || "",
 	};
 
 	const handleValidateFrom = () => {
@@ -579,6 +580,14 @@ function UpdateProduct({ dataUpdate, onHandleHide }) {
 													)
 												)}
 											</CustomSelect>
+										</div>
+										<div className="col g-l-3">
+											<CustomInput
+												name="discount"
+												type="number"
+												label="Giảm giá"
+												placeholder="Nhập giảm giá sản phẩm"
+											/>
 										</div>
 									</div>
 								</div>
