@@ -212,7 +212,7 @@ function ManageProducts({ location, navigate }) {
 									Ngày tạo
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Lựa chọn
+									Tùy chọn
 								</th>
 							</tr>
 						</thead>
@@ -222,12 +222,14 @@ function ManageProducts({ location, navigate }) {
 									<tr
 										key={product._id}
 										className="cursor-pointer hover:bg-[rgba(155,155,155,0.1)]  ease-in-out odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
-										onClick={() =>
-											setDetailProduct({
-												isDetail: true,
-												data: product,
-											})
-										}
+										onClick={() => {
+											if (product?.variants.length > 0) {
+												setDetailProduct({
+													isDetail: true,
+													data: product,
+												});
+											}
+										}}
 									>
 										<td className=" px-6 py-3">
 											{((+searchQueries.get("page") ||

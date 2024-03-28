@@ -9,6 +9,7 @@ const images = {
 	banner3Home: require("./banner3-home.png"),
 	banner4Home: require("./banner4-home.png"),
 	onlinePayment: require("./online-payment.svg").default,
+	onlineShopping: require("./onlineShopping.png"),
 
 	slide1: require("./slide_home_1.png"),
 	slide2: require("./slide_home_2.png"),

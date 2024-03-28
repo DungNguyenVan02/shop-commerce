@@ -213,6 +213,15 @@ div.swiper-pagination {
 	-webkit-text-fill-color: transparent;
 	font-weight: 600;
 }
+
+.text-gradient-1 {
+	background: linear-gradient(75deg, #3f8fbd 30%, #74c1cd 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-weight: 600;
+}
+
 .transitionAll {
 	transition: all ease-in-out 0.3s;
 }
@@ -243,4 +252,8 @@ div.swiper-pagination {
 	background: linear-gradient(148deg, #0198ff2e, #0000);
 	outline: none;
 	transition: all ease-in-out 0.4s;
+}
+
+.border-radius-1 {
+	border-radius: 85% 15% 88% 12% / 53% 36% 64% 47%;
 }

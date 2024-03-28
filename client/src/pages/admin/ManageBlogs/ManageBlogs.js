@@ -61,17 +61,17 @@ function ManageBlogs({ location, navigate }) {
 
 	const handleDeleteBlog = (bid) => {
 		Swal.fire({
-			title: "Are you sure?",
+			title: "Bạn có chắc chắn?",
 			text: "Delete blog from this list!",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
 			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete it!",
+			confirmButtonText: "Đồng ý",
 		}).then((result) => {
 			if (result.isConfirmed) {
 				Swal.fire({
-					title: "Deleted!",
+					title: "Đã xóa",
 					text: "Blog has been deleted.",
 					icon: "success",
 				}).then(async () => {

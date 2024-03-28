@@ -20,7 +20,7 @@ const Order = () => {
 
 	const handleCanceledOrder = (oid) => {
 		Swal.fire({
-			title: "Are you sure?",
+			title: "Bạn có chắc chắn?",
 			text: "Cancel order!",
 			icon: "warning",
 			showCancelButton: true,
@@ -50,7 +50,7 @@ const Order = () => {
 
 	const handleReturnOrder = (oid) => {
 		Swal.fire({
-			title: "Are you sure?",
+			title: "Bạn có chắc chắn?",
 			text: "Request for return and refund!",
 			icon: "warning",
 			showCancelButton: true,
@@ -74,7 +74,7 @@ const Order = () => {
 
 	const handleReceivedOrder = (order) => {
 		Swal.fire({
-			title: "Are you sure?",
+			title: "Bạn có chắc chắn?",
 			text: "I have received the goods",
 			icon: "warning",
 			showCancelButton: true,

@@ -192,7 +192,7 @@ function ManageUsers({ location, navigate }) {
 									Ngày tạo
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Lựa chọn
+									Tùy chọn
 								</th>
 							</tr>
 						</thead>
