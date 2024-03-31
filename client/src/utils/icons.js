@@ -64,12 +64,17 @@ import {
 	HiOutlineChevronDown,
 	HiOutlineChevronRight,
 } from "react-icons/hi2";
-import { TbUserEdit, TbUserX } from "react-icons/tb";
 import {
 	MdOutlineScreenSearchDesktop,
 	MdOutlineLocalShipping,
 } from "react-icons/md";
-import { TbTruckReturn, TbDeviceAirpods } from "react-icons/tb";
+import {
+	TbTruckReturn,
+	TbDeviceAirpods,
+	TbUserEdit,
+	TbUserX,
+} from "react-icons/tb";
+import { FiMapPin } from "react-icons/fi";
 
 import { TfiWrite } from "react-icons/tfi";
 import { GrMoney } from "react-icons/gr";
@@ -160,6 +165,7 @@ const icons = {
 	ImBin,
 	LiaUserTimesSolid,
 	LiaUserCheckSolid,
+	FiMapPin,
 };
 
 export default icons;

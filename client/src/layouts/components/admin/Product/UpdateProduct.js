@@ -70,7 +70,7 @@ function UpdateProduct({ dataUpdate, onHandleHide }) {
 		brand: dataUpdate?.brand || "",
 		ram: dataUpdate?.ram || "",
 		internalMemory: dataUpdate?.internalMemory || "",
-		discount: dataUpdate?.discount || "",
+		discount: dataUpdate?.discount === 0 ? 0 : "",
 	};
 
 	const handleValidateFrom = () => {

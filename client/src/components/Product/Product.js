@@ -53,10 +53,13 @@ function Product({ data, active, navigate, location, dispatch, border }) {
 				} else {
 					const response = await apiAddCart({
 						pid: data._id,
+						sku: data._id,
 						color: data?.color || "Unknown",
 						price: data?.price,
 						quantity: 1,
 						thumbnail: data.thumb,
+						ram: data.ram,
+						internalMemory: data.internalMemory,
 					});
 					if (response?.success) {
 						toast.success("Sản phẩm đã được thêm vào giỏ hàng");

@@ -1,39 +1,21 @@
 import { memo } from "react";
-import { formatMoney } from "~/utils/helper";
 
-const VariantsColor = ({ data, active, onClickActive }) => {
-	const idSelected = data?.sku || data?._id;
-
+const VariantsColor = ({ color, active, onChangeActive, thumb }) => {
 	return (
-		<div
-			className="w-1/3"
-			onClick={() =>
-				onClickActive({
-					id: idSelected,
-					price: data?.price,
-					color: data?.color,
-					quantity: data?.quantity,
-				})
-			}
-		>
+		<div className="w-full" onClick={() => onChangeActive(color)}>
 			<div
 				className={`${
-					idSelected === active
+					color === active
 						? "border-main bg-red-100"
 						: " bg-white-200"
-				} flex items-center py-[3px] px-[5px] border rounded-md cursor-pointer`}
+				} flex items-center justify-center h-[40px] py-[3px] border rounded-md cursor-pointer`}
 			>
 				<img
-					src={data?.thumb}
-					alt={data?.name}
-					className="w-[30px] h-[30px] object-cover rounded mr-1"
+					src={thumb}
+					alt=""
+					className="w-[34px] h-[34px] object-cover rounded mr-1"
 				/>
-				<div className="flex flex-col justify-center text-[12px] flex-1">
-					<h3 className="font-semibold text-gray-900 line-clamp-1">
-						{data?.color}
-					</h3>
-					<p>{formatMoney(data?.price)}</p>
-				</div>
+				<h3 className=" text-gray-800 line-clamp-1">{color}</h3>
 			</div>
 		</div>
 	);

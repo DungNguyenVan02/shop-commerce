@@ -10,6 +10,7 @@ import { OvalAnimation } from "~/components/Animation";
 import { toast } from "react-toastify";
 import withBaseComponent from "~/components/hocs/withBaseComponent";
 import { getCurrentUser } from "~/redux/asyncActions";
+import Address from "~/components/Address";
 
 function Personal({ dispatch }) {
 	const { currentUser } = useSelector(userSelector);
@@ -17,6 +18,7 @@ function Personal({ dispatch }) {
 	const [isRender, setIsRender] = useState(false);
 	const [fileAvatar, setFileAvatar] = useState("");
 	const [previewAvatar, setPreviewAvatar] = useState("");
+	const [isAddAddress, setIsAddAddress] = useState(false);
 
 	useEffect(() => {
 		if (fileAvatar) {
@@ -31,11 +33,10 @@ function Personal({ dispatch }) {
 	}, [previewAvatar]);
 
 	const innitValues = {
-		firstName: currentUser.firstName || "",
-		lastName: currentUser.lastName || "",
+		fullName: currentUser.fullName || "",
 		email: currentUser.email || "",
 		phone: currentUser.phone || "",
-		address: currentUser.address[0] || "",
+		address: currentUser?.address?.address || "",
 	};
 	const checkDirty = (data) => {
 		let isDirty = false;
@@ -78,13 +79,21 @@ function Personal({ dispatch }) {
 					<OvalAnimation height={34} width={34} />
 				</div>
 			)}
+			{isAddAddress && (
+				<div
+					onClick={() => setIsAddAddress(false)}
+					className="fixed top-0 right-0 bottom-0 left-0 bg-[rgba(10,10,10,0.5)] z-[99999999] flex items-center justify-center"
+				>
+					<Address onClose={setIsAddAddress} />
+				</div>
+			)}
 			<div className="px-[30px] mb-[24px] bg-white shadow-lg">
 				<div className="py-[18px] border-b mb-6">
 					<h3 className="text-[#222] font-medium text-[18px]">
-						My Profile
+						Profile
 					</h3>
 					<h4 className="text-[#555] text-[16px]">
-						Manage and protect your account
+						Quản lý thông tin tài khoản của bạn
 					</h4>
 				</div>
 				<div className="grid wide">
@@ -101,41 +110,57 @@ function Personal({ dispatch }) {
 										onChange={handleChange}
 									>
 										<CustomInput
-											label="First name"
-											name="firstName"
-											placeholder="Enter your first name"
+											label="Họ tên"
+											name="fullName"
+											placeholder="Nhập họ tên của bạn"
 										/>
-										<CustomInput
-											label="Last name"
-											name="lastName"
-											placeholder="Enter your last name"
-										/>
-										<CustomSelect
-											label="Address"
-											name="address"
-										>
-											{currentUser.address?.map(
-												(item, i) => (
-													<option key={i}>
-														{item}
-													</option>
-												)
+
+										<div className="relative">
+											{currentUser?.address ? (
+												<CustomInput
+													label="Đia chỉ"
+													name="address"
+													readOnly
+												/>
+											) : (
+												<div className="mb-[6px]">
+													<label className="text-[16px] font-medium ml-2">
+														Địa chỉ
+													</label>
+													<div className="h-[40px] border rounded-md">
+														<div className="flex gap-6 items-center justify-between h-full px-2">
+															<h3>
+																Chưa có địa chỉ
+																nào
+															</h3>
+														</div>
+													</div>
+												</div>
 											)}
-										</CustomSelect>
+											<span
+												onClick={() =>
+													setIsAddAddress(true)
+												}
+												className="absolute top-[43%] right-0 cursor-pointer hover:opacity-80 p-[4px] bg-blue-500 text-white rounded-md shadow-custom_1"
+											>
+												Cập nhật địa chỉ
+											</span>
+										</div>
 										<CustomInput
 											label="Email"
 											name="email"
-											placeholder="Enter your email address"
+											readOnly
+											placeholder="Nhập tài khoản email của bạn"
 										/>
 										<CustomInput
-											label="Phone number"
+											label="Số điện thoại"
 											name="phone"
-											placeholder="Enter your phone number"
+											placeholder="Nhập số điện thoại của bạn"
 										/>
 										<Button
-											styleCustom="px-3 py-1 bg-green-500 text-white rounded hover:opacity-80 my-[24px]"
+											styleCustom="px-3 py-1 bg-blue-500 text-white rounded hover:opacity-80 my-[24px]"
 											type="submit"
-											title="Save"
+											title="Cập nhật"
 										/>
 									</Form>
 								)}

@@ -64,6 +64,7 @@ function CreateProduct() {
 		brand: "",
 		ram: "",
 		internalMemory: "",
+		discount: 0,
 	};
 
 	const handleValidateFrom = () => {
@@ -129,6 +130,8 @@ function CreateProduct() {
 					icon: "error",
 				});
 			}
+		} else {
+			toast.warning("Vui lòng nhập đủ các trường còn thiếu");
 		}
 	};
 
@@ -533,9 +536,16 @@ function CreateProduct() {
 												)}
 											</CustomSelect>
 										</div>
+										<div className="col g-l-3">
+											<CustomInput
+												name="discount"
+												type="number"
+												label="Giảm giá"
+												placeholder="Nhập % giảm giá sản phẩm"
+											/>
+										</div>
 									</div>
 								</div>
-
 								<div className="row">
 									<div className="col g-l-4">
 										<h4 className=" font-medium px-3 text-[16px]">
@@ -651,7 +661,7 @@ function CreateProduct() {
 								<Button
 									styleCustom="px-3 py-1 bg-green-500 text-white rounded hover:opacity-80 my-[24px]"
 									type="submit"
-									title="Tạo sản phẩm"
+									title="Tạo mới"
 									handleClick={handleValidateFrom}
 								/>
 							</Form>

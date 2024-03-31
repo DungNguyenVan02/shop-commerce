@@ -17,7 +17,7 @@ const Cart = () => {
 				{currentUser?.cart?.length > 0 ? (
 					<>
 						<h3 className="my-2 mx-3 mb-0 text-[14px] text-[#999] font-[400]">
-							Products added
+							Sản phẩm trong giỏ hàng
 						</h3>
 						<div className="max-h-[56vh] overflow-y-auto">
 							{currentUser?.cart.map((item, index) => {
@@ -26,7 +26,7 @@ const Cart = () => {
 						</div>
 						<Button
 							styleCustom="float-right mr-3 my-3 px-4 py-2 text-white bg-red-500 text-[14px] rounded hover:opacity-90"
-							title="View my shopping cart"
+							title="Đi tới giỏ hàng"
 							handleClick={() => navigate(routes.cart)}
 						/>
 					</>
@@ -37,7 +37,7 @@ const Cart = () => {
 							src={images.noCart}
 							alt="Empty cart"
 						/>
-						<h3>Empty cart</h3>
+						<h3>Không có sản phẩm nào</h3>
 					</div>
 				)}
 			</div>

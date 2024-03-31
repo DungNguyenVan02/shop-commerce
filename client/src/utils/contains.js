@@ -69,7 +69,7 @@ export const extraInfo = [
 		id: 5,
 		icon: <FaPhoneAlt size={22} color="white" />,
 		title: "Tư vấn",
-		subTitle: "SẴn sàng tư vấn 24/7",
+		subTitle: "Sẵn sàng tư vấn 24/7",
 	},
 ];
 

@@ -25,10 +25,10 @@ function ProInforMation({ description }) {
 					</li>
 				))}
 			</ul>
-			<div className="p-5 text-[14px] border rounded mt-4 shadow-md">
+			<div className="p-5 text-[14px] border rounded mt-4 shadow-custom_1">
 				{active === 1 && (
 					<ul>
-						{description?.length > 1 ? (
+						{Array.isArray(description) ? (
 							description?.map((desc) => (
 								<li key={desc} className="flex gap-2">
 									<GoDotFill />
@@ -36,11 +36,11 @@ function ProInforMation({ description }) {
 								</li>
 							))
 						) : (
-							<div
+							<li
 								dangerouslySetInnerHTML={{
 									__html: DOMPurify.sanitize(description),
 								}}
-							></div>
+							></li>
 						)}
 					</ul>
 				)}

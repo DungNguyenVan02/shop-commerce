@@ -6,7 +6,7 @@ import {
 	apiRatingProduct,
 } from "~/apis";
 import { useCallback, useEffect, useState } from "react";
-import DOMPurify from "dompurify";
+import DOMPurify, { version } from "dompurify";
 
 import icons from "~/utils/icons";
 import { createSlug, formatMoney, renderStar } from "~/utils/helper";
@@ -19,7 +19,7 @@ import {
 	VariantsColor,
 	VariantsVersion,
 } from "~/components/Product";
-import { Slider, SliderSubProduct } from "~/components/Slider";
+import { SliderSubProduct } from "~/components/Slider";
 import { BreadcrumbHeader } from "~/components/SectionLayout";
 import Ratings from "~/components/Ratings";
 import Modal from "~/components/Modal";
@@ -44,25 +44,73 @@ function DetailProduct({ navigate, dispatch, location }) {
 	const [relateProduct, setRelateProduct] = useState([]);
 	const [thumbSrc, setThumbSrc] = useState("");
 	const [updateRating, setUpdateRating] = useState(false);
-	const [selectVariants, setSelectVariants] = useState({
-		id: "",
-		color: null,
-		price: null,
-		ram: null,
-		internalMemory: null,
-	});
+
+	const [versionProduct, setVersionProduct] = useState([]);
+	const [colorActive, setColorActive] = useState("");
+	const [variantsSelected, setVariantsSelected] = useState({});
+
+	useEffect(() => {
+		const variants = [];
+		if (product?.color === colorActive) {
+			variants.push({
+				sku: product._id,
+				ram: product.ram,
+				internalMemory: product.internalMemory,
+				price: product.price,
+				quantity: product.quantity,
+				sold: product.sold,
+				thumbnail: product.thumb,
+			});
+		}
+
+		const filterProductByColor = product?.variants?.filter(
+			(item) => item.color === colorActive
+		);
+
+		if (filterProductByColor) {
+			filterProductByColor?.map((item) =>
+				variants.push({
+					sku: item.sku,
+					ram: item.ram,
+					internalMemory: item.internalMemory,
+					price: item.price,
+					quantity: item.quantity,
+					sold: item.sold,
+					thumbnail: item.thumbnail,
+				})
+			);
+		}
+
+		setVersionProduct(variants);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [colorActive, product]);
+
+	useEffect(() => {
+		if (versionProduct.length > 0) {
+			setVariantsSelected({
+				sku: versionProduct[0].sku,
+				ram: versionProduct[0]?.ram,
+				color: colorActive,
+				internalMemory: versionProduct[0]?.internalMemory,
+				price: versionProduct[0]?.price,
+				quantity: versionProduct[0]?.quantity,
+				sold: versionProduct[0]?.sold,
+				thumbnail:
+					versionProduct[0]?.thumb || versionProduct[0]?.thumbnail,
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [versionProduct]);
+
+	useEffect(() => {
+		setQuantity(1);
+	}, [variantsSelected]);
 
 	const fetchProductData = async () => {
 		const response = await apiGetProduct(pid);
 		if (response?.success) {
-			setSelectVariants({
-				id: response?.getProduct?._id,
-				price: response?.getProduct?.price,
-				color: response?.getProduct?.color,
-				quantity: response?.getProduct?.quantity,
-				ram: response?.getProduct?.ram,
-				internalMemory: response?.getProduct?.internalMemory,
-			});
+			setColorActive(response?.getProduct?.color);
 			setProduct(response?.getProduct);
 			setThumbSrc(response?.getProduct?.thumb);
 		}
@@ -97,31 +145,18 @@ function DetailProduct({ navigate, dispatch, location }) {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [updateRating]);
-	useEffect(() => {
-		selectVariants?.quantity > 0 ? setQuantity(1) : setQuantity(0);
-		let src = "";
-		if (selectVariants.id === product?._id) {
-			src = product?.thumb;
-		} else {
-			src = product?.variants?.find(
-				(el) => el.sku === selectVariants.id
-			)?.thumb;
-		}
-		setThumbSrc(src);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectVariants]);
 
 	// Enter quantity
 	const handleQuantity = useCallback(
 		(number) => {
-			if (+number > selectVariants?.quantity) {
-				setQuantity(selectVariants?.quantity);
+			if (+number > variantsSelected?.quantity) {
+				setQuantity(variantsSelected?.quantity);
 			} else {
 				setQuantity(+number);
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[quantity, selectVariants?.quantity]
+		[quantity, variantsSelected?.quantity]
 	);
 
 	// Handle up or down quantity
@@ -129,14 +164,14 @@ function DetailProduct({ navigate, dispatch, location }) {
 		(number) => {
 			if (number < 1) {
 				setQuantity(1);
-			} else if (number > selectVariants?.quantity) {
-				setQuantity(selectVariants?.quantity);
+			} else if (number > variantsSelected?.quantity) {
+				setQuantity(variantsSelected?.quantity);
 			} else {
 				setQuantity(number);
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[quantity, selectVariants?.quantity]
+		[quantity, variantsSelected?.quantity]
 	);
 
 	const handleRating = useCallback(
@@ -173,12 +208,12 @@ function DetailProduct({ navigate, dispatch, location }) {
 	const handleAddCart = useCallback(async () => {
 		if (!currentUser) {
 			Swal.fire({
-				title: "Notification!",
-				text: "You need to log in to continue",
+				title: "Hệ thống thông báo!",
+				text: "Bạn cần đăng nhập vào hệ thống trước khi tiếp tục",
 				icon: "warning",
 				showCancelButton: true,
-				confirmButtonText: "Go to login!",
-				cancelButtonText: "No, cancel!",
+				confirmButtonText: "Đến trang đăng nhập",
+				cancelButtonText: "Hủy bỏ",
 				reverseButtons: true,
 			}).then((result) => {
 				if (result.isConfirmed) {
@@ -191,15 +226,19 @@ function DetailProduct({ navigate, dispatch, location }) {
 				}
 			});
 		} else {
-			const response = await apiAddCart({
-				pid,
-				thumbnail: thumbSrc,
-				color: selectVariants.color || "Unknown",
+			const payload = {
+				pid: pid,
+				sku: variantsSelected?.sku,
+				thumbnail: variantsSelected?.thumbnail,
+				color: colorActive || "Unknown",
 				quantity,
-				price: selectVariants.price,
-			});
+				price: variantsSelected?.price,
+				ram: variantsSelected?.ram,
+				internalMemory: variantsSelected?.internalMemory,
+			};
+			const response = await apiAddCart(payload);
 			if (response?.success) {
-				toast.success("Has been added to your cart!");
+				toast.success("Sản phẩm đã được thêm vào giỏ hàng");
 				dispatch(getCurrentUser());
 			} else {
 				toast.error(response.mes);
@@ -212,12 +251,23 @@ function DetailProduct({ navigate, dispatch, location }) {
 			checkouts([
 				{
 					pid,
-					color: selectVariants.color || "Unknown",
+					color: versionProduct.color || "Unknown",
 					quantity,
 				},
 			])
 		);
 		navigate(routes.checkout);
+	};
+
+	const flatColor = (arr) => {
+		const rs = [];
+		arr?.forEach((item) => {
+			if (!rs.includes(item)) {
+				rs.push(item);
+			}
+		});
+
+		return rs;
 	};
 
 	return (
@@ -249,9 +299,29 @@ function DetailProduct({ navigate, dispatch, location }) {
 							/>
 						</div>
 						<div className="col g-l-4 g-m-4 g-c-12 text-[#505050] text-[14px] ">
-							<h3 className="text-[30px] text-[#333333] font-semibold">
-								{formatMoney(selectVariants?.price)}
-							</h3>
+							<div className="flex justify-between items-center bg-[#f2f2f2] h-[65px] px-5 rounded-lg">
+								<div>
+									<h3 className="text-[30px] text-main font-semibold">
+										{formatMoney(
+											variantsSelected?.price *
+												((100 - product?.discount) /
+													100)
+										)}
+									</h3>
+									{product?.discount > 0 && (
+										<h3 className="text-[18px] text-[#333333] font-semibold opacity-70 line-through">
+											{formatMoney(
+												variantsSelected?.price
+											)}
+										</h3>
+									)}
+								</div>
+								{product?.discount > 0 && (
+									<span className="px-4 py-2 rounded-md shadow-custom_1 bg-[#f8b500] text-white">
+										-{product?.discount}%
+									</span>
+								)}
+							</div>
 							<div className="flex items-center gap-5 my-5 mt-[10px]">
 								<span className="flex gap-1">
 									{renderStar(product?.totalRatings)?.map(
@@ -263,14 +333,14 @@ function DetailProduct({ navigate, dispatch, location }) {
 								<span className="w-[1px] h-full bg-red-300 text-transparent">
 									|
 								</span>
-								<span>{product?.ratings.length} Đánh giá</span>
+								<span>{product?.ratings?.length} Đánh giá</span>
 								<span className="w-[1px] h-full bg-red-300 text-transparent">
 									|
 								</span>
-								<span>{product?.sold} Lượt bán</span>
+								<span>{variantsSelected?.sold} Lượt bán</span>
 							</div>
 							<ul className="flex flex-col gap-[5px]">
-								{product?.description.length > 1 ? (
+								{Array.isArray(product?.description) ? (
 									product?.description?.map((item) => (
 										<li
 											key={item}
@@ -285,7 +355,7 @@ function DetailProduct({ navigate, dispatch, location }) {
 										className="line-clamp-[15]"
 										dangerouslySetInnerHTML={{
 											__html: DOMPurify.sanitize(
-												product?.description[0]
+												product?.description
 											),
 										}}
 									></div>
@@ -295,32 +365,67 @@ function DetailProduct({ navigate, dispatch, location }) {
 								<h3 className="text-[16px] font-semibold text-gray-800">
 									Phiên bản khác:
 								</h3>
-								<div className="flex flex-wrap">
-									<VariantsVersion
-										data={product}
-										active={selectVariants.id}
-										onClickActive={setSelectVariants}
-									/>
+								<div className="grid wide">
+									<div className="row">
+										{versionProduct.length > 0 &&
+											versionProduct?.map((item, i) => (
+												<div
+													key={i}
+													className="col g-l-4"
+												>
+													<VariantsVersion
+														key={item._id}
+														data={item}
+														onChangeVersion={
+															setVariantsSelected
+														}
+														active={
+															variantsSelected
+														}
+														color={colorActive}
+													/>
+												</div>
+											))}
+									</div>
 								</div>
 							</div>
 							<div className="my-3">
-								<h3 className="text-[16px] font-semibold text-gray-800">
-									Màu sắc:
-								</h3>
-								<div className="flex flex-wrap">
-									<VariantsColor
-										data={product}
-										active={selectVariants.id}
-										onClickActive={setSelectVariants}
-									/>
-									{product?.variants?.map((item) => (
-										<VariantsColor
-											key={item.sku}
-											data={item}
-											active={selectVariants.id}
-											onClickActive={setSelectVariants}
-										/>
-									))}
+								{product?.variants?.length > 0 && (
+									<h3 className="text-[16px] font-semibold text-gray-800">
+										Màu sắc:
+									</h3>
+								)}
+								<div className="grid wide">
+									<div className="row">
+										{product?.variants?.length > 0 &&
+											flatColor([
+												...product?.variants?.map(
+													(el) => el.color
+												),
+												product?.color,
+											]).map((item, i) => (
+												<div
+													key={i}
+													className="col g-l-4"
+												>
+													<VariantsColor
+														color={item}
+														thumb={
+															product?.variants?.find(
+																(el) =>
+																	el.color ===
+																	item
+															).thumbnail ||
+															product?.thumb
+														}
+														active={colorActive}
+														onChangeActive={
+															setColorActive
+														}
+													/>
+												</div>
+											))}
+									</div>
 								</div>
 							</div>
 							<div className="flex items-center gap-2">
@@ -331,7 +436,8 @@ function DetailProduct({ navigate, dispatch, location }) {
 									handleChangeQuantity={handleChangeQuantity}
 								/>
 								<span>
-									{selectVariants?.quantity} sản phẩm còn lại
+									{variantsSelected?.quantity} sản phẩm còn
+									lại
 								</span>
 							</div>
 							<div className="flex gap-4">

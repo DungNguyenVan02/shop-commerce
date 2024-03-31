@@ -63,7 +63,6 @@ export const schemasValidProduct = yup.object().shape({
 		.number()
 		.min(1, "Vui lòng nhập số lượng")
 		.required("Vui lòng nhập trường này"),
-
 	category: yup.string().required("Vui lòng chọn trường này"),
 	brand: yup.string().required("Vui lòng chọn trường này"),
 	internalMemory: yup.string().required("Vui lòng chọn trường này"),
@@ -84,13 +83,9 @@ export const schemasValidVariants = yup.object().shape({
 });
 
 export const schemasValidChangeProfile = yup.object().shape({
-	firstName: yup
+	fullName: yup
 		.string()
-		.min(2, "Invalid first name")
-		.required("Vui lòng nhập trường này"),
-	lastName: yup
-		.string()
-		.min(2, "Invalid last name")
+		.min(2, "Vui lòng nhập họ tên của bạn")
 		.required("Vui lòng nhập trường này"),
 	phone: yup
 		.string()
@@ -107,5 +102,12 @@ export const schemasValidBlog = yup.object().shape({
 	title: yup
 		.string()
 		.min(2, "Please enter title blog")
+		.required("Vui lòng nhập trường này"),
+});
+
+export const schemasValidAddress = yup.object().shape({
+	address: yup
+		.string()
+		.min(10, "Vui lòng nhập địa chỉ của bạn, tối thiểu 10 kí tự")
 		.required("Vui lòng nhập trường này"),
 });

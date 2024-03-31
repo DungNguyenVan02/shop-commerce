@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import { apiRemoveCart, apiUpdateQuantityCart } from "~/apis";
 import { ItemCartDetail } from "~/components/Product";
 import { Button } from "~/components/common";
@@ -14,14 +15,17 @@ import { userSelector } from "~/redux/selector";
 import { checkouts } from "~/redux/userSlice";
 import { formatMoney } from "~/utils/helper";
 
-const Cart = ({ dispatch }) => {
+const Cart = ({ dispatch, navigate }) => {
 	const { currentUser } = useSelector(userSelector);
+
 	const [checkAll, setCheckAll] = useState(false);
+
 	const [checkedList, setCheckList] = useState([]);
+
 	const [itemUpdateCart, setItemUpdateCart] = useState(null);
 
 	const fetchUpdateCart = async (data) => {
-		const response = await apiUpdateQuantityCart(data?.pid, data);
+		const response = await apiUpdateQuantityCart(data);
 		if (response?.success) {
 			dispatch(getCurrentUser());
 		} else {
@@ -30,20 +34,21 @@ const Cart = ({ dispatch }) => {
 	};
 
 	const debounceQuantity = useDebounce(itemUpdateCart, 500);
+
 	useEffect(() => {
 		debounceQuantity && fetchUpdateCart(debounceQuantity);
 		// eslint-disable-next-line no-use-before-define
 	}, [debounceQuantity]);
 
-	const handleUpdateCart = useCallback((dataChange) => {
+	const handleUpdateQuantityCart = useCallback((dataChange) => {
 		setItemUpdateCart(dataChange);
 	});
 
 	useEffect(() => {
-		document.title = "Shopping Cart";
+		document.title = "Giỏ hàng";
 
 		return () => {
-			document.title = "Digital World";
+			document.title = "LEO phone";
 		};
 	}, []);
 
@@ -52,8 +57,9 @@ const Cart = ({ dispatch }) => {
 		if (!checkAll) {
 			setCheckList(
 				currentUser?.cart?.map((item) => ({
-					pid: item.product._id,
-					color: item.color,
+					cid: item._id,
+					pid: item?.product._id,
+					sku: item?.sku,
 				}))
 			);
 		} else {
@@ -69,24 +75,15 @@ const Cart = ({ dispatch }) => {
 		}
 	}, [checkedList]);
 
-	const handleCheckedItem = useCallback((cid, pid, color) => {
-		const isAlready = checkedList?.some(
-			(item) => item.pid === pid && item.color === color
-		);
+	const handleCheckedItem = useCallback((cid, pid, sku) => {
+		const isAlready = checkedList?.some((item) => item.sku === sku);
+
 		if (isAlready) {
-			setCheckList((prev) =>
-				prev.filter(
-					(item) => !(item.pid === pid && item.color === color)
-				)
-			);
+			setCheckList((prev) => prev.filter((item) => item.sku !== sku));
 		} else {
-			setCheckList((prev) => [
-				...prev,
-				{ cid: cid, pid: pid, color: color },
-			]);
+			setCheckList((prev) => [...prev, { cid: cid, pid: pid, sku: sku }]);
 		}
 	});
-
 	const handleRemoveCart = async (cid) => {
 		let payload = {};
 		if (checkedList.length > 0) {
@@ -100,7 +97,7 @@ const Cart = ({ dispatch }) => {
 			dispatch(getCurrentUser());
 			setCheckList([]);
 		} else {
-			toast.error("Something went wrong, please try again!");
+			toast.error("Có lỗi xảy ra, vui lòng thử lại sau!");
 		}
 	};
 
@@ -108,15 +105,38 @@ const Cart = ({ dispatch }) => {
 		const arrCalc = [];
 		currentUser?.cart.forEach((item) => {
 			checkedList.forEach((el) => {
-				if (el.color === item.color && el.pid === item.product._id) {
+				if (item._id === el.cid) {
 					arrCalc.push(item);
 				}
 			});
 		});
 
 		return arrCalc.reduce((total, item) => {
-			return total + item.price * item.quantity;
+			return (
+				total +
+				item.price *
+					((100 - item?.product?.discount) / 100) *
+					item.quantity
+			);
 		}, 0);
+	};
+
+	const handleCheckout = () => {
+		if (currentUser.address.length === 0) {
+			Swal.fire({
+				title: "Hệ thống thông báo",
+				text: "Vui lòng cập nhật địa chỉ nhận hàng trước khi thanh toán",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Cập nhật địa chỉ",
+				cancelButtonText: "Hủy bỏ",
+			}).then(() => {
+				navigate(routes.member_personal);
+			});
+		}
+		// dispatch(checkouts(checkedList))
 	};
 
 	return (
@@ -135,10 +155,10 @@ const Cart = ({ dispatch }) => {
 								<h3 className="ml-[20px]">Product</h3>
 							</div>
 						</div>
-						<div className="text-center col g-l-2">Unit Price</div>
-						<div className="text-center col g-l-2">Quantity</div>
-						<div className="text-center col g-l-2">Total Price</div>
-						<div className="text-center col g-l-1">Actions</div>
+						<div className="text-center col g-l-2">Đơn giá</div>
+						<div className="text-center col g-l-2">Số lượng</div>
+						<div className="text-center col g-l-2">Tổng tiền</div>
+						<div className="text-center col g-l-1">Tùy chọn</div>
 					</div>
 
 					{currentUser?.cart.map((item, index) => (
@@ -148,7 +168,7 @@ const Cart = ({ dispatch }) => {
 							checkedList={checkedList}
 							onChangeChecked={handleCheckedItem}
 							onRemoveCart={handleRemoveCart}
-							onUpdateCart={handleUpdateCart}
+							onUpdateQuantityCart={handleUpdateQuantityCart}
 						/>
 					))}
 
@@ -163,13 +183,13 @@ const Cart = ({ dispatch }) => {
 										className="w-[18px] h-[18px]"
 									/>{" "}
 									<span>
-										Select all({currentUser?.cart.length})
+										Tất cả ({currentUser?.cart.length})
 									</span>
 									<span
 										className="cursor-pointer hover:underline hover:text-main"
 										onClick={handleRemoveCart}
 									>
-										Delete
+										Xóa
 									</span>
 								</div>
 							</div>
@@ -177,36 +197,24 @@ const Cart = ({ dispatch }) => {
 						<div className="col g-l-6">
 							<div className="flex h-full items-center justify-end gap-4">
 								<h3 className="w-2/3">
-									Total ({checkedList.length || 0}):{" "}
+									Tổng thanh toán ({checkedList.length || 0}):{" "}
 									<strong className="text-main">
 										{formatMoney(calcPrice())}
 									</strong>
 								</h3>
 
-								<Link
-									to={
-										checkedList.length > 0 &&
-										routes.checkout
+								<Button
+									isDisabled={
+										checkedList.length === 0 ? true : false
 									}
-									className="w-full"
-								>
-									<Button
-										isDisabled={
-											checkedList.length === 0
-												? true
-												: false
-										}
-										handleClick={() =>
-											dispatch(checkouts(checkedList))
-										}
-										title="Check out"
-										styleCustom={`px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-full w-1/3 ${
-											checkedList.length === 0
-												? "opacity-60"
-												: " hover:opacity-90"
-										}`}
-									/>
-								</Link>
+									handleClick={handleCheckout}
+									title="Thanh toán"
+									styleCustom={`px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-full w-1/3 ${
+										checkedList.length === 0
+											? "opacity-60"
+											: " hover:opacity-90"
+									}`}
+								/>
 							</div>
 						</div>
 					</div>

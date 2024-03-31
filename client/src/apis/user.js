@@ -101,9 +101,9 @@ export const apiRemoveCart = (data) => {
 	});
 };
 
-export const apiUpdateQuantityCart = (pid, data) => {
+export const apiUpdateQuantityCart = (data) => {
 	return axios({
-		url: "/user/update-quantity/" + pid,
+		url: "/user/update-quantity",
 		method: "PUT",
 		data,
 	});

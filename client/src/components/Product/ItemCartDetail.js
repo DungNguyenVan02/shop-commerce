@@ -5,15 +5,15 @@ import images from "~/assets/images";
 
 const ItemCartDetail = ({
 	data,
-	onChangeChecked,
 	checkedList,
+	onChangeChecked,
 	onRemoveCart,
-	onUpdateCart,
+	onUpdateQuantityCart,
 }) => {
 	const [quantity, setQuantity] = useState(data?.quantity);
 
 	useEffect(() => {
-		onUpdateCart({ pid: data?.product._id, color: data?.color, quantity });
+		onUpdateQuantityCart({ cid: data?._id, quantity });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [quantity]);
 
@@ -51,15 +51,13 @@ const ItemCartDetail = ({
 				<div className="flex gap-2 items-center">
 					<input
 						checked={checkedList?.some(
-							(item) =>
-								item.pid === data?.product._id &&
-								item.color === data?.color
+							(item) => item.cid === data._id
 						)}
 						onChange={() =>
 							onChangeChecked(
 								data?._id,
 								data?.product._id,
-								data?.color
+								data?.sku
 							)
 						}
 						className="w-[18px] h-[18px]"
@@ -75,13 +73,27 @@ const ItemCartDetail = ({
 							<span className="text-[#000D] line-clamp-2">
 								{data?.product.name}
 							</span>
-							<span>Color: {data?.color}</span>
+							<span>Ram: {data?.ram}</span>
+							<span>Bộ nhớ: {data?.internalMemory}</span>
+							<span>Màu sắc: {data?.color}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div className=" text-center col g-l-2">
-				{formatMoney(data?.price)}
+				<div className="flex items-center gap-1">
+					<span>
+						{formatMoney(
+							(data?.price * (100 - data?.product?.discount)) /
+								100
+						)}
+					</span>
+					{data?.product?.discount > 0 && (
+						<span className="px-2 py-1 rounded-md shadow-custom_1 bg-[#f8b500] text-white">
+							-{data?.product?.discount}%
+						</span>
+					)}
+				</div>
 			</div>
 			<div className=" text-center col g-l-2">
 				<SelectQuantity
@@ -91,13 +103,16 @@ const ItemCartDetail = ({
 				/>
 			</div>
 			<div className="text-center col g-l-2">
-				{formatMoney(data?.price * quantity)}
+				{formatMoney(
+					((data?.price * (100 - data?.product?.discount)) / 100) *
+						quantity
+				)}
 			</div>
 			<div
 				className="text-center cursor-pointer hover:underline hover:text-main col g-l-1"
 				onClick={() => onRemoveCart(data?._id)}
 			>
-				Delete
+				Xóa
 			</div>
 		</div>
 	);

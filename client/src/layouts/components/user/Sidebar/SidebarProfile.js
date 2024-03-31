@@ -36,7 +36,9 @@ const SidebarProfile = () => {
 					alt="avatar"
 				/>
 				<div>
-					<h3 className="font-semibold text-[#333]">{`${currentUser?.firstName} ${currentUser?.lastName}`}</h3>
+					<h3 className="font-semibold text-[#333]">
+						{currentUser?.fullName}
+					</h3>
 					<NavLink
 						to={routes.member_personal}
 						className="flex items-center gap-1 cursor-pointer"
