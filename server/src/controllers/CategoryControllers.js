@@ -19,8 +19,6 @@ class CategoryControllers {
 			req.body.slug = generateSlug(name);
 		}
 
-		console.log(generateSlug(name));
-
 		const response = await Categories.create(req.body);
 		return res.json({
 			success: response ? true : false,

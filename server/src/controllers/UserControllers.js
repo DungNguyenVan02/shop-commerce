@@ -151,7 +151,7 @@ class UserControllers {
 		}
 		if (response.isBlocked) {
 			throw new Error(
-				"Your account has been locked, please contact the administrator!"
+				"Tài khoản của bạn đã bị khóa, thông tin chi tiết vui lòng liên hệ quản trị viên!"
 			);
 		}
 		if (await response.isCorrectPassword(password)) {
@@ -212,14 +212,13 @@ class UserControllers {
 
 	getCurrent = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		console.log(_id);
 		const user = await User.findById(_id)
 			.select("-refreshToken -password")
 			.populate({
 				path: "cart",
 				populate: {
 					path: "product",
-					select: "name quantity",
+					select: "name quantity discount",
 				},
 			})
 			.populate("wishlist", "name thumb price color _id");
@@ -417,8 +416,8 @@ class UserControllers {
 	// [PUT] /current
 	updateUser = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const { firstName, lastName, email, phone } = req.body;
-		const payload = { firstName, lastName, email, phone };
+		const { fullName, phone } = req.body;
+		const payload = { fullName, phone };
 		if (req.file) {
 			payload.image = req.file.path;
 		}
@@ -462,34 +461,29 @@ class UserControllers {
 	updateAddress = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
 
-		if (!req.body.address) {
+		const { address, detail } = req.body;
+
+		if (!address || !detail) {
 			throw new Error("Missing inputs");
 		}
 
-		const listAddress = await User.findById(_id).select("address");
-
-		const alreadyAddress = listAddress.address.find(
-			(item) => item === req.body.address
+		const data = {
+			address,
+			detail,
+		};
+		const response = await User.findByIdAndUpdate(
+			_id,
+			{ $set: { address: data } },
+			{
+				new: true,
+			}
 		);
 
-		if (!alreadyAddress) {
-			const response = await User.findByIdAndUpdate(
-				_id,
-				{ $push: { address: req.body.address } },
-				{
-					new: true,
-				}
-			).select("-refreshToken -password -role");
-			return res.status(200).json({
-				success: response ? true : false,
-				mes: response
-					? "Updated successfully!"
-					: "some thing went wrong",
-			});
-		}
 		return res.status(200).json({
-			success: true,
-			mes: "Updated successfully!",
+			success: response ? true : false,
+			mes: response
+				? "Cập nhật địa chỉ thành công"
+				: "Cập nhật địa chỉ không thành công",
 		});
 	});
 
@@ -518,13 +512,28 @@ class UserControllers {
 	// [PUT] /cart
 	updateCart = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const { pid, quantity = 1, color, price, thumbnail } = req.body;
-		if (!pid || !color || !price || !thumbnail)
+		const {
+			pid,
+			sku,
+			quantity = 1,
+			color,
+			ram,
+			internalMemory,
+			price,
+			thumbnail,
+		} = req.body;
+		if (
+			(!pid || !sku || !color || !price || !thumbnail,
+			!ram || !internalMemory)
+		)
 			throw new Error("Missing inputs");
 		const cartUser = await User.findById(_id).select("cart");
 		const alreadyProduct = cartUser?.cart?.find(
 			(el) =>
-				el.product.toString() === pid && el.color.toString() === color
+				el.sku.toString() === sku &&
+				el.color.toString() === color &&
+				el.ram.toString() === ram &&
+				el.internalMemory.toString() === internalMemory
 		);
 		if (alreadyProduct) {
 			const response = await User.updateOne(
@@ -534,6 +543,8 @@ class UserControllers {
 						"cart.$.quantity": alreadyProduct.quantity + quantity,
 						"cart.$.price": price,
 						"cart.$.thumbnail": thumbnail,
+						"cart.$.ram": ram,
+						"cart.$.internalMemory": internalMemory,
 					},
 				},
 				{ new: true }
@@ -542,8 +553,8 @@ class UserControllers {
 			return res.status(200).json({
 				success: response ? true : false,
 				mes: response
-					? "Updated your cart successfully"
-					: "some thing went wrong",
+					? "Cập nhật giỏ hàng thành công"
+					: "Có lỗi xảy ra, vui lòng thử lại sau",
 			});
 		} else {
 			const response = await User.findByIdAndUpdate(
@@ -552,10 +563,13 @@ class UserControllers {
 					$push: {
 						cart: {
 							product: pid,
+							sku,
 							quantity,
 							color,
 							price,
 							thumbnail,
+							ram,
+							internalMemory,
 						},
 					},
 				},
@@ -565,8 +579,8 @@ class UserControllers {
 			return res.status(200).json({
 				success: response ? true : false,
 				mes: response
-					? "Updated your cart successfully"
-					: "some thing went wrong",
+					? "Cập nhật giỏ hàng thành công"
+					: "Có lỗi xảy ra, vui lòng thử lại sau",
 			});
 		}
 	});
@@ -574,13 +588,12 @@ class UserControllers {
 	// [PUT] /update-quantity
 	updateQuantityCart = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const { pid } = req.params;
-		const { color, quantity } = req.body;
-		if (!pid || !color || !quantity) throw new Error("Missing inputs");
+		const { cid, quantity } = req.body;
+		if (!cid || !quantity) throw new Error("Missing inputs");
+
 		const cartUser = await User.findById(_id).select("cart");
 		const alreadyProduct = cartUser?.cart?.find(
-			(el) =>
-				el.product.toString() === pid && el.color.toString() === color
+			(el) => el._id.toString() === cid
 		);
 		if (alreadyProduct) {
 			const response = await User.updateOne(
@@ -596,14 +609,14 @@ class UserControllers {
 			return res.status(200).json({
 				success: response ? true : false,
 				mes: response
-					? "Updated your cart successfully"
-					: "some thing went wrong",
+					? "Cập nhật giỏ hàng thành công"
+					: "Có lỗi xảy ra, vui lòng thử lại sau",
 			});
 		}
 
 		return res.status(200).json({
 			success: true,
-			mes: "Cannot find product in cart",
+			mes: "Không tìm thấy sản phẩm trong giỏ hàng",
 		});
 	});
 

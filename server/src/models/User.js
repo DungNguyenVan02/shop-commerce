@@ -35,15 +35,18 @@ const userSchema = new mongoose.Schema(
 		cart: [
 			{
 				product: { type: mongoose.Types.ObjectId, ref: "Product" },
+				sku: String,
 				thumbnail: String,
 				quantity: Number,
 				color: String,
 				price: Number,
+				ram: String,
+				internalMemory: String,
 			},
 		],
 		address: {
-			type: Array,
-			default: [],
+			address: String,
+			detail: String,
 		},
 		wishlist: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
 		isBlocked: {

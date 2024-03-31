@@ -24,7 +24,7 @@ router.put(
 );
 router.put("/cart", verifyAccessToken, userControllers.updateCart);
 router.put(
-	"/update-quantity/:pid",
+	"/update-quantity",
 	verifyAccessToken,
 	userControllers.updateQuantityCart
 );
