@@ -11,7 +11,7 @@ import withBaseComponent from "../hocs/withBaseComponent";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { toast } from "react-toastify";
 
-const Address = ({ onClose, dispatch }) => {
+const Address = ({ onClose, dispatch, onReload }) => {
 	const { FiMapPin } = icons;
 	const [isValid, setIsValid] = useState(false);
 
@@ -71,9 +71,11 @@ const Address = ({ onClose, dispatch }) => {
 			};
 			const response = await apiUpdateAddress(payload);
 
-			if (response.success) {
+			if (response?.success) {
 				dispatch(getCurrentUser());
+				onReload((prev) => !prev);
 				onClose(false);
+				toast.success(response?.mes);
 			} else {
 				toast.error(response?.mes);
 			}

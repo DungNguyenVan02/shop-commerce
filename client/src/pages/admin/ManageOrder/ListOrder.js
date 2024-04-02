@@ -10,10 +10,12 @@ import { UpdateOrder } from "~/components/Admin/ManageOrder";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import images from "~/assets/images";
+import { formatMoney } from "~/utils/helper";
 
 function ListOrder({ location, navigate }) {
 	const [searchQueries] = useSearchParams();
-	const { CiSearch, IoTrashBinOutline, FaRegEdit } = icons;
+	const { CiSearch, IoTrashBinOutline, FaRegEdit, FaCheck, IoCloseOutline } =
+		icons;
 	const [searchText, setSearchText] = useState({ q: "" });
 	const [orders, setOrders] = useState({});
 	const [isRerender, setIsRerender] = useState(false);
@@ -113,7 +115,7 @@ function ListOrder({ location, navigate }) {
 									type="text"
 									value={searchQueries.q}
 									onChange={handleSearchText}
-									placeholder="Enter search order by code"
+									placeholder="Tìm kiếm theo mã đơn hàng"
 									className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
 								/>
 								<CiSearch
@@ -132,7 +134,7 @@ function ListOrder({ location, navigate }) {
 										<th scope="col" className="px-6 py-3">
 											Mã đơn hàng
 										</th>
-										<th scope="col" className="px-6 py-3">
+										<th scope="col" className="px-2 py-3">
 											Số lượng
 										</th>
 										<th scope="col" className="px-6 py-3">
@@ -140,13 +142,17 @@ function ListOrder({ location, navigate }) {
 										</th>
 
 										<th scope="col" className="px-6 py-3">
-											Người đặt
+											Thông tin người đặt
 										</th>
-										<th scope="col" className="px-6 py-3">
-											Số điện thoại
-										</th>
+
 										<th scope="col" className="px-6 py-3">
 											Trạng thái
+										</th>
+										<th
+											scope="col"
+											className="px-2 py-3 text-center"
+										>
+											Thanh toán
 										</th>
 										<th scope="col" className="px-6 py-3">
 											Ngày đặt
@@ -176,22 +182,45 @@ function ListOrder({ location, navigate }) {
 												<td className="px-6 py-3">
 													{order?.code}
 												</td>
-												<td className="px-6 py-3">
+												<td className="px-2 py-3 text-center">
 													{order?.products.length}
 												</td>
 												<td className="px-6 py-3">
-													{order?.total}
+													{formatMoney(order?.total)}
 												</td>
 
-												<td className="px-6 py-3">
-													{`${order?.orderBy?.firstName} ${order?.orderBy?.lastName}`}
+												<td className="px-6 py-3 flex flex-col justify-center items-center gap-1">
+													<span>
+														{
+															order?.orderBy
+																?.fullName
+														}
+													</span>
+													<span>
+														Lh:{" "}
+														{order?.orderBy?.phone}
+													</span>
 												</td>
 
-												<td className="px-6 py-3">
-													{order?.orderBy?.phone}
-												</td>
 												<td className="px-6 py-3">
 													{order?.status}
+												</td>
+												<td className="px-2 py-3 flex justify-center items-center">
+													{order?.isPayed ? (
+														<div className="flex justify-center items-center w-[26px] h-[26px] bg-green-500 rounded-full">
+															<FaCheck
+																color="white"
+																size={20}
+															/>
+														</div>
+													) : (
+														<div className="flex justify-center items-center w-[26px] h-[26px] bg-red-500 rounded-full">
+															<IoCloseOutline
+																color="white"
+																size={20}
+															/>
+														</div>
+													)}
 												</td>
 												<td className="px-6 py-3">
 													{moment(

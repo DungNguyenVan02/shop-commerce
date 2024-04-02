@@ -84,7 +84,7 @@ function Personal({ dispatch }) {
 					onClick={() => setIsAddAddress(false)}
 					className="fixed top-0 right-0 bottom-0 left-0 bg-[rgba(10,10,10,0.5)] z-[99999999] flex items-center justify-center"
 				>
-					<Address onClose={setIsAddAddress} />
+					<Address onClose={setIsAddAddress} onReload={setIsRender} />
 				</div>
 			)}
 			<div className="px-[30px] mb-[24px] bg-white shadow-lg">

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, createSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { apiRemoveCart, apiUpdateQuantityCart } from "~/apis";
@@ -122,7 +122,7 @@ const Cart = ({ dispatch, navigate }) => {
 	};
 
 	const handleCheckout = () => {
-		if (currentUser.address.length === 0) {
+		if (!currentUser.address) {
 			Swal.fire({
 				title: "Hệ thống thông báo",
 				text: "Vui lòng cập nhật địa chỉ nhận hàng trước khi thanh toán",
@@ -132,11 +132,15 @@ const Cart = ({ dispatch, navigate }) => {
 				cancelButtonColor: "#d33",
 				confirmButtonText: "Cập nhật địa chỉ",
 				cancelButtonText: "Hủy bỏ",
-			}).then(() => {
-				navigate(routes.member_personal);
+			}).then((result) => {
+				if (result.isConfirmed) {
+					navigate(routes.member_personal);
+				}
 			});
+		} else {
+			dispatch(checkouts(checkedList));
+			navigate(routes.checkout);
 		}
-		// dispatch(checkouts(checkedList))
 	};
 
 	return (

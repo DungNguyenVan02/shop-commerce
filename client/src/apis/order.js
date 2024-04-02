@@ -78,3 +78,11 @@ export const apiDeleteOrder = (oid) => {
 		method: "DELETE",
 	});
 };
+
+export const apiCheckoutOnline = (data) => {
+	return axios({
+		url: "/order/payment_vnpay",
+		method: "POST",
+		data,
+	});
+};
