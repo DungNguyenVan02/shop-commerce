@@ -18,6 +18,8 @@ router.get(
 	orderControllers.getUserHistoryOrder
 );
 
+router.post("/payment_vnpay", verifyAccessToken, orderControllers.checkout);
+
 router.get("/admin", verifyAccessToken, isAdmin, orderControllers.getOrders);
 router.get(
 	"/admin/all-orders",

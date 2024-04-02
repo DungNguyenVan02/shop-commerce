@@ -1,26 +1,101 @@
 const Order = require("../models/Order");
-const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
-const { v4: uuid } = require("uuid");
+const moment = require("moment");
+
+const querystring = require("qs");
+const sortObject = require("../ultils/sortObject");
+const crypto = require("crypto");
 
 class OrderControllers {
+	checkout = asyncHandler(async (req, res) => {
+		process.env.TZ = "Asia/Ho_Chi_Minh";
+
+		const date = new Date();
+
+		const ipAddress =
+			req.headers["x-forwarded-for"] ||
+			req.connection.remoteAddress ||
+			req.socket.remoteAddress ||
+			req.connection.socket.remoteAddress;
+
+		const createDate = moment(date).format("YYYYMMDDHHmmss");
+
+		const tmnCode = "JF1NCCQA";
+		const secretKey = "BVTGAFOVZSHPJULCYNJPJPXPHMKXXLTT";
+		const returnUrl = "http://localhost:3000/checkout";
+
+		const { amount } = req.body;
+		const orderId = moment(date).format("DDHHmmss");
+
+		let vnp_Params = {};
+		vnp_Params["vnp_Version"] = "2.1.0";
+		vnp_Params["vnp_Command"] = "pay";
+		vnp_Params["vnp_TmnCode"] = tmnCode;
+		vnp_Params["vnp_Amount"] = amount * 100;
+		vnp_Params["vnp_Locale"] = "vn";
+		vnp_Params["vnp_CurrCode"] = "VND";
+		vnp_Params["vnp_OrderInfo"] = "Thanh toan cho ma GD:" + orderId;
+		vnp_Params["vnp_IpAddr"] = ipAddress;
+		vnp_Params["vnp_OrderType"] = "other";
+		vnp_Params["vnp_ReturnUrl"] = returnUrl;
+		vnp_Params["vnp_CreateDate"] = createDate;
+		vnp_Params["vnp_TxnRef"] = orderId;
+		vnp_Params = sortObject(vnp_Params);
+
+		try {
+			let vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+			const signData = querystring.stringify(vnp_Params, {
+				encode: false,
+			});
+			const hmac = crypto.createHmac("sha512", secretKey);
+			const signed = hmac
+				.update(new Buffer(signData, "utf-8"))
+				.digest("hex");
+			vnp_Params["vnp_SecureHash"] = signed;
+			vnpUrl +=
+				"?" + querystring.stringify(vnp_Params, { encode: false });
+			return res.status(200).json({
+				url: vnpUrl,
+			});
+		} catch (error) {
+			return res.status(400).json({
+				mes: "Có lỗi xảy ra",
+			});
+		}
+	});
+
 	// [POST] /
 	createOrder = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const { products, total, method, address } = req.body;
+		const {
+			products,
+			total,
+			method,
+			address,
+			isPayed = false,
+			bankCode,
+			code,
+		} = req.body;
 
 		if ((!total || !method || !address, !products)) {
 			throw new Error("Missing input");
 		}
 
-		const response = await Order.create({
-			code: uuid(),
+		const payload = {
+			code,
 			products,
 			total,
 			address,
 			method,
 			orderBy: _id,
-		});
+			isPayed,
+		};
+
+		if (bankCode) {
+			payload["address"] = bankCode;
+		}
+
+		const response = await Order.create(payload);
 
 		return res.json({
 			success: response ? true : false,
@@ -159,18 +234,13 @@ class OrderControllers {
 			];
 		}
 
-		// if (queries?.status) {
-		// 	delete formatQuery.status;
-		// 	formatQuery.status = queries.status;
-		// }
-
 		const q = { ...formatQuery };
-		q.status = { $in: ["Success", "Processing", "Transported"] };
+		q.status = { $in: ["Đang xử lý", "Đang giao hàng"] };
 		q.isConfirmReturn = false;
 
 		let queryCommand = Order.find(q)
 
-			.populate("orderBy", "firstName lastName phone email")
+			.populate("orderBy", "fullName phone email")
 			.populate({
 				path: "products",
 				populate: {
