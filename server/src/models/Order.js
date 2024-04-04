@@ -13,6 +13,7 @@ var orderSchema = new mongoose.Schema(
 				price: Number,
 				ram: String,
 				internalMemory: String,
+				sku: String,
 			},
 		],
 		status: {

@@ -20,6 +20,10 @@ var productSchema = new mongoose.Schema(
 			required: true,
 			trim: true,
 		},
+		blog: {
+			type: String,
+			trim: true,
+		},
 		brand: {
 			type: String,
 			required: true,

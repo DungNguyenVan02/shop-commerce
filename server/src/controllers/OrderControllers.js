@@ -20,9 +20,9 @@ class OrderControllers {
 
 		const createDate = moment(date).format("YYYYMMDDHHmmss");
 
-		const tmnCode = "JF1NCCQA";
-		const secretKey = "BVTGAFOVZSHPJULCYNJPJPXPHMKXXLTT";
-		const returnUrl = "http://localhost:3000/checkout";
+		const tmnCode = process.env.TMN_CODE;
+		const secretKey = process.env.SECRET_KEY;
+		const returnUrl = process.env.RETURN_URL;
 
 		const { amount } = req.body;
 		const orderId = moment(date).format("DDHHmmss");
@@ -157,12 +157,12 @@ class OrderControllers {
 		const { _id } = req.user;
 		const response = await Order.find({
 			orderBy: _id,
-			status: "Success",
+			status: "Giao hàng thành công",
 		}).populate({
 			path: "products",
 			populate: {
 				path: "product",
-				select: "name",
+				select: "name category",
 			},
 		});
 		return res.status(200).json({
@@ -176,7 +176,7 @@ class OrderControllers {
 		const { _id } = req.user;
 		const response = await Order.find({
 			orderBy: _id,
-			status: "Return",
+			status: "Hoàn trả đơn hàng",
 		}).populate({
 			path: "products",
 			populate: {
@@ -195,7 +195,15 @@ class OrderControllers {
 		const { _id } = req.user;
 		const response = await Order.find({
 			orderBy: _id,
-			$or: [{ status: ["Processing", "Success", "Transported"] }],
+			$or: [
+				{
+					status: [
+						"Đang xử lý",
+						"Giao hàng thành công",
+						"Đang giao hàng",
+					],
+				},
+			],
 		}).populate({
 			path: "products",
 			populate: {
@@ -230,7 +238,6 @@ class OrderControllers {
 			delete formatQuery.q;
 			formatQuery["$or"] = [
 				{ code: { $regex: queries.q, $options: "i" } },
-				{ status: { $regex: queries.q, $options: "i" } },
 			];
 		}
 
@@ -321,11 +328,11 @@ class OrderControllers {
 		}
 
 		const q = { ...formatQuery };
-		q.status = "Return";
+		q.status = "Hoàn trả đơn hàng";
 
 		let queryCommand = Order.find(q)
 
-			.populate("orderBy", "firstName lastName phone email")
+			.populate("orderBy", "fullName phone email")
 			.populate({
 				path: "products",
 				populate: {
@@ -391,11 +398,11 @@ class OrderControllers {
 		}
 
 		const q = { ...formatQuery };
-		q.status = "Canceled";
+		q.status = { $in: ["Hủy đơn hàng"] };
 
 		let queryCommand = Order.find(q)
 
-			.populate("orderBy", "firstName lastName phone email")
+			.populate("orderBy", "fullName phone email")
 			.populate({
 				path: "products",
 				populate: {

@@ -92,7 +92,7 @@ class UserControllers {
 				codeVerified: rs.response?.includes("OK") ? codeVerified : "",
 				mes: rs.response?.includes("OK")
 					? "Please check your email to accept registration"
-					: "Something went wrong, please try again",
+					: "Có lỗi xảy ra, vui lòng thử lại sau",
 			});
 		}
 	});
@@ -221,7 +221,10 @@ class UserControllers {
 					select: "name quantity discount",
 				},
 			})
-			.populate("wishlist", "name thumb price color _id");
+			.populate(
+				"wishlist",
+				"name thumb price color ram internalMemory totalRatings discount _id"
+			);
 		return res.status(200).json({
 			success: user ? true : false,
 			res: user ? user : "User not found",
@@ -358,8 +361,7 @@ class UserControllers {
 		if (queries?.q) {
 			delete formatQuery.q;
 			formatQuery["$or"] = [
-				{ firstName: { $regex: queries.q, $options: "i" } },
-				{ lastName: { $regex: queries.q, $options: "i" } },
+				{ fullName: { $regex: queries.q, $options: "i" } },
 				{ phone: { $regex: queries.q, $options: "i" } },
 			];
 		}
@@ -648,7 +650,7 @@ class UserControllers {
 
 		const user = await User.findById(_id);
 
-		const alreadyWishlist = await user?.wishlist?.find(
+		const alreadyWishlist = user?.wishlist?.find(
 			(wid) => wid.toString() === pid
 		);
 		if (alreadyWishlist) {

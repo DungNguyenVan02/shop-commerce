@@ -6,14 +6,23 @@ const { v4: uuid } = require("uuid");
 class ProductControllers {
 	// [POST] /createproduct
 	createProduct = asyncHandler(async (req, res) => {
-		const { name, price, description, category, brand, quantity, color } =
-			req.body;
+		const {
+			name,
+			price,
+			description,
+			blogProduct,
+			category,
+			brand,
+			quantity,
+			color,
+		} = req.body;
 		const thumb = req?.files?.thumb[0]?.path;
 		const images = req.files?.images?.map((el) => el.path);
 		if (
 			!name ||
 			!price ||
 			!description ||
+			!blogProduct ||
 			!category ||
 			!brand ||
 			!quantity ||
@@ -22,13 +31,24 @@ class ProductControllers {
 			throw new Error("Missing inputs");
 		}
 
-		if (name) {
-			req.body.slug = slugify(name);
-		}
-		if (thumb) req.body.thumb = thumb;
-		if (images) req.body.images = images;
+		const payload = {
+			name,
+			price,
+			description,
+			blog: blogProduct,
+			category,
+			brand,
+			quantity,
+			color,
+		};
 
-		const newProduct = await Product.create(req.body);
+		if (name) {
+			payload.slug = slugify(name);
+		}
+		if (thumb) payload.thumb = thumb;
+		if (images) payload.images = images;
+
+		const newProduct = await Product.create(payload);
 
 		return res.status(200).json({
 			success: newProduct ? true : false,
@@ -304,6 +324,7 @@ class ProductControllers {
 			sumRating /
 			10
 		).toFixed(1);
+
 		await productUpdateRate.save();
 
 		return res.status(200).json({
@@ -454,19 +475,30 @@ class ProductControllers {
 		if (!arrProduct) throw new Error("Missing inputs");
 
 		arrProduct.forEach(async (product) => {
-			const productUpdate = await Product.findByIdAndUpdate(
-				product.pid,
-				{
-					$inc: { sold: product.quantity },
-				},
-				{ new: true }
-			);
-			return res.status(200).json({
-				success: product ? true : false,
-				mes: productUpdate
-					? "Update sold successfully"
-					: "Cannot find product in cart",
-			});
+			const findProduct = await Product.findById(product.pid);
+
+			if (findProduct._id === product.pid) {
+				await Product.findByIdAndUpdate(
+					findProduct._id,
+					{
+						$inc: { sold: product.quantity },
+					},
+					{ new: true }
+				);
+			} else {
+				const getVariants = findProduct.variants.filter(
+					(item) => item.sku.toString() === product.sku.toString()
+				);
+
+				getVariants.forEach((item) => {
+					item.sold = item.sold + product.quantity;
+					findProduct.save();
+				});
+			}
+		});
+		return res.status(200).json({
+			success: true,
+			mes: "Cập nhật lượt bán thành công",
 		});
 	});
 }
