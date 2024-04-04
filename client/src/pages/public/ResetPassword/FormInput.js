@@ -30,10 +30,12 @@ function FormInput() {
 			codeForgotPassword: codeVerify,
 		});
 		if (response?.success) {
-			Swal.fire("Notifications", response.mes, "success").then(() => {
-				setAnimate(false);
-				navigate(routes.login);
-			});
+			Swal.fire("Hệ thống thông báo", response.mes, "success").then(
+				() => {
+					setAnimate(false);
+					navigate(routes.login);
+				}
+			);
 		} else {
 			Swal.fire("Oops!", response.mes, "error");
 			setAnimate(false);

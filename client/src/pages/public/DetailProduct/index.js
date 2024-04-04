@@ -1,12 +1,7 @@
 import { Link, createSearchParams, useParams } from "react-router-dom";
-import {
-	apiAddCart,
-	apiGetProduct,
-	apiGetProducts,
-	apiRatingProduct,
-} from "~/apis";
+import { apiAddCart, apiGetProduct, apiGetProducts, apiRatings } from "~/apis";
 import { useCallback, useEffect, useState } from "react";
-import DOMPurify, { version } from "dompurify";
+import DOMPurify from "dompurify";
 
 import icons from "~/utils/icons";
 import { createSlug, formatMoney, renderStar } from "~/utils/helper";
@@ -22,7 +17,6 @@ import {
 import { SliderSubProduct } from "~/components/Slider";
 import { BreadcrumbHeader } from "~/components/SectionLayout";
 import Ratings from "~/components/Ratings";
-import Modal from "~/components/Modal";
 import VoteForm from "~/components/Ratings/VoteForm";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -32,6 +26,7 @@ import routes from "~/config/routes";
 import withBaseComponent from "~/components/hocs/withBaseComponent";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { checkouts } from "~/redux/userSlice";
+import { showModal } from "~/redux/appSlice";
 
 function DetailProduct({ navigate, dispatch, location }) {
 	const { currentUser } = useSelector(userSelector);
@@ -178,13 +173,10 @@ function DetailProduct({ navigate, dispatch, location }) {
 		async (dataRating) => {
 			const date = new Date();
 			if (!product?._id || !dataRating.comment) {
-				toast.warning(
-					"Please enter complete product review information",
-					{
-						position: "top-center",
-						theme: "colored",
-					}
-				);
+				toast.warning("Có lỗi xảy ra, vui lòng thử lại sau", {
+					position: "top-center",
+					theme: "colored",
+				});
 				return;
 			}
 			const payload = {
@@ -196,7 +188,7 @@ function DetailProduct({ navigate, dispatch, location }) {
 				}/${date.getFullYear()}`,
 				time: `${date.getHours()}:${date.getMinutes()}`,
 			};
-			const response = await apiRatingProduct(payload);
+			const response = await apiRatings(payload);
 			if (response?.success) {
 				setUpdateRating(!updateRating);
 			}
@@ -205,6 +197,7 @@ function DetailProduct({ navigate, dispatch, location }) {
 		[isShowModal]
 	);
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const handleAddCart = useCallback(async () => {
 		if (!currentUser) {
 			Swal.fire({
@@ -273,9 +266,12 @@ function DetailProduct({ navigate, dispatch, location }) {
 	return (
 		<div className="w-full">
 			{isShowModal && (
-				<Modal>
+				<div
+					onClick={() => dispatch(showModal({ isShowModal: false }))}
+					className="absolute top-0 left-0 bottom-0 right-0  z-[99999999]  bg-[rgba(10,10,10,0.5)]"
+				>
 					<VoteForm name={product?.name} onRating={handleRating} />
-				</Modal>
+				</div>
 			)}
 			<BreadcrumbHeader
 				category={category}
@@ -415,7 +411,7 @@ function DetailProduct({ navigate, dispatch, location }) {
 																(el) =>
 																	el.color ===
 																	item
-															).thumbnail ||
+															)?.thumbnail ||
 															product?.thumb
 														}
 														active={colorActive}
@@ -470,7 +466,10 @@ function DetailProduct({ navigate, dispatch, location }) {
 				</div>
 			</div>
 			<div className="max-w-main w-full mx-auto my-[20px] mb-0">
-				<ProInforMation description={product?.description} />
+				<ProInforMation
+					description={product?.description}
+					blog={product?.blog}
+				/>
 			</div>
 			<div className="max-w-main w-full mx-auto">
 				<Ratings data={product} />

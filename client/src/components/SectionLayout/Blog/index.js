@@ -8,7 +8,7 @@ function Blog({ navigate }) {
 	const [blogs, setBlogs] = useState([]);
 
 	const fetchBlog = async () => {
-		const response = await apiGetBlogs();
+		const response = await apiGetBlogs({ sort: "-createdAt" });
 		if (response?.success) {
 			setBlogs(response.blogs);
 		}

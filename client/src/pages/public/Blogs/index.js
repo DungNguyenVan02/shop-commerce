@@ -9,7 +9,9 @@ function Blogs() {
 	const { IoIosArrowForward } = icons;
 	const [blogs, setBlogs] = useState();
 	const fetchBlogs = async () => {
-		const response = await apiGetBlogs();
+		const response = await apiGetBlogs({
+			sort: "-createdAt",
+		});
 		if (response?.success) {
 			setBlogs(response.blogs);
 		}

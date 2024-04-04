@@ -15,7 +15,7 @@ export const apiGetProduct = (pid) => {
 	});
 };
 
-export const apiRatingProduct = (data) => {
+export const apiRatings = (data) => {
 	return axios({
 		url: "/product/ratings",
 		method: "PUT",

@@ -7,6 +7,7 @@ function MarkdownEditor({
 	onChangeValue,
 	invalidField,
 	setInvalidField,
+	id,
 }) {
 	return (
 		<>
@@ -49,14 +50,14 @@ function MarkdownEditor({
 				onChange={(e) => onChangeValue(e.target.getContent())}
 				onBlur={(e) =>
 					e.target.getContent() === "" &&
-					setInvalidField((prev) => ({ ...prev, description: true }))
+					setInvalidField((prev) => ({ ...prev, [id]: true }))
 				}
 				onFocus={() =>
-					invalidField.description &&
-					setInvalidField((prev) => ({ ...prev, description: false }))
+					invalidField[id] &&
+					setInvalidField((prev) => ({ ...prev, [id]: false }))
 				}
 			/>
-			{invalidField.description && (
+			{invalidField[id] && (
 				<p className="text-main">Vui lòng nhập trường này</p>
 			)}
 		</>

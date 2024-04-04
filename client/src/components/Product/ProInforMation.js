@@ -2,11 +2,10 @@ import { memo, useState } from "react";
 import DOMPurify from "dompurify";
 import { tabs } from "~/utils/contains";
 import icons from "~/utils/icons";
-function ProInforMation({ description }) {
+function ProInforMation({ description, blog }) {
 	const [active, setActive] = useState(1);
 	const [content, setContent] = useState(null);
 
-	const { GoDotFill } = icons;
 	return (
 		<div className="pb-6">
 			<ul className="flex items-center gap-1">
@@ -18,7 +17,9 @@ function ProInforMation({ description }) {
 						}`}
 						onClick={() => {
 							setActive(tab.id);
-							setContent(tab.content);
+							tab.id === 2
+								? setContent(blog)
+								: setContent(tab.content);
 						}}
 					>
 						{tab.tab}
@@ -28,20 +29,20 @@ function ProInforMation({ description }) {
 			<div className="p-5 text-[14px] border rounded mt-4 shadow-custom_1">
 				{active === 1 && (
 					<ul>
-						{Array.isArray(description) ? (
-							description?.map((desc) => (
-								<li key={desc} className="flex gap-2">
-									<GoDotFill />
-									{desc}
-								</li>
-							))
-						) : (
-							<li
-								dangerouslySetInnerHTML={{
-									__html: DOMPurify.sanitize(description),
-								}}
-							></li>
-						)}
+						<li
+							dangerouslySetInnerHTML={{
+								__html: DOMPurify.sanitize(description),
+							}}
+						></li>
+					</ul>
+				)}
+				{active === 2 && (
+					<ul>
+						<li
+							dangerouslySetInnerHTML={{
+								__html: DOMPurify.sanitize(blog),
+							}}
+						></li>
 					</ul>
 				)}
 				{content}

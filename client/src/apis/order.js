@@ -23,17 +23,19 @@ export const apiGetOrderByAdmin = (params) => {
 	});
 };
 
-export const apiGetOrderCanceledByAdmin = () => {
+export const apiGetOrderCanceledByAdmin = (params) => {
 	return axios({
 		url: "/order/admin/canceled",
 		method: "GET",
+		params,
 	});
 };
 
-export const apiGetOrderReturnByAdmin = () => {
+export const apiGetOrderReturnByAdmin = (params) => {
 	return axios({
 		url: "/order/admin/return-refund",
 		method: "GET",
+		params,
 	});
 };
 

@@ -24,6 +24,7 @@ function CreateProduct() {
 	const [brands, setBrands] = useState([]);
 
 	const [description, setDescription] = useState("");
+	const [blogProduct, setBlogProduct] = useState("");
 
 	const [resetImages, setResetImages] = useState(false);
 
@@ -40,6 +41,7 @@ function CreateProduct() {
 	// Thể hiện trạng thái validate form
 	const [invalidField, setInvalidField] = useState({
 		description: false,
+		blogProduct: false,
 		thumb: false,
 		images: false,
 		color: false,
@@ -48,12 +50,20 @@ function CreateProduct() {
 	const inputFileRef = useRef();
 
 	// get data từ MarkDown
-	const onChangeValue = useCallback(
+	const onChangeValueDesc = useCallback(
 		(value) => {
 			setDescription(value);
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[description]
+	);
+
+	const onChangeValueBlog = useCallback(
+		(value) => {
+			setBlogProduct(value);
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[blogProduct]
 	);
 
 	const initialValues = {
@@ -77,6 +87,10 @@ function CreateProduct() {
 			result = false;
 			setInvalidField((prev) => ({ ...prev, description: true }));
 		}
+		if (!blogProduct) {
+			result = false;
+			setInvalidField((prev) => ({ ...prev, blogProduct: true }));
+		}
 		if (!images.thumb) {
 			result = false;
 			setInvalidField((prev) => ({ ...prev, thumb: true }));
@@ -94,6 +108,7 @@ function CreateProduct() {
 			const payload = {
 				...data,
 				description: description,
+				blogProduct: blogProduct,
 				color: color,
 			};
 
@@ -199,7 +214,9 @@ function CreateProduct() {
 		color && setInvalidField((prev) => ({ ...prev, color: false }));
 		description &&
 			setInvalidField((prev) => ({ ...prev, description: false }));
-	}, [description, images, color]);
+		blogProduct &&
+			setInvalidField((prev) => ({ ...prev, blogProduct: false }));
+	}, [description, images, color, blogProduct]);
 
 	useEffect(() => {
 		return () => preview.thumb && URL.revokeObjectURL(preview.thumb);
@@ -650,14 +667,28 @@ function CreateProduct() {
 										</div>
 									</div>
 								</div>
-								<MarkdownEditor
-									label="Mô tả sản phẩm"
-									value={{ description: "" }}
-									onChangeValue={onChangeValue}
-									invalidField={invalidField}
-									setInvalidField={setInvalidField}
-									description={description}
-								/>
+
+								<div className="mb-5">
+									<MarkdownEditor
+										label="Thông tin về sản phẩm"
+										value={{ blogProduct: "" }}
+										onChangeValue={onChangeValueBlog}
+										invalidField={invalidField}
+										setInvalidField={setInvalidField}
+										id="blogProduct"
+									/>
+								</div>
+								<div>
+									<MarkdownEditor
+										label="Mô tả sản phẩm"
+										value={{ description: "" }}
+										onChangeValue={onChangeValueDesc}
+										invalidField={invalidField}
+										setInvalidField={setInvalidField}
+										id="description"
+									/>
+								</div>
+
 								<Button
 									styleCustom="px-3 py-1 bg-green-500 text-white rounded hover:opacity-80 my-[24px]"
 									type="submit"

@@ -107,25 +107,23 @@ function ReturnOrder({ location, navigate }) {
 					Quản lý đơn hoàn hàng
 				</h3>
 
-				{orders?.orders?.length > 0 && (
-					<div className="flex h-[60px] items-center py-3 gap-5">
-						<div className="h-full flex items-center border rounded-md ">
-							<input
-								type="text"
-								value={searchQueries.q}
-								onChange={handleSearchText}
-								placeholder="Enter search order by code"
-								className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
-							/>
-							<CiSearch
-								size={20}
-								className="mx-3 cursor-pointer opacity-80 hover:opacity-100"
-							/>
-						</div>
+				<div className="flex h-[60px] items-center py-3 gap-5">
+					<div className="h-full flex items-center border rounded-md ">
+						<input
+							type="text"
+							value={searchQueries.q}
+							onChange={handleSearchText}
+							placeholder="Enter search order by code"
+							className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
+						/>
+						<CiSearch
+							size={20}
+							className="mx-3 cursor-pointer opacity-80 hover:opacity-100"
+						/>
 					</div>
-				)}
+				</div>
 
-				{orders?.orders?.length > 0 ? (
+				{orders?.orders?.length > 0 && orders?.orders ? (
 					<div className="overflow-x-auto shadow-md sm:rounded-lg">
 						<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 							<thead className="text-xs text-white uppercase bg-blue-500 dark:bg-gray-700 dark:text-gray-400">
@@ -188,7 +186,7 @@ function ReturnOrder({ location, navigate }) {
 											</td>
 
 											<td className="px-6 py-3">
-												{`${order?.orderBy?.firstName} ${order?.orderBy?.lastName}`}
+												{order?.orderBy?.fullName}
 											</td>
 
 											<td className="px-6 py-3">
@@ -196,8 +194,8 @@ function ReturnOrder({ location, navigate }) {
 											</td>
 											<td className="px-6 py-3">
 												{order?.isConfirmReturn
-													? "Confirm"
-													: "Return"}
+													? "Xác nhận hoàn hàng"
+													: "Yêu cầu hoàn hàng"}
 											</td>
 											<td className="px-6 py-3">
 												{moment(

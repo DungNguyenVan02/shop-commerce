@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { apiUpdateUser } from "~/apis";
 import images from "~/assets/images";
-import { Button, CustomInput, CustomSelect } from "~/components/common";
+import { Button, CustomInput } from "~/components/common";
 import { userSelector } from "~/redux/selector";
 import { schemasValidChangeProfile } from "~/utils/schemasValid";
 import { OvalAnimation } from "~/components/Animation";

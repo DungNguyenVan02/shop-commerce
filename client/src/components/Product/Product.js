@@ -143,7 +143,7 @@ function Product({ data, active, navigate, location, dispatch, border }) {
 					</p>
 				</div>
 				<div className="flex items-center gap-1">
-					{renderStar(data?.totalRatings).map((item, i) => (
+					{renderStar(data?.totalRatings)?.map((item, i) => (
 						<i key={i}>{item}</i>
 					))}
 				</div>

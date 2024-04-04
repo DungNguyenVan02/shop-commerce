@@ -24,6 +24,7 @@ function ManageBlogs({ location, navigate }) {
 	const fetchGetBlogs = async (params) => {
 		const response = await apiGetBlogs({
 			...params,
+			sort: "-createdAt",
 			limit: process.env.REACT_APP_LIMIT,
 		});
 		if (response?.success) {
@@ -88,7 +89,7 @@ function ManageBlogs({ location, navigate }) {
 
 	return (
 		<div
-			className="w-full"
+			className="p-5 bg-[#f6f8fb] min-h-screen"
 			onClick={() => setUpdateBlog({ isUpdate: false, data: [] })}
 		>
 			{updateBlog.isUpdate && (
@@ -99,18 +100,18 @@ function ManageBlogs({ location, navigate }) {
 					/>
 				</div>
 			)}
-			<div className="flex items-center h-[40px] bg-gray-600 text-white px-3">
-				Manage blog
-			</div>
-			<div className="px-3 bg-gray-100 min-h-screen">
+			<div className="p-3 bg-white border rounded-lg shadow-custom_1 min-h-[600px]">
+				<h3 className="flex items-center text-black font-semibold text-[24px]">
+					Thêm sản phẩm
+				</h3>
 				<div className="flex h-[60px] items-center py-3 gap-5">
-					<div className="h-full flex items-center bblog rounded-md ">
+					<div className="h-full flex items-center border rounded-md shadow-custom ">
 						<input
 							type="text"
-							value={searchQueries.q}
+							value={searchText.q}
 							onChange={handleSearchText}
-							placeholder="Enter search by title blog"
-							className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
+							placeholder="Tìm kiếm theo tiêu đề bài viết"
+							className="min-w-[360px] pl-3 h-full outline-none bg-transparent placeholder:text-[14px]"
 						/>
 						<CiSearch
 							size={20}
@@ -118,15 +119,16 @@ function ManageBlogs({ location, navigate }) {
 						/>
 					</div>
 				</div>
+
 				<div className="overflow-x-auto shadow-md sm:rounded-lg">
 					<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-						<thead className="text-xs text-white uppercase bg-gray-800 dark:bg-gray-700 dark:text-gray-400">
+						<thead className="text-xs text-white uppercase bg-blue-500 dark:bg-gray-700 dark:text-gray-400">
 							<tr>
 								<th scope="col" className="px-6 py-3">
 									#
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Title
+									Tiêu đề
 								</th>
 								<th scope="col" className="px-6 py-3">
 									Like
@@ -136,13 +138,13 @@ function ManageBlogs({ location, navigate }) {
 								</th>
 
 								<th scope="col" className="px-6 py-3">
-									Viewer
+									Lượt xem
 								</th>
 								<th scope="col" className="px-6 py-3">
-									createdAt
+									Ngày tạo
 								</th>
 								<th scope="col" className="px-6 py-3">
-									Actions
+									Tùy chọn
 								</th>
 							</tr>
 						</thead>

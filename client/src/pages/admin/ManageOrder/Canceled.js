@@ -13,7 +13,7 @@ import images from "~/assets/images";
 
 function Canceled({ location, navigate }) {
 	const [searchQueries] = useSearchParams();
-	const { CiSearch, IoTrashBinOutline, FaRegEdit } = icons;
+	const { CiSearch, IoTrashBinOutline, FaRegEye } = icons;
 	const [searchText, setSearchText] = useState({ q: "" });
 	const [orders, setOrders] = useState({});
 	const [isRerender, setIsRerender] = useState(false);
@@ -45,16 +45,16 @@ function Canceled({ location, navigate }) {
 		const queries = Object.fromEntries([...searchQueries]);
 		if (debouncedValue) {
 			queries.q = debouncedValue;
+			navigate({
+				pathname: location.pathname,
+				search: createSearchParams(queries).toString(),
+			});
 		} else {
 			navigate({
 				pathname: location.pathname,
 				search: createSearchParams("").toString(),
 			});
 		}
-		navigate({
-			pathname: location.pathname,
-			search: createSearchParams("").toString(),
-		});
 
 		fetchGetOrders(queries);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,25 +105,23 @@ function Canceled({ location, navigate }) {
 				<h3 className="flex items-center text-black font-semibold text-[24px]">
 					Đơn hàng đã hủy
 				</h3>
-				{orders?.orders?.length > 0 && (
-					<div className="flex h-[60px] items-center py-3 gap-5">
-						<div className="h-full flex items-center border rounded-md ">
-							<input
-								type="text"
-								value={searchQueries.q}
-								onChange={handleSearchText}
-								placeholder="Enter search order by code"
-								className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
-							/>
-							<CiSearch
-								size={20}
-								className="mx-3 cursor-pointer opacity-80 hover:opacity-100"
-							/>
-						</div>
+				<div className="flex h-[60px] items-center py-3 gap-5">
+					<div className="h-full flex items-center border rounded-md ">
+						<input
+							type="text"
+							value={searchQueries.q}
+							onChange={handleSearchText}
+							placeholder="Tìm kiếm theo mã đơn hàng"
+							className="w-[300px] pl-3 h-full outline-none rounded-md placeholder:text-[14px]"
+						/>
+						<CiSearch
+							size={20}
+							className="mx-3 cursor-pointer opacity-80 hover:opacity-100"
+						/>
 					</div>
-				)}
+				</div>
 
-				{orders?.orders?.length > 0 ? (
+				{orders?.orders?.length > 0 && orders?.orders ? (
 					<div className="overflow-x-auto shadow-md sm:rounded-lg">
 						<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 							<thead className="text-xs text-white uppercase bg-blue-500 dark:bg-gray-700 dark:text-gray-400">
@@ -186,7 +184,7 @@ function Canceled({ location, navigate }) {
 											</td>
 
 											<td className="px-6 py-3">
-												{`${order?.orderBy?.firstName} ${order?.orderBy?.lastName}`}
+												{order?.orderBy.fullName}
 											</td>
 
 											<td className="px-6 py-3">
@@ -212,7 +210,7 @@ function Canceled({ location, navigate }) {
 															});
 														}}
 													>
-														<FaRegEdit
+														<FaRegEye
 															size={19}
 															color="#43a87b"
 														/>

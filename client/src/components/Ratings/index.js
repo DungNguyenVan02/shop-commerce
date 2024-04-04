@@ -47,10 +47,10 @@ function Ratings({ data, dispatch, navigate }) {
 			dispatch(showModal({ isShowModal: true }));
 		} else {
 			Swal.fire({
-				title: "Notification",
-				cancelButtonText: "Cancel",
-				confirmButtonText: "Go to login or register",
-				text: "Please log in to your account to rate.",
+				title: "Hệ thống thông báo",
+				cancelButtonText: "Thoát",
+				confirmButtonText: "Đăng nhập",
+				text: "Vui lòng đăng nhập trước khi thực hiện đánh giá",
 				showCancelButton: true,
 			}).then((rs) => {
 				if (rs.isConfirmed) {
@@ -109,7 +109,7 @@ function Ratings({ data, dispatch, navigate }) {
 								</h3>
 								<Button
 									isDisabled={!isSold}
-									title="Reviews"
+									title="Đánh giá"
 									handleClick={handleReview}
 									styleCustom={`px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-[200px]  ${
 										isSold
