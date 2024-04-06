@@ -22,7 +22,7 @@ const Order = () => {
 	const handleCanceledOrder = (oid) => {
 		Swal.fire({
 			title: "Bạn có chắc chắn?",
-			text: "Cancel order!",
+			text: "Hủy bỏ đơn hàng!",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
@@ -32,11 +32,11 @@ const Order = () => {
 			if (result.isConfirmed) {
 				Swal.fire({
 					title: "Canceled!",
-					text: "Order has been deleted.",
+					text: "Đơn hàng đã được hủy",
 					icon: "success",
 				}).then(async () => {
 					const response = await apiUpdateStatusOrder(
-						{ status: "Canceled" },
+						{ status: "Hủy đơn hàng" },
 						oid
 					);
 					if (response?.success) {
@@ -85,7 +85,7 @@ const Order = () => {
 		}).then(async (result) => {
 			if (result.isConfirmed) {
 				const response = await apiUpdateStatusOrder(
-					{ status: "Giao hàng thành công" },
+					{ status: "Giao hàng thành công", isPayed: true },
 					order._id
 				);
 				if (response?.success) {

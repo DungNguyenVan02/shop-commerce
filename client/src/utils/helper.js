@@ -1,3 +1,4 @@
+import moment from "moment";
 import icons from "./icons";
 
 const { FaStar, FaRegStar, FaRegStarHalfStroke } = icons;
@@ -87,11 +88,26 @@ export const generateRange = (start, end) => {
 	});
 };
 
-// export const getBase64 = (file) => {
-// 	return new Promise((resolve, reject) => {
-// 		const reader = new FileReader();
-// 		reader.readAsDataURL(file);
-// 		reader.onload = () => resolve(reader.result);
-// 		reader.onerror = (error) => reject(error);
-// 	});
-// };
+export const getMoneyByTime = (time, type, orders) => {
+	const filterOrderByTime = orders.filter((order) => {
+		if (type === "YYYY") {
+			return (
+				+moment(order.createdAt).format(type) === time &&
+				order.status === "Giao hàng thành công"
+			);
+		} else {
+			return (
+				+moment(order.createdAt).format(type) ===
+				(type === "MM" ? time : +moment(time).format(type))
+			);
+		}
+	});
+
+	let result = 0;
+
+	if (filterOrderByTime.length > 0) {
+		result = filterOrderByTime?.reduce((rs, item) => rs + item.total, 0);
+	}
+
+	return formatMoney(result);
+};

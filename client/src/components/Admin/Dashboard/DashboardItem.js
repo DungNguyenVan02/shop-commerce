@@ -1,5 +1,4 @@
 import React, { memo, useState } from "react";
-import { createSearchParams } from "react-router-dom";
 import withBaseComponent from "~/components/hocs/withBaseComponent";
 import routes from "~/config/routes";
 import icons from "~/utils/icons";
@@ -8,17 +7,12 @@ const DashboardItem = ({ data, navigate }) => {
 	const [isHover, setIsHover] = useState(false);
 
 	const handleClick = () => {
-		if (data?.title === "Return") {
+		if (data?.title === "Hoàn trả đơn hàng") {
 			navigate(routes.admin_manage_return);
 		} else if (data?.title === "Earning") {
 			navigate(routes.admin_manage_orders);
 		} else {
-			const queries = {};
-			queries.q = data?.title;
-			navigate({
-				pathname: routes.admin_manage_orders,
-				search: createSearchParams(queries).toString(),
-			});
+			navigate(routes.admin_manage_orders);
 		}
 	};
 
@@ -26,9 +20,9 @@ const DashboardItem = ({ data, navigate }) => {
 		<div
 			onClick={handleClick}
 			className={` flex flex-col justify-between border-l-[5px] hover:text-white  h-[124px] p-5 rounded-md bg-white shadow-custom cursor-pointer ${
-				data?.title === "Success"
+				data?.title === "Giao hàng thành công"
 					? "border-green-600 hover:bg-green-600"
-					: data?.title === "Return"
+					: data?.title === "Hoàn trả đơn hàng"
 					? "border-red-600 hover:bg-red-600"
 					: data?.title === "Earning"
 					? "border-[#f5ad42] hover:bg-[#f5ad42]"
@@ -38,17 +32,15 @@ const DashboardItem = ({ data, navigate }) => {
 			onMouseLeave={() => setIsHover(false)}
 		>
 			<div className="flex justify-between items-center">
-				<h3 className="text-[24px] font-semibold">
-					{`${data?.title} order`}
-				</h3>
-				{data?.title === "Success" ? (
+				<h3 className="text-[20px] font-semibold">{data?.title}</h3>
+				{data?.title === "Giao hàng thành công" ? (
 					<BsCart3 size={28} color={isHover ? "#fff" : "#07bc0c"} />
-				) : data?.title === "Return" ? (
+				) : data?.title === "Hoàn trả đơn hàng" ? (
 					<TbTruckReturn
 						size={28}
 						color={isHover ? "#fff" : "#e74c3c"}
 					/>
-				) : data?.title === "Processing" ? (
+				) : data?.title === "Đang xử lý" ? (
 					<MdOutlineLocalShipping
 						size={28}
 						color={isHover ? "#fff" : "#3498db"}

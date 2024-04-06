@@ -156,17 +156,17 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 				>
 					Thoát
 				</button>
-				{dataUpdate?.status === "Đang xử lý" ||
-					(dataUpdate?.status === "Hoàn trả đơn hàng" && (
-						<button
-							className="px-3 py-2 bg-green-500 text-white rounded hover:opacity-80"
-							onClick={handleUpdateStatus}
-						>
-							{dataUpdate.status === "Hoàn trả đơn hàng"
-								? "Xác nhận hoàn trả đơn hàng"
-								: "Cập nhật"}
-						</button>
-					))}
+				{(dataUpdate?.status === "Đang xử lý" ||
+					dataUpdate?.status === "Hoàn trả đơn hàng") && (
+					<button
+						className="px-3 py-2 bg-green-500 text-white rounded hover:opacity-80"
+						onClick={handleUpdateStatus}
+					>
+						{dataUpdate.status === "Hoàn trả đơn hàng"
+							? "Xác nhận hoàn trả đơn hàng"
+							: "Cập nhật"}
+					</button>
+				)}
 			</div>
 		</div>
 	);
