@@ -42,6 +42,7 @@ const DetailBlog = () => {
 			<div className="max-w-main w-full mx-auto my-7">
 				<div className="my-[24px] flex flex-col gap-6">
 					<img
+						loading="lazy"
 						src={blog.image}
 						alt=""
 						className="w-[500px] object-cover"

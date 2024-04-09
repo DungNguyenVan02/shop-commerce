@@ -13,6 +13,7 @@ const SubBanner = ({ navigate }) => {
 				}
 			>
 				<img
+					loading="lazy"
 					className="w-full object-contain hover:scale-110 ease-in-out duration-200"
 					src="https://clickbuy.com.vn/uploads/media/581-yyCOV.png"
 					alt=""
@@ -23,6 +24,7 @@ const SubBanner = ({ navigate }) => {
 				onClick={() => navigate("/tablet")}
 			>
 				<img
+					loading="lazy"
 					className="w-full object-cover hover:scale-110 ease-in-out duration-200"
 					src="https://cdn2.cellphones.com.vn/insecure/rs:fill:690:300/q:10/plain/https://dashboard.cellphones.com.vn/storage/right-banner-ipad-gen9-new-th2.jpg"
 					alt=""

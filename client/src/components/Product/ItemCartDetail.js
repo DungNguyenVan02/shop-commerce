@@ -65,6 +65,7 @@ const ItemCartDetail = ({
 					/>
 					<div className="flex items-center gap-2">
 						<img
+							loading="lazy"
 							className="w-[80px] h-[80x] object-cover"
 							src={data?.thumbnail || images.defaultProduct}
 							alt=""

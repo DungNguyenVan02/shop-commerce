@@ -21,6 +21,7 @@ import Wishlist from "~/pages/public/Wishlist";
 import Return from "~/pages/public/Return";
 import { CreateBlog, ManageBlogs } from "~/pages/admin/ManageBlogs";
 import DetailBlog from "~/pages/public/DetailBlog";
+import ManageChat from "~/pages/admin/ManageChat";
 
 const publicRoutes = [
 	{
@@ -86,6 +87,11 @@ const publicRoutes = [
 	{
 		path: routes.admin_dashboard,
 		component: DashBroad,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.admin_chat,
+		component: ManageChat,
 		isAdminRoutes: true,
 	},
 

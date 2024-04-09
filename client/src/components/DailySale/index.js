@@ -103,6 +103,7 @@ function DailySale({ dispatch, navigate }) {
 				<h3>DAILY DEALS</h3>
 			</div>
 			<img
+				loading="lazy"
 				className="mx-auto mt-8 w-[120px]"
 				src={deadDaily?.data?.thumb || images.defaultProduct}
 				alt={deadDaily?.data?.name}

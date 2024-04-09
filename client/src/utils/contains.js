@@ -18,6 +18,7 @@ const {
 	TbTruckReturn,
 	GoChecklist,
 	TfiWrite,
+	RiSendPlaneFill,
 } = icons;
 
 export const footerList = [
@@ -283,6 +284,12 @@ export const adminSlideBar = [
 				path: routes.admin_manage_blogs,
 			},
 		],
+	},
+	{
+		id: 5,
+		title: "Tin nhắn",
+		icon: <RiSendPlaneFill />,
+		path: routes.admin_chat,
 	},
 ];
 

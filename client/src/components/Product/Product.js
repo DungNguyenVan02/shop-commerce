@@ -121,6 +121,7 @@ function Product({ data, active, navigate, location, dispatch, border }) {
 					</Link>
 				</div>
 				<img
+					loading="lazy"
 					className="max-w-[230px] w-full object-cover mx-auto"
 					src={data?.thumb || images.noProductImage}
 					alt=""

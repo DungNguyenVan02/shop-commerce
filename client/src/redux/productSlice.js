@@ -20,7 +20,7 @@ const productSlice = createSlice({
 			})
 			.addCase(actions.getNewProducts.rejected, (state, action) => {
 				state.status = false;
-				state.errorMessage = action.payload.message;
+				state.errorMessage = action.payload?.message;
 			});
 	},
 });

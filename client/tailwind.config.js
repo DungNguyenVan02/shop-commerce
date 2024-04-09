@@ -85,6 +85,32 @@ module.exports = {
 						transform: "translateY(-100px);",
 					},
 				},
+
+				slideTopLeft: {
+					"0%": {
+						"-webkit-transform":
+							"translateY(20px) translateX(20px);",
+						transform: "translateY(20px) translateX(20px);",
+					},
+					" 100%": {
+						"-webkit-transform": "translateY(0) translateX(0);",
+						transform: "translateY(0) translateX(0);",
+					},
+				},
+
+				slideHide: {
+					"0% offset": {
+						"-webkit-transform":
+							"translateZ(0) translateY(0) translateX(0);",
+						transform: "translateZ(0) translateY(0) translateX(0);",
+					},
+					" 100%": {
+						"-webkit-transform":
+							"translateZ(-400px) translateY(200px) translateX(200px);",
+						transform:
+							"translateZ(-400px) translateY(200px) translateX(200px);",
+					},
+				},
 			},
 			animation: {
 				slideTopForm:
@@ -95,7 +121,12 @@ module.exports = {
 				textGradient: "textGradient 3s ease infinite",
 				scaleUpTopRight:
 					"scaleUpTopRight 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both",
+				slideTopLeft:
+					"slideTopLeft 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;",
+				slideHide:
+					"slideHide 0.45s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;",
 			},
+
 			borderRadius: {
 				custom: "37% 63% 100% 0% / 33% 0% 100% 67% ",
 			},

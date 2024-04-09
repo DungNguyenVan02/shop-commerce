@@ -202,6 +202,7 @@ const UpdateBlog = ({ dataUpdate, onHandleHide }) => {
 												<div className="mt-5">
 													{preview?.thumb && (
 														<img
+															loading="lazy"
 															className="w-[140px] object-cover"
 															src={preview?.thumb}
 															alt=""

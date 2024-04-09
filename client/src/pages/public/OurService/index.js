@@ -13,6 +13,7 @@ function OurService() {
 					<div className="row">
 						<div className="col g-l-6 g-m-6 g-c-12 ">
 							<img
+								loading="lazy"
 								className="w-full object-cover"
 								src="https://cdn.shopify.com/s/files/1/1636/8779/files/9069783_orig.jpg?v=1491836163"
 								alt=""

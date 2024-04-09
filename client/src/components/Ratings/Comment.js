@@ -8,6 +8,7 @@ function Comment({ data }) {
 		<div className=" gap-3 bg-[#f2f2f2] border px-[20px] py-[16px] rounded-sm">
 			<div className="flex gap-3">
 				<img
+					loading="lazy"
 					className="w-[40px] h-[40px] object-cover rounded-full"
 					src={data?.postedBy?.image || images.avatarDefault}
 					alt="user"

@@ -447,6 +447,7 @@ const CreateVariants = ({ variantsProduct, onHandleHide }) => {
 													<div className="mt-5">
 														{preview && (
 															<img
+																loading="lazy"
 																className="w-[140px] object-cover"
 																src={preview}
 																alt=""

@@ -205,6 +205,7 @@ const Checkout = ({ dispatch, navigate, location }) => {
 										<div className="flex gap-2 items-center">
 											<div className="flex items-center gap-2">
 												<img
+													loading="lazy"
 													className="w-[80px] h-[80x] object-cover"
 													src={
 														product?.thumbnail ||
@@ -261,7 +262,11 @@ const Checkout = ({ dispatch, navigate, location }) => {
 							<div className="flex gap-5 items-center border-t-[1px] border-dashed py-4 px-5 bg-[#fafdff]">
 								<span>Giao hàng nhanh:</span>
 								<span className="flex items-center text-[#26aa99] text-[12px] gap-2">
-									<img src={images.iconShip} alt="" />
+									<img
+										loading="lazy"
+										src={images.iconShip}
+										alt=""
+									/>
 									<p>{`Dự kiến nhận hàng vào: ${expectedDelivery?.from} - ${expectedDelivery?.to}`}</p>
 								</span>
 							</div>

@@ -11,6 +11,7 @@ const VariantsColor = ({ color, active, onChangeActive, thumb }) => {
 				} flex items-center justify-center h-[40px] py-[3px] border rounded-md cursor-pointer`}
 			>
 				<img
+					loading="lazy"
 					src={thumb}
 					alt=""
 					className="w-[34px] h-[34px] object-cover rounded mr-1"

@@ -14,6 +14,7 @@ const BlogItem = ({ data }) => {
 					<div className="col g-l-5 g-c-5 g-m-12">
 						<div className="max-w-full rounded-xl overflow-hidden">
 							<img
+								loading="lazy"
 								className="w-full object-cover "
 								src={data?.image}
 								alt=""

@@ -182,6 +182,7 @@ function CreateBlog({ navigate }) {
 										<div className="my-5">
 											{preview?.thumb && (
 												<img
+													loading="lazy"
 													className="w-[140px] object-cover"
 													src={preview?.thumb}
 													alt=""

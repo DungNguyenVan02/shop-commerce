@@ -33,6 +33,7 @@ const Cart = () => {
 				) : (
 					<div className=" h-[300px] flex items-center justify-center flex-col">
 						<img
+							loading="lazy"
 							className="w-[250px]"
 							src={images.noCart}
 							alt="Empty cart"

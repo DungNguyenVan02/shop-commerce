@@ -15,6 +15,13 @@ export const apiGetAllUser = (params) => {
 	});
 };
 
+export const apiGetUserById = (id) => {
+	return axios({
+		url: "/user/" + id,
+		method: "GET",
+	});
+};
+
 export const apiUpdateUserByAdmin = (uid, data) => {
 	return axios({
 		url: "/user/" + uid,

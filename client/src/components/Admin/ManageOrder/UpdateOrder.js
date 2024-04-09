@@ -123,6 +123,7 @@ const UpdateOrder = ({ dataUpdate, onHide, onRerender }) => {
 									className="flex items-center gap-5 p-2 mt-2 border rounded"
 								>
 									<img
+										loading="lazy"
 										className="w-[100px] object-cover"
 										src={
 											item.thumbnail ||

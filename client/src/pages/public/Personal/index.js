@@ -169,6 +169,7 @@ function Personal({ dispatch }) {
 						<div className="col g-l-4">
 							<div className="flex flex-col items-center gap-2">
 								<img
+									loading="lazy"
 									className="w-[100px] h-[100px] object-cover shadow-lg rounded-full"
 									src={
 										previewAvatar

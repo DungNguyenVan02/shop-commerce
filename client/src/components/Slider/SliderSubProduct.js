@@ -43,6 +43,7 @@ function SliderSubProduct({ dataSrc, handleClick }) {
 				{dataSrc?.map((link) => (
 					<SwiperSlide key={link}>
 						<img
+							loading="lazy"
 							className="w-full h-[120px] object-contain border "
 							src={link || images.defaultImage}
 							alt="sub-product"

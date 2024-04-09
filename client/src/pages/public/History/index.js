@@ -59,6 +59,7 @@ const History = () => {
 												to={`/detail-product/${item.product.category}/${item.product._id}/${item.product?.name}`}
 											>
 												<img
+													loading="lazy"
 													src={item.thumbnail}
 													alt=""
 													className="w-[100px] object-cover mb-2"

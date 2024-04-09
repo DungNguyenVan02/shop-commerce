@@ -147,6 +147,7 @@ const Order = () => {
 											key={i}
 										>
 											<img
+												loading="lazy"
 												src={item?.thumbnail}
 												alt=""
 												className="w-[100px] object-cover mb-2"

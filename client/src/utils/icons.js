@@ -22,7 +22,7 @@ import {
 	LiaUserTimesSolid,
 	LiaUserCheckSolid,
 } from "react-icons/lia";
-
+import { LuMessagesSquare } from "react-icons/lu";
 import { BsList, BsSortDown, BsSortDownAlt, BsCart3 } from "react-icons/bs";
 
 import {
@@ -51,12 +51,17 @@ import {
 	IoPhonePortraitOutline,
 } from "react-icons/io5";
 
-import {} from "react-icons/sl";
 import { AiOutlineHistory } from "react-icons/ai";
 import { GoDotFill, GoClock, GoChecklist } from "react-icons/go";
 import { GiPositionMarker } from "react-icons/gi";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { RiDashboard3Line, RiProductHuntLine } from "react-icons/ri";
+
+import {
+	RiDashboard3Line,
+	RiProductHuntLine,
+	RiSendPlaneFill,
+	RiInformationFill,
+} from "react-icons/ri";
 import { TiGroupOutline } from "react-icons/ti";
 import { BiCustomize, BiUser } from "react-icons/bi";
 import {
@@ -166,6 +171,10 @@ const icons = {
 	LiaUserTimesSolid,
 	LiaUserCheckSolid,
 	FiMapPin,
+
+	LuMessagesSquare,
+	RiSendPlaneFill,
+	RiInformationFill,
 };
 
 export default icons;

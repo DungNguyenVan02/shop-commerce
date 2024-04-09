@@ -31,6 +31,7 @@ const SidebarProfile = () => {
 		<div className="flex flex-col p-2">
 			<div className="flex items-center justify-center gap-2 p-2 border-b mb-[24px]">
 				<img
+					loading="lazy"
 					className="w-[50px] h-[50px] object-cover rounded-full shadow-lg"
 					src={currentUser?.image || images.avatarDefault}
 					alt="avatar"

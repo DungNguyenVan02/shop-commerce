@@ -16,8 +16,7 @@ import withBaseComponent from "~/components/hocs/withBaseComponent";
 
 function ManageProducts({ location, navigate }) {
 	const [searchQueries] = useSearchParams();
-	const { CiSearch, FaRegEdit, IoTrashBinOutline, BiCustomize, FaRegEye } =
-		icons;
+	const { CiSearch, FaRegEdit, IoTrashBinOutline, BiCustomize } = icons;
 	const [searchText, setSearchText] = useState({ q: "" });
 	const [products, setProducts] = useState([]);
 	const [isRerender, setIsRender] = useState(false);
@@ -241,6 +240,7 @@ function ManageProducts({ location, navigate }) {
 										</td>
 										<td className=" px-4 py-3">
 											<img
+												loading="lazy"
 												className="w-[40px] object-cover"
 												src={product?.thumb}
 												alt={product?.name}

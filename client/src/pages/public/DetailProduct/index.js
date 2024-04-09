@@ -284,6 +284,7 @@ function DetailProduct({ navigate, dispatch, location }) {
 						<div className="col g-l-5 g-m-5 g-c-12">
 							<div className="w-[458px] h-[458px] object-contain border">
 								<img
+									loading="lazy"
 									className="w-full h-full object-contain"
 									src={thumbSrc || images?.defaultProduct}
 									alt={product?.name}

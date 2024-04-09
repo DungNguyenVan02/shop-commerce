@@ -47,6 +47,7 @@ function Banner() {
 					<SwiperSlide key={item.id}>
 						<div className="rounded-lg overflow-hidden">
 							<img
+								loading="lazy"
 								src={item.src}
 								alt=""
 								className="w-full h-full object-contain"
@@ -56,6 +57,7 @@ function Banner() {
 				))}
 			</Swiper>
 			<img
+				loading="lazy"
 				className="rounded-md mt-2"
 				src="https://clickbuy.com.vn/uploads/media/612-lhAyF.png"
 				alt=""

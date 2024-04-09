@@ -137,6 +137,7 @@ function Ratings({ data, dispatch, navigate }) {
 											phẩm này
 										</h3>
 										<img
+											loading="lazy"
 											className="w-[400px] object-cover"
 											src={images.review}
 											alt=""

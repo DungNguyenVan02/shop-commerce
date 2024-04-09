@@ -21,6 +21,7 @@ const routes = {
 
 	// Admin
 	admin_dashboard: "/admin/dashboard",
+	admin_chat: "/admin/chat",
 	admin_manage_users: "/admin/manage-users",
 	admin_manage_orders: "/admin/manage-order",
 	admin_manage_blogs: "/admin/manage-blogs",
@@ -36,7 +37,6 @@ const routes = {
 	member_wishlist: "/member/wishlist",
 	member_order: "/member/order",
 	member_return: "/member/return-refund",
-	member_history: "/member/history",
 };
 
 export default routes;

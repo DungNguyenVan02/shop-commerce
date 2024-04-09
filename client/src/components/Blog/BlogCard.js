@@ -8,7 +8,12 @@ import { Link } from "react-router-dom";
 const BlogCard = ({ data, navigate }) => {
 	return (
 		<article className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm">
-			<img alt="" src={data?.image} className=" w-full object-cover" />
+			<img
+				loading="lazy"
+				alt=""
+				src={data?.image}
+				className=" w-full object-cover"
+			/>
 
 			<div className="px-4 py-2">
 				<span className="text-[12px] opacity-60">

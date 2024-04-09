@@ -16,6 +16,7 @@ function AdminLayout({ children }) {
 				</Link>
 				<div className="flex items-center text-[14px] text-white gap-2">
 					<img
+						loading="lazy"
 						src={images.avatarDefault}
 						alt="admin"
 						className="w-[34px] h-[34px] rounded-full object-cover"

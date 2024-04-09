@@ -92,6 +92,7 @@ function Search({ location, navigate }) {
 							className="flex items-center p-2 gap-3 mt-2 hover:cursor-pointer hover:bg-gray-50"
 						>
 							<img
+								loading="lazy"
 								className="w-[40px] object-cover"
 								src={item?.thumb}
 								alt=""

@@ -11,6 +11,7 @@ function CardProduct({ data }) {
 				className="flex items-center p-2 mb-4 gap-4 shadow-custom_1 rounded-md hover:translate-y-[-2px] transitionAll"
 			>
 				<img
+					loading="lazy"
 					className="w-[86px] h-[86px] object-cover"
 					src={data?.thumb || images.defaultProduct}
 					alt={data?.name}

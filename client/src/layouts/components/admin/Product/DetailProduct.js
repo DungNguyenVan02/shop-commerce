@@ -18,16 +18,19 @@ const DetailProduct = ({ detailProduct, onRerender }) => {
 	});
 
 	const [heightScroll, setHeightScroll] = useState(window.scrollY);
-	const getScroll = () => {
-		window.addEventListener("scroll", () => {
-			setHeightScroll(window.scrollY);
-		});
-	};
 
 	const containerRef = useRef();
 
 	useEffect(() => {
-		getScroll();
+		const scroll = () => {
+			setHeightScroll(window.scrollY);
+		};
+
+		window.addEventListener("scroll", scroll);
+
+		return () => {
+			window.removeEventListener("scroll", scroll);
+		};
 	}, [isRerender]);
 
 	useEffect(() => {
@@ -143,6 +146,7 @@ const DetailProduct = ({ detailProduct, onRerender }) => {
 										</td>
 										<td className="whitespace-nowrap px-4 py-2 text-gray-700">
 											<img
+												loading="lazy"
 												className="w-[50px] object-cover"
 												src={
 													item?.thumbnail ||

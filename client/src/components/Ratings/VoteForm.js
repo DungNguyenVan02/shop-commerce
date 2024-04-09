@@ -54,6 +54,7 @@ function VoteForm({ name, onRating }) {
 				<div className="flex gap-4 items-center">
 					<div className="shadow-2xl w-[120px] h-[120px] rounded-full overflow-hidden">
 						<img
+							loading="lazy"
 							className="w-full h-full object-cover "
 							src={images.reviewProduct}
 							alt={name}

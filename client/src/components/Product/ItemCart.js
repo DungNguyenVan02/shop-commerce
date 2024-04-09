@@ -19,6 +19,7 @@ const ItemCart = ({ data, dispatch }) => {
 	return (
 		<div className="px-3 py-2 flex gap-2 items-center ">
 			<img
+				loading="lazy"
 				className="w-[50px] h-[50px] object-cover"
 				src={data?.thumbnail || images.defaultProduct}
 				alt="Product cart"
