@@ -36,6 +36,7 @@ router.put(
 	isAdmin,
 	userControllers.updateUserByAdmin
 );
+router.get("/:uid", verifyAccessToken, isAdmin, userControllers.getUserById);
 
 router.put("/wishlist/:pid", verifyAccessToken, userControllers.wishList);
 

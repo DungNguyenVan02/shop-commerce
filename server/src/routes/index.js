@@ -6,6 +6,8 @@ const blogRouter = require("./Blog");
 const brandRouter = require("./Brand");
 const couponRouter = require("./Coupon");
 const orderRouter = require("./Order");
+const chatRouter = require("./Chat");
+const messageRouter = require("./Message");
 const insertDataRouter = require("./InsertData");
 
 const { notFound, errHandler } = require("../middlewares/errorHandle");
@@ -19,6 +21,8 @@ function routes(app) {
 	app.use("/api/brand", brandRouter);
 	app.use("/api/coupon", couponRouter);
 	app.use("/api/order", orderRouter);
+	app.use("/api/chat", chatRouter);
+	app.use("/api/message", messageRouter);
 	app.use("/api/insert", insertDataRouter);
 
 	// handle error

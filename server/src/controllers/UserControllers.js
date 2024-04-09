@@ -459,6 +459,22 @@ class UserControllers {
 		});
 	});
 
+	// [GET] /:uid
+	getUserById = asyncHandler(async (req, res) => {
+		const { uid } = req.params;
+
+		if (!uid) {
+			throw new Error("Missing inputs");
+		}
+		const response = await User.findById(uid).select(
+			"-refreshToken -password -role"
+		);
+		return res.status(200).json({
+			success: response ? true : false,
+			data: response ? response : "",
+		});
+	});
+
 	// [PUT] /address
 	updateAddress = asyncHandler(async (req, res) => {
 		const { _id } = req.user;

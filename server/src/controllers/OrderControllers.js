@@ -108,11 +108,11 @@ class OrderControllers {
 	// [BUT] /
 	updateStatus = asyncHandler(async (req, res) => {
 		const { oid } = req.params;
-		const { status } = req.body;
+		const { status, isPayed } = req.body;
 		if (!status) throw new Error("Missing status");
 		const response = await Order.findByIdAndUpdate(
 			oid,
-			{ status },
+			{ status, isPayed },
 			{ new: true }
 		);
 		return res.status(200).json({
@@ -242,7 +242,9 @@ class OrderControllers {
 		}
 
 		const q = { ...formatQuery };
-		q.status = { $in: ["Đang xử lý", "Đang giao hàng"] };
+		q.status = {
+			$in: ["Đang xử lý", "Đang giao hàng", "Giao hàng thành công"],
+		};
 		q.isConfirmReturn = false;
 
 		let queryCommand = Order.find(q)
