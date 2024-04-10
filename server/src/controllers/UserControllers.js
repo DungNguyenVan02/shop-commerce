@@ -97,6 +97,78 @@ class UserControllers {
 		}
 	});
 
+	// [POST] /register-google
+	registerGoogle = asyncHandler(async (req, res) => {
+		const { email, fullName, userGoogleId } = req.body;
+
+		const payload = {
+			email,
+			fullName,
+			userGoogleId,
+		};
+		const user = await User.findOne({ email, userGoogleId });
+
+		if (user) {
+			throw new Error("Tài khoản đã tồn tại!");
+		} else {
+			const response = await User.create(payload);
+
+			return res.status(200).json({
+				success: response ? true : false,
+				data: response,
+				mes: response ? "Đăng ký thành công" : "Đăng ký thất bại",
+			});
+		}
+	});
+
+	// [POST] /login-google
+	loginGoogle = asyncHandler(async (req, res, next) => {
+		const { email, userGoogleId } = req.body;
+		if ((!email, !userGoogleId)) {
+			return res.status(403).json({
+				success: false,
+				mes: "Missing required fields",
+			});
+		}
+
+		const response = await User.findOne({ userGoogleId });
+
+		if (!response) {
+			throw new Error("Không tìm thấy tài khoản");
+		}
+		if (response.isBlocked) {
+			throw new Error(
+				"Tài khoản của bạn đã bị khóa, thông tin chi tiết vui lòng liên hệ quản trị viên!"
+			);
+		}
+
+		const { password, refreshToken, ...userData } = response.toObject();
+		// create access token and refresh token
+		const accessToken = generateAccessToken(response._id, userData.role);
+		const newRefreshToken = generateRefreshToken(response._id);
+
+		// save refresh token in database
+		const rs = await User.findByIdAndUpdate(
+			response._id,
+			{ newRefreshToken },
+			{ new: true }
+		);
+
+		// save refresh token in cookie
+		res.cookie("refreshToken", newRefreshToken, {
+			httpOnly: true,
+			maxAge: 7 * 24 * 60 * 60 * 1000,
+		});
+		// refresh token => cấp mới access token khi hết hạn
+		// access token => xác thực người dùng, phân quyền
+		return res.status(200).json({
+			success: rs ? true : false,
+			mes: rs ? "Login successfully" : "Something went wrong",
+			accessToken,
+			data: userData,
+		});
+	});
+
 	// [POST] /completedregister
 	completedRegister = asyncHandler(async (req, res) => {
 		const { codeVerified } = req.body;
@@ -147,7 +219,7 @@ class UserControllers {
 
 		const response = await User.findOne({ email, isVerified: true });
 		if (!response) {
-			throw new Error("Cannot find user, please try again");
+			throw new Error("Không tìm thấy tài khoản");
 		}
 		if (response.isBlocked) {
 			throw new Error(

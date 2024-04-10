@@ -6,8 +6,10 @@ const uploader = require("../config/cloudinary");
 const router = express.Router();
 
 router.post("/register", userControllers.register);
+router.post("/register-google", userControllers.registerGoogle);
 router.put("/completedregister", userControllers.completedRegister);
 router.post("/login", userControllers.login);
+router.post("/login-google", userControllers.loginGoogle);
 router.post("/logout", userControllers.logout);
 router.post("/refreshtoken", userControllers.refreshAccessToken);
 router.post("/forgotpassword", userControllers.forgotPassword);

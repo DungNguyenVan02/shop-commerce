@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const { type } = require("os");
 
 const userSchema = new mongoose.Schema(
 	{
@@ -21,11 +22,9 @@ const userSchema = new mongoose.Schema(
 		phone: {
 			type: String,
 			unique: true,
-			required: true,
 		},
 		password: {
 			type: String,
-			required: true,
 		},
 		role: {
 			type: Number,
@@ -76,6 +75,10 @@ const userSchema = new mongoose.Schema(
 		isVerified: {
 			type: Boolean,
 			default: false,
+		},
+		userGoogleId: {
+			type: String,
+			default: null,
 		},
 	},
 	{ timestamps: true }
