@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import routes from "~/config/routes";
 import icons from "~/utils/icons";
 import { SpinnerAnimation } from "~/components/Animation";
+import Authentication from "~/components/Firebase/Authentication";
 
 function FormInput() {
 	const dispatch = useDispatch();
@@ -166,6 +167,10 @@ function FormInput() {
 						rightAnimation={isAnimation && <SpinnerAnimation />}
 					/>
 				</div>
+				<div className="relative flex justify-center items-center opacity-70 text-[14px] before:absolute before:top-[50%] before:w-full before:h-[1px]  before:bg-gray-400">
+					<span className=" px-1 bg-white z-10">hoặc</span>
+				</div>
+				<Authentication />
 				<div className="font-[300] text-sm pb-4">
 					<div className="flex justify-between">
 						<span

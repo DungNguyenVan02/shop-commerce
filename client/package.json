@@ -13,6 +13,7 @@
 		"axios": "^1.6.2",
 		"chart.js": "^4.4.1",
 		"dompurify": "^3.0.8",
+		"firebase": "^10.10.0",
 		"formik": "^2.4.5",
 		"moment": "^2.29.4",
 		"normalize.css": "^8.0.1",

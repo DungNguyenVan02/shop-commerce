@@ -130,3 +130,19 @@ export const apiUpdateWishlist = (params) => {
 		method: "PUT",
 	});
 };
+
+export const apiRegisterWithGoogle = (data) => {
+	return axios({
+		url: "/user/register-google/",
+		method: "POST",
+		data,
+	});
+};
+
+export const apiLoginWithGoogle = (data) => {
+	return axios({
+		url: "/user/login-google/",
+		method: "POST",
+		data,
+	});
+};

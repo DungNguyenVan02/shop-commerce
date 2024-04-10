@@ -89,19 +89,19 @@ export const schemasValidChangeProfile = yup.object().shape({
 		.required("Vui lòng nhập trường này"),
 	phone: yup
 		.string()
-		.test("phone", "Invalid phone number", (value) =>
+		.test("phone", "Vui lòng nhập số điện thoại của bạn", (value) =>
 			phoneRegex.test(value)
 		),
 	email: yup
 		.string()
-		.matches(emailRegex, "Invalid email address")
+		.matches(emailRegex, "Trường này phải là email")
 		.required("Vui lòng nhập trường này"),
 });
 
 export const schemasValidBlog = yup.object().shape({
 	title: yup
 		.string()
-		.min(2, "Please enter title blog")
+		.min(2, "Vui lòng nhập tiêu đề bài viết")
 		.required("Vui lòng nhập trường này"),
 });
 

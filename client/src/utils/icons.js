@@ -16,6 +16,7 @@ import {
 	FaUpload,
 	FaRegEdit,
 	FaPen,
+	FaFacebook,
 } from "react-icons/fa";
 import {
 	LiaFileInvoiceDollarSolid,
@@ -85,7 +86,7 @@ import { TfiWrite } from "react-icons/tfi";
 import { GrMoney } from "react-icons/gr";
 
 import { ImBin } from "react-icons/im";
-
+import { FcGoogle } from "react-icons/fc";
 const icons = {
 	FaTabletAlt,
 	FaCameraRetro,
@@ -111,6 +112,7 @@ const icons = {
 	FaUpload,
 	FaRegEdit,
 	FaPen,
+	FaFacebook,
 
 	CiSearch,
 
@@ -175,6 +177,8 @@ const icons = {
 	LuMessagesSquare,
 	RiSendPlaneFill,
 	RiInformationFill,
+
+	FcGoogle,
 };
 
 export default icons;
