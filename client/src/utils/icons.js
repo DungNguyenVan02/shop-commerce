@@ -24,7 +24,13 @@ import {
 	LiaUserCheckSolid,
 } from "react-icons/lia";
 import { LuMessagesSquare } from "react-icons/lu";
-import { BsList, BsSortDown, BsSortDownAlt, BsCart3 } from "react-icons/bs";
+import {
+	BsList,
+	BsSortDown,
+	BsSortDownAlt,
+	BsCart3,
+	BsImages,
+} from "react-icons/bs";
 
 import {
 	FaStar,
@@ -53,7 +59,7 @@ import {
 } from "react-icons/io5";
 
 import { AiOutlineHistory } from "react-icons/ai";
-import { GoDotFill, GoClock, GoChecklist } from "react-icons/go";
+import { GoDotFill, GoClock, GoChecklist, GoPlus } from "react-icons/go";
 import { GiPositionMarker } from "react-icons/gi";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
@@ -87,6 +93,7 @@ import { GrMoney } from "react-icons/gr";
 
 import { ImBin } from "react-icons/im";
 import { FcGoogle } from "react-icons/fc";
+
 const icons = {
 	FaTabletAlt,
 	FaCameraRetro,
@@ -133,6 +140,7 @@ const icons = {
 	BsList,
 	BsSortDown,
 	BsSortDownAlt,
+	BsImages,
 
 	GiPositionMarker,
 
@@ -179,6 +187,7 @@ const icons = {
 	RiInformationFill,
 
 	FcGoogle,
+	GoPlus,
 };
 
 export default icons;

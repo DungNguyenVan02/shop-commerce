@@ -38,6 +38,7 @@ function Personal({ dispatch }) {
 		phone: currentUser.phone || "",
 		address: currentUser?.address?.address || "",
 	};
+
 	const checkDirty = (data) => {
 		let isDirty = false;
 		for (let i of Object.keys(data)) {
@@ -72,6 +73,7 @@ function Personal({ dispatch }) {
 			}
 		}
 	};
+
 	return (
 		<>
 			{isUploading && (

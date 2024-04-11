@@ -34,6 +34,17 @@ export const getCurrentUser = createAsyncThunk(
 	}
 );
 
+export const getSlide = createAsyncThunk(
+	"app/slide",
+	async (data, { rejectWithValue }) => {
+		const response = await apis.apiGetSlides();
+		if (!response?.success) {
+			return rejectWithValue(response);
+		}
+		return response.data;
+	}
+);
+
 export const logoutUser = createAsyncThunk(
 	"user/logout",
 	async (data, { rejectWithValue }) => {

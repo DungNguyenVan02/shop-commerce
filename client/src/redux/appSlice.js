@@ -4,8 +4,8 @@ const appSlice = createSlice({
 	name: "app",
 	initialState: {
 		categories: null,
-		isLoading: false,
 		isShowModal: false,
+		slides: null,
 	},
 	reducers: {
 		showModal: (state, action) => {
@@ -14,15 +14,11 @@ const appSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(actions.getCategories.pending, (state) => {
-				state.isLoading = true;
-			})
 			.addCase(actions.getCategories.fulfilled, (state, action) => {
-				state.isLoading = false;
 				state.categories = action.payload;
 			})
-			.addCase(actions.getCategories.rejected, (state, action) => {
-				state.errorMessage = action.payload?.message;
+			.addCase(actions.getSlide.fulfilled, (state, action) => {
+				state.slides = action.payload;
 			});
 	},
 });

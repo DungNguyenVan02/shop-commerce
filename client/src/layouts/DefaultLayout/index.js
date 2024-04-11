@@ -56,8 +56,6 @@ function DefaultLayout({ children, navigate, location }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isOpenChat]);
 
-	console.log(onlineUsers);
-
 	// Nhận tin nhắn mới từ socket server
 	useEffect(() => {
 		socket.current?.on("receive-message", (data) => {

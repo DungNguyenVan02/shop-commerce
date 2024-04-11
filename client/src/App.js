@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { publicRoutes } from "~/routes";
 import DefaultLayout from "~/layouts/DefaultLayout";
 import AdminLayout from "~/layouts/AdminLayout";
-import { getCategories } from "~/redux/asyncActions";
+import { getCategories, getSlide } from "~/redux/asyncActions";
 import { useDispatch } from "react-redux";
 import Footer from "~/layouts/components/user/Footer";
 import MemberLayout from "./layouts/MemberLayout";
@@ -14,6 +14,7 @@ function App() {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(getCategories());
+		dispatch(getSlide());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	return (

@@ -67,7 +67,7 @@ const Checkout = ({ dispatch, navigate, location }) => {
 			)}`,
 			products: productCheckout,
 			total: totalPayment,
-			address: currentUser.address.detail,
+			address: currentUser.address?.detail,
 			orderBy: currentUser._id,
 			method: "Thanh toán khi nhận hàng",
 		};

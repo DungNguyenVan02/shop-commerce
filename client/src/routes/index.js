@@ -22,6 +22,7 @@ import Return from "~/pages/public/Return";
 import { CreateBlog, ManageBlogs } from "~/pages/admin/ManageBlogs";
 import DetailBlog from "~/pages/public/DetailBlog";
 import ManageChat from "~/pages/admin/ManageChat";
+import ManageSlide from "~/pages/admin/ManageSlide";
 
 const publicRoutes = [
 	{
@@ -87,6 +88,11 @@ const publicRoutes = [
 	{
 		path: routes.admin_dashboard,
 		component: DashBroad,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.admin_manage_slide,
+		component: ManageSlide,
 		isAdminRoutes: true,
 	},
 	{

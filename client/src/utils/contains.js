@@ -19,6 +19,7 @@ const {
 	GoChecklist,
 	TfiWrite,
 	RiSendPlaneFill,
+	BsImages,
 } = icons;
 
 export const footerList = [
@@ -287,6 +288,12 @@ export const adminSlideBar = [
 	},
 	{
 		id: 5,
+		title: "Quản lý slide",
+		icon: <BsImages size={16} />,
+		path: routes.admin_manage_slide,
+	},
+	{
+		id: 6,
 		title: "Tin nhắn",
 		icon: <RiSendPlaneFill />,
 		path: routes.admin_chat,
@@ -330,25 +337,6 @@ export const memberSlideBar = [
 		title: "Lịch sử mua hàng",
 		icon: <AiOutlineHistory />,
 		path: routes.member_history,
-	},
-];
-
-export const slider = [
-	{
-		id: 1,
-		src: images.slide1,
-	},
-	{
-		id: 2,
-		src: images.slide2,
-	},
-	{
-		id: 3,
-		src: images.slide3,
-	},
-	{
-		id: 4,
-		src: images.slide4,
 	},
 ];
 

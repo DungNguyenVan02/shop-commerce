@@ -31,6 +31,8 @@ const routes = {
 	admin_manage_return: "/admin/manage-return",
 	admin_manage_canceled: "/admin/manage-canceled",
 
+	admin_manage_slide: "/admin/manage-slide",
+
 	// Member
 	member_personal: "/member/personal",
 	member_cart: "/member/cart",

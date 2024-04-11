@@ -1,14 +1,18 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, Autoplay } from "swiper";
-import { slider } from "~/utils/contains";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { useEffect, useState } from "react";
+import { appSelector } from "~/redux/selector";
+import { useSelector } from "react-redux";
 function Banner() {
+	const { slides } = useSelector(appSelector);
 	const [widthScreen, setWidthScreen] = useState(window.innerWidth);
+
+	console.log(slides);
 
 	const setWidth = (e) => {
 		setWidthScreen(e.target.innerWidth);
@@ -20,6 +24,7 @@ function Banner() {
 			window.removeEventListener("resize", setWidth);
 		};
 	}, [widthScreen]);
+
 	return (
 		<div
 			className={`${
@@ -43,18 +48,19 @@ function Banner() {
 				slidesPerView={1}
 				className="mySwiper"
 			>
-				{slider.map((item) => (
-					<SwiperSlide key={item.id}>
-						<div className="rounded-lg overflow-hidden">
-							<img
-								loading="lazy"
-								src={item.src}
-								alt=""
-								className="w-full h-full object-contain"
-							/>
-						</div>
-					</SwiperSlide>
-				))}
+				{slides &&
+					slides[0]?.images?.map((item) => (
+						<SwiperSlide key={item}>
+							<div className="rounded-lg overflow-hidden">
+								<img
+									loading="lazy"
+									src={item}
+									alt=""
+									className="w-full h-full object-contain"
+								/>
+							</div>
+						</SwiperSlide>
+					))}
 			</Swiper>
 			<img
 				loading="lazy"

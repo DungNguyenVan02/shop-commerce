@@ -105,18 +105,12 @@ const Authentication = ({ dispatch, navigate }) => {
 	}, []);
 
 	return (
-		<div className="flex items-center justify-center gap-5 text-[14px] text-[#1877f2] my-3">
-			<div className="flex justify-center items-center gap-1 w-[165px] h-[40px] border rounded-sm cursor-pointer hover:bg-[rgba(0,0,0,.02)]">
-				<FaFacebook size={22} color="#1877f2" />
-				<span>Facebook</span>
-			</div>
-			<div
-				onClick={handleLoginWithGoogle}
-				className="flex justify-center items-center gap-1 w-[165px] h-[40px] border rounded-sm cursor-pointer hover:bg-[rgba(0,0,0,.02)]"
-			>
-				<FcGoogle size={22} />
-				<span>Google</span>
-			</div>
+		<div
+			onClick={handleLoginWithGoogle}
+			className="text-[14px] text-[#1877f2] my-3 flex justify-center items-center gap-1 w-full h-[40px] border rounded-sm cursor-pointer hover:bg-[rgba(0,0,0,.02)]"
+		>
+			<FcGoogle size={22} />
+			<span>Google</span>
 		</div>
 	);
 };

@@ -9,6 +9,7 @@ import routes from "~/config/routes";
 import icons from "~/utils/icons";
 import { useNavigate } from "react-router-dom";
 import { SpinnerAnimation } from "~/components/Animation";
+import Authentication from "~/components/Firebase/Authentication";
 
 function FormInput() {
 	const navigate = useNavigate();
@@ -245,7 +246,13 @@ function FormInput() {
 						title="Đăng ký"
 						rightAnimation={isAnimate && <SpinnerAnimation />}
 					/>
-					<div className="flex justify-center text-[16px]">
+					<div className="w-full">
+						<div className="w-full relative flex justify-center items-center opacity-70 text-[14px] before:absolute before:top-[50%] before:w-full before:h-[1px]  before:bg-gray-400">
+							<span className=" px-1 bg-white z-10">hoặc</span>
+						</div>
+						<Authentication />
+					</div>
+					<div className="flex justify-center text-[14px]">
 						<p className="text-gray-400 mr-1">
 							Bạn đã có tài khoản? đăng nhập tại
 						</p>
@@ -261,7 +268,7 @@ function FormInput() {
 			{isConfirm && (
 				<div className="fixed top-0 right-0 bottom-0 left-0 bg-overlay z-[51]">
 					<div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white shadow-md min-w-[240px] p-[40px] flex flex-col items-center gap-4">
-						<h3>Please confirm code verify</h3>
+						<h3>Vui lòng nhập code xác thực tài khoản</h3>
 						<input
 							required
 							value={valueConfirm}

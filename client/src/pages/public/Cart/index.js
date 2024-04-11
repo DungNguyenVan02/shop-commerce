@@ -121,7 +121,7 @@ const Cart = ({ dispatch, navigate }) => {
 	};
 
 	const handleCheckout = () => {
-		if (!currentUser.address && !currentUser.phone) {
+		if (!currentUser.address || !currentUser.phone) {
 			Swal.fire({
 				title: "Hệ thống thông báo",
 				text: "Vui lòng cập nhật đầy đủ thông tin trước khi thanh toán",
