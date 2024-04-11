@@ -4,8 +4,8 @@ const categoryRouter = require("./Category");
 const blogCategoryRouter = require("./BlogCategory");
 const blogRouter = require("./Blog");
 const brandRouter = require("./Brand");
-const couponRouter = require("./Coupon");
 const orderRouter = require("./Order");
+const slideRouter = require("./Slide");
 const chatRouter = require("./Chat");
 const messageRouter = require("./Message");
 const insertDataRouter = require("./InsertData");
@@ -19,7 +19,7 @@ function routes(app) {
 	app.use("/api/blog-category", blogCategoryRouter);
 	app.use("/api/blog", blogRouter);
 	app.use("/api/brand", brandRouter);
-	app.use("/api/coupon", couponRouter);
+	app.use("/api/slide", slideRouter);
 	app.use("/api/order", orderRouter);
 	app.use("/api/chat", chatRouter);
 	app.use("/api/message", messageRouter);
