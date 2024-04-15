@@ -97,7 +97,7 @@ const FilterProduct = ({ location, navigate }) => {
 						setPrice([]);
 					}}
 				>
-					Reset
+					Xóa
 				</span>
 			</div>
 			<div className=" flex flex-col mt-5 w-full">
@@ -112,7 +112,7 @@ const FilterProduct = ({ location, navigate }) => {
 								className="cursor-pointer hover:text-blue-500"
 								onClick={() => setPrice([])}
 							>
-								Reset
+								Xóa
 							</span>
 						</div>
 						<div className="flex flex-col gap-2">
@@ -205,7 +205,7 @@ const FilterProduct = ({ location, navigate }) => {
 								className="cursor-pointer hover:text-blue-500"
 								onClick={() => setCategoryChecked([])}
 							>
-								Reset
+								Xóa
 							</span>
 						</div>
 						<div className="flex flex-col gap-2">
@@ -274,7 +274,7 @@ const FilterProduct = ({ location, navigate }) => {
 								className="cursor-pointer hover:text-blue-500"
 								onClick={() => setBrand([])}
 							>
-								Reset
+								Xóa
 							</span>
 						</div>
 						<div className="flex flex-col gap-2">
@@ -318,7 +318,7 @@ const FilterProduct = ({ location, navigate }) => {
 								className="cursor-pointer hover:text-blue-500"
 								onClick={() => setColor([])}
 							>
-								Reset
+								Xóa
 							</span>
 						</div>
 						<div className="flex flex-col gap-2">

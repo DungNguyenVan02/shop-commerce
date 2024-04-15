@@ -16,8 +16,7 @@ const BrandProduct = ({ category }) => {
 		let q = { category: category };
 		if (brandShow) {
 			q = {
-				category: category,
-				brand: brandShow,
+				brand_category: `${brandShow},${category}`,
 			};
 		}
 		const response = await apiGetProducts(q);

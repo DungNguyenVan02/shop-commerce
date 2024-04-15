@@ -39,23 +39,26 @@ export const apiGetOrderReturnByAdmin = (params) => {
 	});
 };
 
-export const apiGetOrder = () => {
+export const apiGetOrder = (params) => {
 	return axios({
 		url: "/order",
 		method: "GET",
+		params,
 	});
 };
-export const apiGetHistoryOrder = () => {
+export const apiGetHistoryOrder = (params) => {
 	return axios({
 		url: "/order/history-order",
 		method: "GET",
+		params,
 	});
 };
 
-export const apiGetReturnOrder = () => {
+export const apiGetReturnOrder = (params) => {
 	return axios({
 		url: "/order/return-order",
 		method: "GET",
+		params,
 	});
 };
 

@@ -50,11 +50,14 @@ function ListOrder({ location, navigate }) {
 				pathname: location.pathname,
 				search: createSearchParams(queries).toString(),
 			});
-		} else {
-			navigate({
-				pathname: location.pathname,
-				search: createSearchParams("").toString(),
-			});
+		}
+
+		if (debouncedValue === "") {
+			searchQueries.get("q") &&
+				navigate({
+					pathname: location.pathname,
+					search: createSearchParams("").toString(),
+				});
 		}
 
 		fetchGetOrders(queries);

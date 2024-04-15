@@ -1,20 +1,26 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { apiGetHistoryOrder } from "~/apis";
+import Pagination from "~/components/Pagination";
 import { formatMoney } from "~/utils/helper";
 
 const History = () => {
 	const [orders, setOrders] = useState([]);
-	const fetchOrder = async () => {
-		const response = await apiGetHistoryOrder();
+	const [query] = useSearchParams();
+
+	const fetchOrder = async (queries) => {
+		const response = await apiGetHistoryOrder(queries);
 		if (response?.success) {
-			setOrders(response.listOrder);
+			setOrders(response);
 		}
 	};
 	useEffect(() => {
-		fetchOrder();
-	}, []);
+		const queries = Object.fromEntries([...query]);
+
+		fetchOrder(queries);
+		window.scrollTo(0, 0);
+	}, [query]);
 
 	return (
 		<div className="p-3 bg-white border rounded-lg shadow-custom_1 min-h-[600px]">
@@ -42,13 +48,18 @@ const History = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{orders?.map((order, i) => {
+					{orders?.orders?.map((order, i) => {
 						return (
 							<tr
 								key={order._id}
 								className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
 							>
-								<td className="px-6 py-3">{i + 1}</td>
+								<td className="px-6 py-3">
+									{((+query.get("page") || 1) - 1) *
+										process.env.REACT_APP_LIMIT +
+										i +
+										1}
+								</td>
 								<td className="px-6 py-3">
 									{order.products.map((item, i) => (
 										<div
@@ -102,6 +113,10 @@ const History = () => {
 					})}
 				</tbody>
 			</table>
+
+			<div className="mt-5">
+				<Pagination totalCount={orders?.counts} />
+			</div>
 		</div>
 	);
 };

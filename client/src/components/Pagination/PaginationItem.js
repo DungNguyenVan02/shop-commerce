@@ -9,6 +9,7 @@ function PaginationItem({ children, navigate, location }) {
 	const handleChangePage = (page) => {
 		const queries = Object.fromEntries([...params]);
 		if (Number(page)) queries.page = page;
+
 		navigate({
 			pathname: location.pathname,
 			search: createSearchParams(queries).toString(),

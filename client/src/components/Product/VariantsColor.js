@@ -8,7 +8,7 @@ const VariantsColor = ({ color, active, onChangeActive, thumb }) => {
 					color === active
 						? "border-main bg-red-100"
 						: " bg-white-200"
-				} flex items-center justify-center h-[40px] py-[3px] border rounded-md cursor-pointer`}
+				} flex items-center justify-center h-[46px] py-[3px] border rounded-md cursor-pointer`}
 			>
 				<img
 					loading="lazy"

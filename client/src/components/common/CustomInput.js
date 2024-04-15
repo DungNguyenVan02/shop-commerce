@@ -15,6 +15,7 @@ function CustomInput({
 	if (textArea) {
 		TypeInput = "textarea";
 	}
+
 	return (
 		<div className="mb-3">
 			{label && (

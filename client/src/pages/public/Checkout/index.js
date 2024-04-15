@@ -6,7 +6,12 @@ import withBaseComponent from "~/components/hocs/withBaseComponent";
 import images from "~/assets/images";
 import { formatMoney } from "~/utils/helper";
 import { Button, Congratulations } from "~/components/common";
-import { apiCheckoutOnline, apiCreateOrder, apiRemoveCart } from "~/apis";
+import {
+	apiCheckoutOnline,
+	apiCreateOrder,
+	apiRemoveCart,
+	apiUpdateSold,
+} from "~/apis";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { checkouts as checkoutsSlice } from "~/redux/userSlice";
 import Swal from "sweetalert2";
@@ -25,14 +30,17 @@ const Checkout = ({ dispatch, navigate, location }) => {
 
 	useEffect(() => {
 		const listProductCheckout = [];
-		currentUser?.cart.forEach((item) => {
-			checkouts.forEach((el) => {
-				if (el.cid === item._id) {
-					listProductCheckout.push(item);
-				}
+		if (checkouts[0]?.cid) {
+			currentUser?.cart.forEach((item) => {
+				checkouts.forEach((el) => {
+					if (el.cid === item._id) {
+						listProductCheckout.push(item);
+					}
+				});
 			});
-		});
-
+		} else {
+			listProductCheckout.push(checkouts[0]);
+		}
 		setProductCheckout(listProductCheckout);
 
 		const date = new Date();
@@ -51,9 +59,9 @@ const Checkout = ({ dispatch, navigate, location }) => {
 		return productCheckout.reduce(
 			(total, item) =>
 				total +
-				item.price *
-					((100 - item.product.discount) / 100) *
-					item.quantity,
+				item?.price *
+					((100 - item?.product?.discount) / 100) *
+					item?.quantity,
 			0
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,12 +80,38 @@ const Checkout = ({ dispatch, navigate, location }) => {
 			method: "Thanh toán khi nhận hàng",
 		};
 		const response = await apiCreateOrder(payload);
-		if (response?.success) {
-			const response = await apiRemoveCart({
-				arrProduct: productCheckout.map((item) => item._id),
-			});
+		if (response.success) {
+			const data = {
+				arrProduct: productCheckout?.map((product) => ({
+					quantity: product.quantity,
+					pid: product?.product?._id,
+					sku: product?.sku,
+				})),
+				state: 0,
+			};
+			await apiUpdateSold(data);
 
-			if (response?.success) {
+			if (checkouts[0]?.cid) {
+				const response = await apiRemoveCart({
+					arrProduct: productCheckout.map((item) => item._id),
+				});
+
+				if (response?.success) {
+					setIsSuccess(true);
+					dispatch(checkoutsSlice([]));
+					dispatch(getCurrentUser());
+					setTimeout(() => {
+						Swal.fire(
+							"Hệ thống thông báo",
+							"Đặt hàng thành công!",
+							"success"
+						).then(() => {
+							setIsSuccess(false);
+							navigate("/");
+						});
+					}, 500);
+				}
+			} else {
 				setIsSuccess(true);
 				dispatch(checkoutsSlice([]));
 				dispatch(getCurrentUser());
@@ -106,10 +140,38 @@ const Checkout = ({ dispatch, navigate, location }) => {
 	const fetchCreateCheckoutOnline = async (data) => {
 		const response = await apiCreateOrder(data);
 		if (response?.success) {
-			const response = await apiRemoveCart({
-				arrProduct: productCheckout.map((item) => item._id),
-			});
-			if (response?.success) {
+			console.log(data);
+			const dataUpdateSold = {
+				arrProduct: data?.products?.map((product) => ({
+					quantity: product?.quantity,
+					pid: product?.product,
+					sku: product?.sku,
+				})),
+				state: 0,
+			};
+			await apiUpdateSold(dataUpdateSold);
+			setProductCheckout([]);
+
+			if (checkouts[0]?.cid) {
+				const response = await apiRemoveCart({
+					arrProduct: productCheckout.map((item) => item._id),
+				});
+				if (response?.success) {
+					setIsSuccess(true);
+					dispatch(checkoutsSlice([]));
+					dispatch(getCurrentUser());
+					setTimeout(() => {
+						Swal.fire(
+							"Hệ thống thông báo",
+							"Đặt hàng thành công!",
+							"success"
+						).then(() => {
+							setIsSuccess(false);
+							navigate("/");
+						});
+					}, 500);
+				}
+			} else {
 				setIsSuccess(true);
 				dispatch(checkoutsSlice([]));
 				dispatch(getCurrentUser());
@@ -126,7 +188,7 @@ const Checkout = ({ dispatch, navigate, location }) => {
 			}
 		}
 	};
-
+	console.log(productCheckout);
 	useEffect(() => {
 		if (location?.search.length > 0 && productCheckout.length > 0) {
 			const filterInfoParam = location.search.split("?")[1].split("&");
@@ -135,14 +197,23 @@ const Checkout = ({ dispatch, navigate, location }) => {
 			filterInfoParam.forEach((item) => {
 				objectConvert[item.split("=")[0]] = item.split("=")[1];
 			});
-			console.log(Object.keys(objectConvert).length > 0);
 
 			if (Object.keys(objectConvert).length > 0) {
 				if (objectConvert.vnp_TransactionStatus === "00") {
 					fetchCreateCheckoutOnline({
-						products: productCheckout,
+						products: productCheckout.map((product) => ({
+							product: product?.product?._id,
+							thumbnail: product?.thumbnail,
+							quantity: product?.quantity,
+							color: product?.color,
+							price: product?.price,
+							ram: product?.ram,
+							internalMemory: product?.internalMemory,
+							sku: product?.sku,
+						})),
 						code: objectConvert.vnp_BankTranNo,
-						total: objectConvert.vnp_Amount,
+						bankCode: objectConvert.vnp_BankCode,
+						total: objectConvert.vnp_Amount / 100,
 						address: currentUser.address.detail,
 						orderBy: currentUser._id,
 						isPayed: true,
@@ -158,9 +229,22 @@ const Checkout = ({ dispatch, navigate, location }) => {
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [location?.search.length > 0, productCheckout]);
+	}, [productCheckout.length > 0]);
 
-	console.log(productCheckout);
+	// useEffect(() => {
+	// 	if(isUpdateSold) {
+
+	// const dataUpdateSold = {
+	// 	arrProduct: data?.products?.map((product) => ({
+	// 		quantity: product?.quantity,
+	// 		pid: product?.product?._id,
+	// 		sku: product?.sku,
+	// 	})),
+	// };
+	// await apiUpdateSold(dataUpdateSold);
+
+	// 	}
+	// }, [isUpdateSold])
 
 	return (
 		<>
@@ -239,22 +323,23 @@ const Checkout = ({ dispatch, navigate, location }) => {
 											{formatMoney(
 												product?.price *
 													((100 -
-														product.product
+														product?.product
 															?.discount) /
 														100)
 											)}
 										</span>
 									</div>
 									<div className=" text-center col g-l-2 g-m-2 g-c-12">
-										{product.quantity}
+										{product?.quantity}
 									</div>
 									<div className="text-center col g-l-2 g-m-2 g-c-12">
 										{formatMoney(
 											product?.price *
 												((100 -
-													product.product?.discount) /
+													product?.product
+														?.discount) /
 													100) *
-												product.quantity
+												product?.quantity
 										)}
 									</div>
 								</div>

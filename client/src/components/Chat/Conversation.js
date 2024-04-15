@@ -33,9 +33,11 @@ const Conversation = ({ data, currentUserId, online }) => {
 				<h3 className="text-[15px] text-[#050505] font-medium">
 					{userData?.fullName}
 				</h3>
-				<p className="text-[13px] text-[#65676B] line-clamp-1">
-					Oke nhé shop
-				</p>
+				{online && (
+					<p className="text-[13px] text-[#65676B] line-clamp-1">
+						Đang hoạt động
+					</p>
+				)}
 			</div>
 		</div>
 	);

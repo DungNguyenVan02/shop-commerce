@@ -88,8 +88,14 @@ function DailySale({ dispatch, navigate }) {
 		dispatch(
 			checkouts([
 				{
-					pid: deadDaily?.data?._id,
-					color: deadDaily?.data?.color || "Unknown",
+					product: deadDaily?.data,
+					color: deadDaily?.data.color,
+					internalMemory: deadDaily?.data.internalMemory,
+					ram: deadDaily?.data.ram,
+					price: deadDaily?.data.price,
+					sku: deadDaily?.data._id,
+					thumbnail: deadDaily?.data.thumb,
+					quantity: 1,
 				},
 			])
 		);

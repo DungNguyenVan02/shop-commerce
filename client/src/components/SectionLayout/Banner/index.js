@@ -12,8 +12,6 @@ function Banner() {
 	const { slides } = useSelector(appSelector);
 	const [widthScreen, setWidthScreen] = useState(window.innerWidth);
 
-	console.log(slides);
-
 	const setWidth = (e) => {
 		setWidthScreen(e.target.innerWidth);
 	};

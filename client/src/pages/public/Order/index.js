@@ -1,25 +1,33 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { apiGetOrder, apiUpdateSold, apiUpdateStatusOrder } from "~/apis";
+import Pagination from "~/components/Pagination";
 import { formatMoney } from "~/utils/helper";
 
 const Order = () => {
 	const [orders, setOrders] = useState([]);
+	const [query] = useSearchParams();
 	const [isRerender, setIsRerender] = useState(false);
 
-	const fetchOrder = async () => {
-		const response = await apiGetOrder();
+	const fetchOrder = async (queries) => {
+		const response = await apiGetOrder(queries);
 		if (response?.success) {
-			setOrders(response.listOrder);
+			setOrders(response);
 		}
 	};
-	useEffect(() => {
-		fetchOrder();
-	}, [isRerender]);
 
-	const handleCanceledOrder = (oid) => {
+	useEffect(() => {
+		const queries = Object.fromEntries([...query]);
+
+		fetchOrder(queries);
+		window.scrollTo(0, 0);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isRerender, query]);
+
+	const handleCanceledOrder = (oid, order) => {
 		Swal.fire({
 			title: "Bạn có chắc chắn?",
 			text: "Hủy bỏ đơn hàng!",
@@ -40,6 +48,16 @@ const Order = () => {
 						oid
 					);
 					if (response?.success) {
+						const data = {
+							arrProduct: order.products?.map((product) => ({
+								quantity: product.quantity,
+								pid: product?.product?._id,
+								sku: product?.sku,
+							})),
+							state: 1,
+						};
+						await apiUpdateSold(data);
+
 						setIsRerender(!isRerender);
 					} else {
 						toast.warning(response.message);
@@ -49,7 +67,7 @@ const Order = () => {
 		});
 	};
 
-	const handleReturnOrder = (oid) => {
+	const handleReturnOrder = (oid, order) => {
 		Swal.fire({
 			title: "Bạn có chắc chắn?",
 			text: "Đơn hàng sẽ hoàn lại cho đơn vị vận chuyển và nhận tiền!",
@@ -65,6 +83,15 @@ const Order = () => {
 					oid
 				);
 				if (response?.success) {
+					const data = {
+						arrProduct: order.products?.map((product) => ({
+							quantity: product.quantity,
+							pid: product?.product?._id,
+							sku: product?.sku,
+						})),
+						state: 1,
+					};
+					await apiUpdateSold(data);
 					setIsRerender(!isRerender);
 				} else {
 					toast.warning(response.message);
@@ -89,14 +116,6 @@ const Order = () => {
 					order._id
 				);
 				if (response?.success) {
-					const data = {
-						arrProduct: order?.products?.map((od) => ({
-							quantity: od.quantity,
-							pid: od?.product?._id,
-							sku: od?.sku,
-						})),
-					};
-					await apiUpdateSold(data);
 					setIsRerender(!isRerender);
 				} else {
 					toast.warning(response.message);
@@ -133,13 +152,18 @@ const Order = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{orders?.map((order, i) => {
+					{orders?.orders?.map((order, i) => {
 						return (
 							<tr
 								key={order?._id}
 								className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
 							>
-								<td className="px-6 py-3">{i + 1}</td>
+								<td className="px-6 py-3">
+									{((+query.get("page") || 1) - 1) *
+										process.env.REACT_APP_LIMIT +
+										i +
+										1}
+								</td>
 								<td className="px-6 py-3">
 									{order?.products.map((item, i) => (
 										<div
@@ -189,7 +213,10 @@ const Order = () => {
 										<span
 											className="cursor-pointer hover:underline text-main"
 											onClick={() =>
-												handleCanceledOrder(order?._id)
+												handleCanceledOrder(
+													order?._id,
+													order
+												)
 											}
 										>
 											Hủy đơn hàng
@@ -208,7 +235,8 @@ const Order = () => {
 												className="cursor-pointer hover:underline opacity-60"
 												onClick={() =>
 													handleReturnOrder(
-														order?._id
+														order?._id,
+														order
 													)
 												}
 											>
@@ -224,6 +252,9 @@ const Order = () => {
 					})}
 				</tbody>
 			</table>
+			<div className="mt-5">
+				<Pagination totalCount={orders?.counts} />
+			</div>
 		</div>
 	);
 };

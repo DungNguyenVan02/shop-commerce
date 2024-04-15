@@ -111,3 +111,23 @@ export const getMoneyByTime = (time, type, orders) => {
 
 	return formatMoney(result);
 };
+
+export const convertNumberInMoney = (number) => {
+	const numberConvert = number.toString();
+	const result = [];
+
+	for (let i = numberConvert.length - 1; i >= 0; i--) {
+		// Thêm ký tự hiện tại vào mảng kết quả
+		result.push(numberConvert[i]);
+
+		// Nếu đã thêm vào đủ 3 ký tự và ký tự hiện tại không phải là ký tự đầu tiên
+		if (result.length % 3 === 0 && i !== 0) {
+			// Thêm dấu chấm phẩy vào mảng kết quả
+			result.push(".");
+		}
+	}
+
+	result.reverse();
+
+	return result.join("");
+};

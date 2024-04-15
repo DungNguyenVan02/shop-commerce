@@ -31,6 +31,14 @@ export const apiCreateProduct = (data) => {
 	});
 };
 
+export const apiCreateAccessoryProduct = (data) => {
+	return axios({
+		url: "/product/create-accessory",
+		method: "POST",
+		data,
+	});
+};
+
 export const apiDeleteProduct = (pid) => {
 	return axios({
 		url: "/product/" + pid,

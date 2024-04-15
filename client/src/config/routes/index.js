@@ -27,6 +27,7 @@ const routes = {
 	admin_manage_blogs: "/admin/manage-blogs",
 	admin_create_blog: "/admin/create-blog",
 	admin_create_product: "/admin/create-product",
+	admin_create_accessory: "/admin/create-accessory",
 	admin_manage_products: "/admin/manage-products",
 	admin_manage_return: "/admin/manage-return",
 	admin_manage_canceled: "/admin/manage-canceled",
@@ -39,6 +40,7 @@ const routes = {
 	member_wishlist: "/member/wishlist",
 	member_order: "/member/order",
 	member_return: "/member/return-refund",
+	member_history: "/member/history",
 };
 
 export default routes;

@@ -262,11 +262,20 @@ function ManageProducts({ location, navigate }) {
 												<span>
 													Màu sắc: {product?.color}
 												</span>
-												<span>Ram: {product?.ram}</span>
-												<span>
-													Bộ nhớ trong:{" "}
-													{product?.internalMemory}
-												</span>
+												{product?.category !==
+													"Phụ kiện" && (
+													<>
+														<span>
+															Ram: {product?.ram}
+														</span>
+														<span>
+															Bộ nhớ trong:{" "}
+															{
+																product?.internalMemory
+															}
+														</span>
+													</>
+												)}
 											</div>
 										</td>
 
@@ -300,34 +309,43 @@ function ManageProducts({ location, navigate }) {
 												}
 												className="flex items-center justify-center gap-3"
 											>
-												<span
-													className="cursor-pointer opacity-75 hover:opacity-100"
-													onClick={() =>
-														setUpdateProduct({
-															isUpdate: true,
-															data: product,
-														})
-													}
-												>
-													<FaRegEdit
-														size={19}
-														color="#43a87b"
-													/>
-												</span>
-												<span
-													className="cursor-pointer opacity-75 hover:opacity-100"
-													onClick={() =>
-														setVariantsProduct({
-															isVariants: true,
-															data: product,
-														})
-													}
-												>
-													<BiCustomize
-														size={19}
-														color="#0B60B0"
-													/>
-												</span>
+												{product.category !==
+													"Phụ kiện" && (
+													<>
+														<span
+															className="cursor-pointer opacity-75 hover:opacity-100"
+															onClick={() =>
+																setUpdateProduct(
+																	{
+																		isUpdate: true,
+																		data: product,
+																	}
+																)
+															}
+														>
+															<FaRegEdit
+																size={19}
+																color="#43a87b"
+															/>
+														</span>
+														<span
+															className="cursor-pointer opacity-75 hover:opacity-100"
+															onClick={() =>
+																setVariantsProduct(
+																	{
+																		isVariants: true,
+																		data: product,
+																	}
+																)
+															}
+														>
+															<BiCustomize
+																size={19}
+																color="#0B60B0"
+															/>
+														</span>
+													</>
+												)}
 												<span
 													className="cursor-pointer opacity-75 hover:opacity-100"
 													onClick={() =>

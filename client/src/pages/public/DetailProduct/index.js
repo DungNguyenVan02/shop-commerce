@@ -1,5 +1,11 @@
 import { Link, createSearchParams, useParams } from "react-router-dom";
-import { apiAddCart, apiGetProduct, apiGetProducts, apiRatings } from "~/apis";
+import {
+	apiAddAccessoryCart,
+	apiAddCart,
+	apiGetProduct,
+	apiGetProducts,
+	apiRatings,
+} from "~/apis";
 import { useCallback, useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 
@@ -219,22 +225,40 @@ function DetailProduct({ navigate, dispatch, location }) {
 				}
 			});
 		} else {
-			const payload = {
-				pid: pid,
-				sku: variantsSelected?.sku,
-				thumbnail: variantsSelected?.thumbnail,
-				color: colorActive || "Unknown",
-				quantity,
-				price: variantsSelected?.price,
-				ram: variantsSelected?.ram,
-				internalMemory: variantsSelected?.internalMemory,
-			};
-			const response = await apiAddCart(payload);
-			if (response?.success) {
-				toast.success("Sản phẩm đã được thêm vào giỏ hàng");
-				dispatch(getCurrentUser());
+			if (variantsSelected?.ram && variantsSelected.internalMemory) {
+				const payload = {
+					pid: pid,
+					sku: variantsSelected?.sku,
+					thumbnail: variantsSelected?.thumbnail,
+					color: colorActive || "Unknown",
+					quantity,
+					price: variantsSelected?.price,
+					ram: variantsSelected?.ram,
+					internalMemory: variantsSelected?.internalMemory,
+				};
+				const response = await apiAddCart(payload);
+				if (response?.success) {
+					toast.success("Sản phẩm đã được thêm vào giỏ hàng");
+					dispatch(getCurrentUser());
+				} else {
+					toast.error(response.mes);
+				}
 			} else {
-				toast.error(response.mes);
+				const payload = {
+					pid: pid,
+					sku: variantsSelected?.sku,
+					thumbnail: variantsSelected?.thumbnail,
+					color: colorActive || "Unknown",
+					quantity,
+					price: variantsSelected?.price,
+				};
+				const response = await apiAddAccessoryCart(payload);
+				if (response?.success) {
+					toast.success("Sản phẩm đã được thêm vào giỏ hàng");
+					dispatch(getCurrentUser());
+				} else {
+					toast.error(response.mes);
+				}
 			}
 		}
 	});
@@ -243,9 +267,14 @@ function DetailProduct({ navigate, dispatch, location }) {
 		dispatch(
 			checkouts([
 				{
-					pid,
-					color: versionProduct.color || "Unknown",
-					quantity,
+					product: product,
+					color: variantsSelected.color,
+					internalMemory: variantsSelected.internalMemory,
+					ram: variantsSelected.ram,
+					price: variantsSelected.price,
+					sku: variantsSelected.sku,
+					thumbnail: variantsSelected.thumbnail,
+					quantity: quantity,
 				},
 			])
 		);
@@ -387,41 +416,40 @@ function DetailProduct({ navigate, dispatch, location }) {
 								</div>
 							</div>
 							<div className="my-3">
-								{product?.variants?.length > 0 && (
+								{
 									<h3 className="text-[16px] font-semibold text-gray-800">
 										Màu sắc:
 									</h3>
-								)}
+								}
 								<div className="grid wide">
 									<div className="row">
-										{product?.variants?.length > 0 &&
-											flatColor([
-												...product?.variants?.map(
-													(el) => el.color
-												),
-												product?.color,
-											]).map((item, i) => (
-												<div
-													key={i}
-													className="col g-l-4"
-												>
-													<VariantsColor
-														color={item}
-														thumb={
-															product?.variants?.find(
-																(el) =>
-																	el.color ===
-																	item
-															)?.thumbnail ||
-															product?.thumb
-														}
-														active={colorActive}
-														onChangeActive={
-															setColorActive
-														}
-													/>
-												</div>
-											))}
+										{(product?.variants?.length > 0
+											? flatColor([
+													...product?.variants?.map(
+														(el) => el.color
+													),
+													product?.color,
+											  ])
+											: [product?.color]
+										).map((item, i) => (
+											<div key={i} className="col g-l-4">
+												<VariantsColor
+													color={item}
+													thumb={
+														product?.variants?.find(
+															(el) =>
+																el.color ===
+																item
+														)?.thumbnail ||
+														product?.thumb
+													}
+													active={colorActive}
+													onChangeActive={
+														setColorActive
+													}
+												/>
+											</div>
+										))}
 									</div>
 								</div>
 							</div>
@@ -439,15 +467,29 @@ function DetailProduct({ navigate, dispatch, location }) {
 							</div>
 							<div className="flex gap-4">
 								<Button
+									isDisabled={
+										variantsSelected?.quantity === 0
+									}
 									handleClick={handleAddCart}
 									title="Thêm vào giỏ hàng"
 									leftICon={<FaCartPlus />}
-									styleCustom="rounded-sm bg-red-300 border border-red-600 text-white hover:opacity-80 px-4 py3"
+									styleCustom={`rounded-sm bg-red-300 border border-red-600 text-white  px-4 py-3 ${
+										variantsSelected?.quantity === 0
+											? "opacity-70"
+											: "hover:opacity-80"
+									}`}
 								/>
 								<Button
+									isDisabled={
+										variantsSelected?.quantity === 0
+									}
 									handleClick={handleBuyNow}
 									title="Mua ngay"
-									styleCustom="rounded-sm bg-main text-white hover:opacity-80 px-4 py-3"
+									styleCustom={`rounded-sm bg-main text-white px-4 py-3 ${
+										variantsSelected?.quantity === 0
+											? "opacity-70"
+											: "hover:opacity-80"
+									}`}
 								/>
 							</div>
 						</div>

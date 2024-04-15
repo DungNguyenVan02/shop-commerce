@@ -100,6 +100,14 @@ export const apiAddCart = (data) => {
 	});
 };
 
+export const apiAddAccessoryCart = (data) => {
+	return axios({
+		url: "/user/accessory-cart",
+		method: "PUT",
+		data,
+	});
+};
+
 export const apiRemoveCart = (data) => {
 	return axios({
 		url: "/user/remove-cart",

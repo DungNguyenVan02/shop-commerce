@@ -11,17 +11,25 @@ function Products() {
 
 	const fetchProducts = async (queries) => {
 		let q = queries;
-		if (slug === "tablet" && !brand) {
+		if (
+			(slug === "Điện thoại" ||
+				slug === "Tablet" ||
+				slug === "Phụ kiện") &&
+			!brand
+		) {
 			q = {
+				...queries,
 				category:
 					slug?.slice(0, 1)?.toLocaleUpperCase() + slug?.slice(1),
 			};
 		}
 		if (slug === "brand") {
 			q = {
+				...queries,
 				brand,
 			};
 		}
+
 		const response = await apiGetProducts(q);
 		if (response?.success) setProducts(response);
 	};

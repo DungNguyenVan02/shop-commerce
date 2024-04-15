@@ -69,6 +69,20 @@ export const schemasValidProduct = yup.object().shape({
 	ram: yup.string().required("Vui lòng chọn trường này"),
 });
 
+export const schemasValidAccessory = yup.object().shape({
+	name: yup
+		.string()
+		.min(2, "Vui lòng nhập tên sản phẩm")
+		.required("Vui lòng nhập trường này"),
+	price: yup.number().required("Vui lòng nhập trường này"),
+	discount: yup.number().required("Vui lòng nhập trường này"),
+	quantity: yup
+		.number()
+		.min(1, "Vui lòng nhập số lượng")
+		.required("Vui lòng nhập trường này"),
+	brand: yup.string().required("Vui lòng chọn trường này"),
+});
+
 export const schemasValidVariants = yup.object().shape({
 	quantity: yup
 		.number()

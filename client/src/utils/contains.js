@@ -242,6 +242,11 @@ export const adminSlideBar = [
 			},
 			{
 				id: 1,
+				title: "Thêm phụ kiện",
+				path: routes.admin_create_accessory,
+			},
+			{
+				id: 2,
 				title: "Danh sách sản phẩm",
 				path: routes.admin_manage_products,
 			},

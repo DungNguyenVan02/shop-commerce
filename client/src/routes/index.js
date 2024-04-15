@@ -8,7 +8,11 @@ import OurService from "../pages/public/OurService";
 import Products from "../pages/public/Products";
 import Register from "../pages/public/Register";
 import ResetPassword from "../pages/public/ResetPassword";
-import { CreateProduct, ManageProducts } from "~/pages/admin/ManageProducts";
+import {
+	CreateAccessory,
+	CreateProduct,
+	ManageProducts,
+} from "~/pages/admin/ManageProducts";
 import { Canceled, ListOrder, ReturnOrder } from "~/pages/admin/ManageOrder";
 import ManageUsers from "~/pages/admin/ManageUsers";
 import DashBroad from "~/pages/admin/DashBroad";
@@ -134,6 +138,11 @@ const publicRoutes = [
 	{
 		path: routes.admin_create_product,
 		component: CreateProduct,
+		isAdminRoutes: true,
+	},
+	{
+		path: routes.admin_create_accessory,
+		component: CreateAccessory,
 		isAdminRoutes: true,
 	},
 	{

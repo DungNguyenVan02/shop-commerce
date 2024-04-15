@@ -26,7 +26,7 @@ function Sidebar() {
 					return (
 						<Link
 							key={category._id}
-							to={`${routes.products}/${category.slug}`}
+							to={`${routes.products}/${category.name}`}
 							className=" cursor-pointer flex items-center text-4 py-[10px] px-[20px] hover:text-main hover:bg-slate-100 gap-3"
 						>
 							<Icon />

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { userSelector } from "~/redux/selector";
 import Swal from "sweetalert2";
 import routes from "~/config/routes";
-import { apiAddCart, apiUpdateWishlist } from "~/apis";
+import { apiAddAccessoryCart, apiAddCart, apiUpdateWishlist } from "~/apis";
 import { getCurrentUser } from "~/redux/asyncActions";
 import { toast } from "react-toastify";
 import { Link, createSearchParams } from "react-router-dom";
@@ -31,6 +31,7 @@ function Product({ data, active, navigate, location, dispatch, border }) {
 				}
 				break;
 			case "addCart":
+				console.log(data);
 				if (!currentUser) {
 					Swal.fire({
 						title: "Hệ thống thông báo!",
@@ -51,21 +52,38 @@ function Product({ data, active, navigate, location, dispatch, border }) {
 						}
 					});
 				} else {
-					const response = await apiAddCart({
-						pid: data._id,
-						sku: data._id,
-						color: data?.color || "Unknown",
-						price: data?.price,
-						quantity: 1,
-						thumbnail: data.thumb,
-						ram: data.ram,
-						internalMemory: data.internalMemory,
-					});
-					if (response?.success) {
-						toast.success("Sản phẩm đã được thêm vào giỏ hàng");
-						dispatch(getCurrentUser());
+					if (data?.ram && data?.internalMemory) {
+						const response = await apiAddCart({
+							pid: data._id,
+							sku: data._id,
+							color: data?.color || "Unknown",
+							price: data?.price,
+							quantity: 1,
+							thumbnail: data.thumb,
+							ram: data?.ram,
+							internalMemory: data?.internalMemory,
+						});
+						if (response?.success) {
+							toast.success("Sản phẩm đã được thêm vào giỏ hàng");
+							dispatch(getCurrentUser());
+						} else {
+							toast.error(response.mes);
+						}
 					} else {
-						toast.error(response.mes);
+						const response = await apiAddAccessoryCart({
+							pid: data._id,
+							sku: data._id,
+							color: data?.color || "Unknown",
+							price: data?.price,
+							quantity: 1,
+							thumbnail: data.thumb,
+						});
+						if (response?.success) {
+							toast.success("Sản phẩm đã được thêm vào giỏ hàng");
+							dispatch(getCurrentUser());
+						} else {
+							toast.error(response.mes);
+						}
 					}
 				}
 				break;

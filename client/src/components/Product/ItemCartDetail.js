@@ -13,7 +13,21 @@ const ItemCartDetail = ({
 	const [quantity, setQuantity] = useState(data?.quantity);
 
 	useEffect(() => {
-		onUpdateQuantityCart({ cid: data?._id, quantity });
+		const findProductVariants = data.product.variants.find(
+			(variant) => variant.sku === data.sku
+		);
+		if (findProductVariants) {
+			setQuantity(findProductVariants.quantity > 0 ? data.quantity : 0);
+		} else {
+			setQuantity(data.product.quantity > 0 ? data.quantity : 0);
+		}
+	}, [data]);
+
+	useEffect(() => {
+		if (quantity > 0) {
+			onUpdateQuantityCart({ cid: data?._id, quantity });
+		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [quantity]);
 
@@ -57,7 +71,8 @@ const ItemCartDetail = ({
 							onChangeChecked(
 								data?._id,
 								data?.product._id,
-								data?.sku
+								data?.sku,
+								`${quantity > 0 ? false : true}`
 							)
 						}
 						className="w-[18px] h-[18px]"

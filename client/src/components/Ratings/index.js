@@ -2,13 +2,11 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import VoteBar from "./VoteBar";
 import { renderStar } from "../../utils/helper";
-import Swal from "sweetalert2";
 import { Button } from "~/components/common";
 import Comment from "./Comment";
 import { showModal } from "~/redux/appSlice";
 import { appSelector } from "~/redux/selector";
 import { userSelector } from "~/redux/selector";
-import routes from "~/config/routes";
 import { apiGetHistoryOrder } from "~/apis";
 import withBaseComponent from "../hocs/withBaseComponent";
 import images from "~/assets/images";
@@ -22,7 +20,7 @@ function Ratings({ data, dispatch, navigate }) {
 	const fetchOrder = async () => {
 		const response = await apiGetHistoryOrder();
 		if (response?.success) {
-			setHistoryOrders(response.listOrder);
+			setHistoryOrders(response.orders);
 		}
 	};
 
@@ -33,7 +31,7 @@ function Ratings({ data, dispatch, navigate }) {
 	}, [data]);
 
 	useEffect(() => {
-		historyOrders.forEach((order) => {
+		historyOrders?.forEach((order) => {
 			const result = order?.products?.some(
 				(item) => item?.product?._id === data?._id
 			);
@@ -45,18 +43,6 @@ function Ratings({ data, dispatch, navigate }) {
 	const handleReview = useCallback(() => {
 		if (isLogin) {
 			dispatch(showModal({ isShowModal: true }));
-		} else {
-			Swal.fire({
-				title: "Hệ thống thông báo",
-				cancelButtonText: "Thoát",
-				confirmButtonText: "Đăng nhập",
-				text: "Vui lòng đăng nhập trước khi thực hiện đánh giá",
-				showCancelButton: true,
-			}).then((rs) => {
-				if (rs.isConfirmed) {
-					navigate(routes.login);
-				}
-			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isShowModal]);

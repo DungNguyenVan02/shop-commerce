@@ -74,13 +74,16 @@ const Cart = ({ dispatch, navigate }) => {
 		}
 	}, [checkedList]);
 
-	const handleCheckedItem = useCallback((cid, pid, sku) => {
+	const handleCheckedItem = useCallback((cid, pid, sku, validCheckout) => {
 		const isAlready = checkedList?.some((item) => item.sku === sku);
 
 		if (isAlready) {
 			setCheckList((prev) => prev.filter((item) => item.sku !== sku));
 		} else {
-			setCheckList((prev) => [...prev, { cid: cid, pid: pid, sku: sku }]);
+			setCheckList((prev) => [
+				...prev,
+				{ cid: cid, pid: pid, sku: sku, validCheckout },
+			]);
 		}
 	});
 	const handleRemoveCart = async (cid) => {
@@ -104,7 +107,7 @@ const Cart = ({ dispatch, navigate }) => {
 		const arrCalc = [];
 		currentUser?.cart.forEach((item) => {
 			checkedList.forEach((el) => {
-				if (item._id === el.cid) {
+				if (item._id === el.cid && el.validCheckout === "false") {
 					arrCalc.push(item);
 				}
 			});
@@ -208,12 +211,26 @@ const Cart = ({ dispatch, navigate }) => {
 
 								<Button
 									isDisabled={
-										checkedList.length === 0 ? true : false
+										checkedList.length === 0
+											? true
+											: checkedList.some((item) =>
+													item.validCheckout ===
+													"true"
+														? true
+														: false
+											  )
 									}
 									handleClick={handleCheckout}
 									title="Thanh toán"
 									styleCustom={`px-4 py-2 text-white bg-red-500 text-[14px] rounded-md w-full w-1/3 ${
 										checkedList.length === 0
+											? true
+											: checkedList.some((item) =>
+													item.validCheckout ===
+													"true"
+														? true
+														: false
+											  )
 											? "opacity-60"
 											: " hover:opacity-90"
 									}`}
