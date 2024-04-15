@@ -22,6 +22,17 @@ router.post(
 	]),
 	productControllers.createProduct
 );
+router.post(
+	"/create-accessory",
+	uploader.fields([
+		{
+			name: "images",
+			maxCount: 10,
+		},
+		{ name: "thumb", maxCount: 1 },
+	]),
+	productControllers.createAccessory
+);
 router.put(
 	"/variants/:pid",
 	uploader.fields([

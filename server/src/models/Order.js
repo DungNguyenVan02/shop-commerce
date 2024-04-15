@@ -31,11 +31,11 @@ var orderSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
-		bankCode: String,
 		isConfirmReturn: {
 			type: Boolean,
 			default: false,
 		},
+		bankCode: String,
 		address: String,
 		total: Number,
 		orderBy: {

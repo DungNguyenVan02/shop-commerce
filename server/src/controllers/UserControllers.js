@@ -290,7 +290,7 @@ class UserControllers {
 				path: "cart",
 				populate: {
 					path: "product",
-					select: "name quantity discount",
+					select: "name quantity discount variants",
 				},
 			})
 			.populate(
@@ -613,8 +613,13 @@ class UserControllers {
 			thumbnail,
 		} = req.body;
 		if (
-			(!pid || !sku || !color || !price || !thumbnail,
-			!ram || !internalMemory)
+			!pid ||
+			!sku ||
+			!color ||
+			!price ||
+			!thumbnail ||
+			!internalMemory ||
+			!ram
 		)
 			throw new Error("Missing inputs");
 		const cartUser = await User.findById(_id).select("cart");
@@ -660,6 +665,61 @@ class UserControllers {
 							thumbnail,
 							ram,
 							internalMemory,
+						},
+					},
+				},
+				{ new: true }
+			);
+
+			return res.status(200).json({
+				success: response ? true : false,
+				mes: response
+					? "Cập nhật giỏ hàng thành công"
+					: "Có lỗi xảy ra, vui lòng thử lại sau",
+			});
+		}
+	});
+
+	updateAccessoryCart = asyncHandler(async (req, res) => {
+		const { _id } = req.user;
+		const { pid, sku, quantity = 1, color, price, thumbnail } = req.body;
+		if (!pid || !sku || !color || !price || !thumbnail)
+			throw new Error("Missing inputs");
+		const cartUser = await User.findById(_id).select("cart");
+		const alreadyProduct = cartUser?.cart?.find(
+			(el) => el.sku.toString() === sku && el.color.toString() === color
+		);
+		if (alreadyProduct) {
+			const response = await User.updateOne(
+				{ cart: { $elemMatch: alreadyProduct } },
+				{
+					$set: {
+						"cart.$.quantity": alreadyProduct.quantity + quantity,
+						"cart.$.price": price,
+						"cart.$.thumbnail": thumbnail,
+					},
+				},
+				{ new: true }
+			);
+
+			return res.status(200).json({
+				success: response ? true : false,
+				mes: response
+					? "Cập nhật giỏ hàng thành công"
+					: "Có lỗi xảy ra, vui lòng thử lại sau",
+			});
+		} else {
+			const response = await User.findByIdAndUpdate(
+				_id,
+				{
+					$push: {
+						cart: {
+							product: pid,
+							sku,
+							quantity,
+							color,
+							price,
+							thumbnail,
 						},
 					},
 				},

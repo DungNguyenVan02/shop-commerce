@@ -26,6 +26,11 @@ router.put(
 );
 router.put("/cart", verifyAccessToken, userControllers.updateCart);
 router.put(
+	"/accessory-cart",
+	verifyAccessToken,
+	userControllers.updateAccessoryCart
+);
+router.put(
 	"/update-quantity",
 	verifyAccessToken,
 	userControllers.updateQuantityCart

@@ -4,8 +4,68 @@ const slugify = require("slugify");
 const { v4: uuid } = require("uuid");
 
 class ProductControllers {
-	// [POST] /createproduct
+	// [POST] /
 	createProduct = asyncHandler(async (req, res) => {
+		const {
+			name,
+			price,
+			description,
+			blogProduct,
+			category,
+			brand,
+			quantity,
+			color,
+			ram,
+			internalMemory,
+		} = req.body;
+		const thumb = req?.files?.thumb[0]?.path;
+		const images = req.files?.images?.map((el) => el.path);
+		if (
+			!name ||
+			!price ||
+			!description ||
+			!blogProduct ||
+			!category ||
+			!brand ||
+			!quantity ||
+			!color ||
+			!ram ||
+			!internalMemory
+		) {
+			throw new Error("Missing inputs");
+		}
+
+		const payload = {
+			name,
+			price,
+			description,
+			blog: blogProduct,
+			category,
+			brand,
+			quantity,
+			color,
+			ram,
+			internalMemory,
+		};
+
+		if (name) {
+			payload.slug = slugify(name);
+		}
+		if (thumb) payload.thumb = thumb;
+		if (images) payload.images = images;
+
+		const newProduct = await Product.create(payload);
+
+		return res.status(200).json({
+			success: newProduct ? true : false,
+			createdProduct: newProduct
+				? newProduct
+				: "Cannot create new product",
+		});
+	});
+
+	// [POST] /create-accessory
+	createAccessory = asyncHandler(async (req, res) => {
 		const {
 			name,
 			price,
@@ -132,13 +192,28 @@ class ProductControllers {
 			categoryQueryObj = { $or: categoryQuery };
 		}
 
+		let brandCategoryQueryObj = {};
+		if (queries?.brand_category) {
+			delete formatQuery.brand_category;
+			const brandCategoryArr = queries.brand_category?.split(",");
+
+			brandCategoryQueryObj = {
+				$and: [
+					{
+						brand: brandCategoryArr[0],
+						category: brandCategoryArr[1],
+					},
+				],
+			};
+		}
+
 		const q = {
 			...categoryQueryObj,
 			...brandQueryObj,
 			...colorQueryObj,
 			...formatQuery,
+			...brandCategoryQueryObj,
 		};
-
 		let queryCommand = Product.find(q);
 
 		// Sorting
@@ -471,6 +546,80 @@ class ProductControllers {
 
 	// [PUT] /update-sold
 	updateSold = asyncHandler(async (req, res) => {
+		const { arrProduct, state } = req.body;
+		if (!arrProduct) throw new Error("Missing inputs");
+
+		// state = 0 là người dùng mua hàng
+		// state = 1 là người dùng hủy, hoàn hàng
+		if (state === 0) {
+			arrProduct.forEach(async (product) => {
+				const findProduct = await Product.findById(product.pid);
+
+				if (findProduct) {
+					if (findProduct?._id.toString() === product.sku) {
+						await Product.findByIdAndUpdate(
+							findProduct._id,
+							{
+								$inc: { sold: product.quantity },
+								$set: {
+									quantity:
+										findProduct.quantity - product.quantity,
+								},
+							},
+							{ new: true }
+						);
+					} else {
+						const getVariants = findProduct?.variants?.filter(
+							(item) =>
+								item.sku.toString() === product.sku.toString()
+						);
+
+						getVariants?.forEach((item) => {
+							item.sold = item.sold + product.quantity;
+							item.quantity = item.quantity - product.quantity;
+							findProduct.save();
+						});
+					}
+				}
+			});
+		} else {
+			arrProduct.forEach(async (product) => {
+				const findProduct = await Product.findById(product.pid);
+
+				if (findProduct) {
+					if (findProduct?._id.toString() === product.sku) {
+						await Product.findByIdAndUpdate(
+							findProduct._id,
+							{
+								$inc: { quantity: product.quantity },
+								$set: {
+									sold: findProduct.sold - product.quantity,
+								},
+							},
+							{ new: true }
+						);
+					} else {
+						const getVariants = findProduct?.variants?.filter(
+							(item) =>
+								item.sku.toString() === product.sku.toString()
+						);
+
+						getVariants?.forEach((item) => {
+							item.sold = item.sold - product.quantity;
+							item.quantity = item.quantity + product.quantity;
+							findProduct.save();
+						});
+					}
+				}
+			});
+		}
+		return res.status(200).json({
+			success: true,
+			mes: "Cập nhật lượt bán thành công",
+		});
+	});
+	// [PUT] /update-quantity
+	updateQuantity = asyncHandler(async (req, res) => {
 		const { arrProduct } = req.body;
 		if (!arrProduct) throw new Error("Missing inputs");
 
@@ -498,7 +647,7 @@ class ProductControllers {
 		});
 		return res.status(200).json({
 			success: true,
-			mes: "Cập nhật lượt bán thành công",
+			mes: "Cập nhật số lượng thành công",
 		});
 	});
 }

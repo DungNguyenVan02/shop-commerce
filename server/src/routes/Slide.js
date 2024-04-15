@@ -5,6 +5,8 @@ const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
 const slideController = require("../controllers/SlideController");
 const router = express.Router();
 
+router.get("/", slideController.getSlides);
+
 router.use(verifyAccessToken, isAdmin);
 
 router.post(
@@ -17,7 +19,6 @@ router.post(
 	]),
 	slideController.createSlides
 );
-router.get("/", slideController.getSlides);
 router.put(
 	"/",
 	uploader.fields([

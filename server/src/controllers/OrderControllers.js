@@ -73,8 +73,8 @@ class OrderControllers {
 			method,
 			address,
 			isPayed = false,
-			bankCode,
 			code,
+			bankCode,
 		} = req.body;
 
 		if ((!total || !method || !address, !products)) {
@@ -92,9 +92,8 @@ class OrderControllers {
 		};
 
 		if (bankCode) {
-			payload["address"] = bankCode;
+			payload.bankCode = bankCode;
 		}
-
 		const response = await Order.create(payload);
 
 		return res.json({
@@ -155,65 +154,195 @@ class OrderControllers {
 	// [GET] /
 	getUserHistoryOrder = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const response = await Order.find({
-			orderBy: _id,
-			status: "Giao hàng thành công",
-		}).populate({
+
+		const queries = { ...req.query };
+		// Tách trường đặc biệt trên query
+		const excludeFields = ["page", "sort", "limit", "fields"];
+		// format lại các operators cho đúng cú pháp mongoose
+		excludeFields.forEach((field) => delete queries[field]);
+
+		let queryString = JSON.stringify(queries);
+		queryString = queryString.replace(
+			/\b(gte|gt|lte|lt)\b/g,
+			(matchedEl) => {
+				return `$${matchedEl}`;
+			}
+		);
+		const formatQuery = JSON.parse(queryString);
+
+		const q = { ...formatQuery };
+		q.orderBy = _id;
+		q.status = "Giao hàng thành công";
+
+		let queryCommand = Order.find(q)?.populate({
 			path: "products",
 			populate: {
 				path: "product",
-				select: "name category",
+				select: "name",
 			},
 		});
-		return res.status(200).json({
-			success: response ? true : false,
-			listOrder: response ? response : "Entity cart order",
+
+		// Sorting
+		if (req.query.sort) {
+			const sortBy = req.query.sort.split(",").join(" ");
+			queryCommand = queryCommand.sort(sortBy);
+		}
+
+		// Fields limiting
+		if (req.query.fields) {
+			const fields = req.query.fields.split(",").join(" ");
+			queryCommand = queryCommand.select(fields);
+		}
+		// Pagination
+		// limit: số object lấy về trong 1 lần gọi api
+		// skip: số trang muốn bỏ qua
+		const page = +req.query.page || 1;
+		const limit = +req.query.limit || process.env.LIMIT;
+		const skip = (page - 1) * limit;
+		queryCommand.skip(skip).limit(limit);
+
+		// execute query
+		queryCommand.exec(async (err, response) => {
+			if (err) throw new Error(err.message);
+			const counts = await Order.find(q).countDocuments();
+			return res.status(200).json({
+				success: response ? true : false,
+				counts,
+				orders: response ? response : "Cannot get orders",
+			});
 		});
 	});
 
 	// [GET] /return
 	getReturnOrder = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const response = await Order.find({
-			orderBy: _id,
-			status: "Hoàn trả đơn hàng",
-		}).populate({
+
+		const queries = { ...req.query };
+		// Tách trường đặc biệt trên query
+		const excludeFields = ["page", "sort", "limit", "fields"];
+		// format lại các operators cho đúng cú pháp mongoose
+		excludeFields.forEach((field) => delete queries[field]);
+
+		let queryString = JSON.stringify(queries);
+		queryString = queryString.replace(
+			/\b(gte|gt|lte|lt)\b/g,
+			(matchedEl) => {
+				return `$${matchedEl}`;
+			}
+		);
+		const formatQuery = JSON.parse(queryString);
+
+		const q = { ...formatQuery };
+		q.orderBy = _id;
+		q.status = "Hoàn trả đơn hàng";
+
+		let queryCommand = Order.find(q)?.populate({
 			path: "products",
 			populate: {
 				path: "product",
 				select: "name",
 			},
 		});
-		return res.status(200).json({
-			success: response ? true : false,
-			listOrder: response ? response : "Entity cart order",
+
+		// Sorting
+		if (req.query.sort) {
+			const sortBy = req.query.sort.split(",").join(" ");
+			queryCommand = queryCommand.sort(sortBy);
+		}
+
+		// Fields limiting
+		if (req.query.fields) {
+			const fields = req.query.fields.split(",").join(" ");
+			queryCommand = queryCommand.select(fields);
+		}
+		// Pagination
+		// limit: số object lấy về trong 1 lần gọi api
+		// skip: số trang muốn bỏ qua
+		const page = +req.query.page || 1;
+		const limit = +req.query.limit || process.env.LIMIT;
+		const skip = (page - 1) * limit;
+		queryCommand.skip(skip).limit(limit);
+
+		// execute query
+		queryCommand.exec(async (err, response) => {
+			if (err) throw new Error(err.message);
+			const counts = await Order.find(q).countDocuments();
+			return res.status(200).json({
+				success: response ? true : false,
+				counts,
+				orders: response ? response : "Cannot get orders",
+			});
 		});
 	});
 
 	// [GET] /
 	getUserOrder = asyncHandler(async (req, res) => {
 		const { _id } = req.user;
-		const response = await Order.find({
-			orderBy: _id,
-			$or: [
-				{
-					status: [
-						"Đang xử lý",
-						"Giao hàng thành công",
-						"Đang giao hàng",
-					],
-				},
-			],
-		}).populate({
+
+		const queries = { ...req.query };
+		// Tách trường đặc biệt trên query
+		const excludeFields = ["page", "sort", "limit", "fields"];
+		// format lại các operators cho đúng cú pháp mongoose
+		excludeFields.forEach((field) => delete queries[field]);
+
+		let queryString = JSON.stringify(queries);
+		queryString = queryString.replace(
+			/\b(gte|gt|lte|lt)\b/g,
+			(matchedEl) => {
+				return `$${matchedEl}`;
+			}
+		);
+		const formatQuery = JSON.parse(queryString);
+
+		formatQuery["$or"] = [
+			{
+				status: [
+					"Đang xử lý",
+					"Giao hàng thành công",
+					"Đang giao hàng",
+				],
+			},
+		];
+
+		const q = { ...formatQuery };
+		q.orderBy = _id;
+
+		let queryCommand = Order.find(q)?.populate({
 			path: "products",
 			populate: {
 				path: "product",
 				select: "name",
 			},
 		});
-		return res.status(200).json({
-			success: response ? true : false,
-			listOrder: response ? response : "Entity cart order",
+
+		// Sorting
+		if (req.query.sort) {
+			const sortBy = req.query.sort.split(",").join(" ");
+			queryCommand = queryCommand.sort(sortBy);
+		}
+
+		// Fields limiting
+		if (req.query.fields) {
+			const fields = req.query.fields.split(",").join(" ");
+			queryCommand = queryCommand.select(fields);
+		}
+		// Pagination
+		// limit: số object lấy về trong 1 lần gọi api
+		// skip: số trang muốn bỏ qua
+		const page = +req.query.page || 1;
+		const limit = +req.query.limit || process.env.LIMIT;
+		const skip = (page - 1) * limit;
+		queryCommand.skip(skip).limit(limit);
+
+		// execute query
+		queryCommand.exec(async (err, response) => {
+			if (err) throw new Error(err.message);
+			const counts = await Order.find(q).countDocuments();
+			return res.status(200).json({
+				success: response ? true : false,
+				counts,
+				orders: response ? response : "Cannot get orders",
+			});
 		});
 	});
 	// [GET] /
@@ -242,15 +371,11 @@ class OrderControllers {
 		}
 
 		const q = { ...formatQuery };
-		q.status = {
-			$in: ["Đang xử lý", "Đang giao hàng", "Giao hàng thành công"],
-		};
-		q.isConfirmReturn = false;
 
 		let queryCommand = Order.find(q)
 
-			.populate("orderBy", "fullName phone email")
-			.populate({
+			?.populate("orderBy", "fullName phone email")
+			?.populate({
 				path: "products",
 				populate: {
 					path: "product",
@@ -291,7 +416,7 @@ class OrderControllers {
 
 	// [GET] /
 	getAllOrders = asyncHandler(async (req, res) => {
-		const response = await Order.find().populate({
+		const response = await Order.find()?.populate({
 			path: "products",
 			populate: {
 				path: "product",
@@ -334,8 +459,8 @@ class OrderControllers {
 
 		let queryCommand = Order.find(q)
 
-			.populate("orderBy", "fullName phone email")
-			.populate({
+			?.populate("orderBy", "fullName phone email")
+			?.populate({
 				path: "products",
 				populate: {
 					path: "product",
@@ -404,8 +529,8 @@ class OrderControllers {
 
 		let queryCommand = Order.find(q)
 
-			.populate("orderBy", "fullName phone email")
-			.populate({
+			?.populate("orderBy", "fullName phone email")
+			?.populate({
 				path: "products",
 				populate: {
 					path: "product",
