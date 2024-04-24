@@ -473,7 +473,7 @@ const CreateVariants = ({ variantsProduct, onHandleHide }) => {
 												}
 												className="cursor-pointer px-3 py-1 bg-red-500 text-white rounded hover:opacity-80 my-[24px]"
 											>
-												Back
+												Trở lại
 											</span>
 										</div>
 									</Form>

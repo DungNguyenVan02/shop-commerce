@@ -34,8 +34,6 @@ const LineChart = ({ orders }) => {
 
 		const yearHere = date.getFullYear();
 
-		const yearLength = 10;
-
 		const result = [];
 
 		for (let i = 9; i > 0; i--) {

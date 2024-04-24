@@ -52,7 +52,7 @@ function App() {
 						);
 					})}
 				</Routes>
-				<ToastContainer />
+				<ToastContainer position="bottom-left" theme="colored" />
 			</div>
 		</Router>
 	);

@@ -28,7 +28,7 @@ const SidebarProfile = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col p-2">
+		<div className="flex flex-col  bg-white h-full shadow-custom_1 border rounded-md">
 			<div className="flex items-center justify-center gap-2 p-2 border-b mb-[24px]">
 				<img
 					loading="lazy"

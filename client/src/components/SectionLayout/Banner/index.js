@@ -25,7 +25,7 @@ function Banner() {
 
 	return (
 		<div
-			className={`${
+			className={`px-2 pt-2 pb-[30px] bg-white border rounded-lg shadow-custom_1 ${
 				widthScreen > 640 ? "max-w-[600px]" : " max-w-[428px] "
 			} `}
 		>

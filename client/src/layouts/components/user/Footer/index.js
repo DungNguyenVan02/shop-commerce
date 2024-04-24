@@ -20,10 +20,10 @@ const Footer = () => {
 				<div className="max-w-main w-full mx-auto flex justify-between items-center">
 					<div className="flex-1">
 						<h3 className="text-[20px] uppercase text-white tracking-[2px]">
-							SIGN UP TO NEWSLETTER
+							Đăng ký bản tin
 						</h3>
 						<p className="text-[13px] text-white font-[400] opacity-60">
-							Subscribe now and receive weekly newsletter
+							Đăng ký ngay và nhận bản tin hàng tuần
 						</p>
 					</div>
 					<div className="flex items-center flex-1 max-w-[590px] w-full rounded-full px-5 bg-[rgba(255,255,255,.1)]">
@@ -31,7 +31,7 @@ const Footer = () => {
 							className="flex-1 py-3 pr-[24px] bg-transparent outline-none text-white placeholder:text-white placeholder:text-[13px] placeholder:opacity-80"
 							type="text"
 							name="email"
-							placeholder="Email address"
+							placeholder="Địa chỉ email của bạn"
 						/>
 						<IoIosMail color="white" opacity={0.8} size={24} />
 					</div>

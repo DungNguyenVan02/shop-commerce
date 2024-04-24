@@ -108,14 +108,14 @@ function ManageUsers({ location, navigate }) {
 	const handleToggleBlocked = (uid, isBlocked) => {
 		Swal.fire({
 			title: `${
-				!isBlocked
-					? "Bạn có chắc chắn muốn mở khóa tài khoản này?"
-					: "Bạn có chắc chắn muốn khóa tài khoản này?"
+				isBlocked.isBlocked
+					? "Bạn có chắc chắn muốn khóa tài khoản này?"
+					: "Bạn có chắc chắn muốn mở khóa tài khoản này?"
 			}`,
 			text: `${
-				!isBlocked
-					? "Tài khoản sẽ được hoạt động bình thường"
-					: "Tài khoản sẽ không sử dụng được tại hệ thống"
+				isBlocked.isBlocked
+					? "Tài khoản sẽ không sử dụng được tại hệ thống"
+					: "Tài khoản sẽ được hoạt động bình thường"
 			}`,
 			icon: "warning",
 			showCancelButton: true,

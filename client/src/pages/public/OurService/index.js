@@ -20,28 +20,29 @@ function OurService() {
 							/>
 						</div>
 						<div className="col g-l-6 g-m-6 g-c-12">
-							<div className="flex flex-col gap-1 justify-center h-full">
+							<div className="flex flex-col gap-5 justify-center h-full">
 								<p>
-									With customer expectations at an all-time
-									high, customer service teams must pull out
-									all the stops to ensure an excellent
-									customer experience. Your interactions must
-									not only be efficient, effective, and
-									authentic, but you must be available through
-									customers’ preferred channel.
+									Với kỳ vọng của khách hàng ở mức cao nhất
+									mọi thời đại, các nhóm dịch vụ khách hàng
+									phải nỗ lực hết mình để đảm bảo trải nghiệm
+									tuyệt vời cho khách hàng. Các tương tác của
+									bạn không chỉ phải hiệu quả, hiệu quả và xác
+									thực mà còn phải có mặt thông qua kênh ưa
+									thích của khách hàng.
 								</p>
 								<p>
-									Getting more information upfront from your
-									customer can help to speed up problem
-									resolution. This includes providing steps to
-									replicate the problem and asking for product
-									specs or screenshots illustrating the issue.
+									Nhận thêm thông tin trước từ khách hàng của
+									bạn có thể giúp tăng tốc độ giải quyết vấn
+									đề. Điều này bao gồm việc cung cấp các bước
+									để tái tạo sự cố và yêu cầu thông số kỹ
+									thuật của sản phẩm hoặc ảnh chụp màn hình
+									minh họa sự cố.
 								</p>
 							</div>
 						</div>
 					</div>
 					<h3 className="text-[28px] font-semibold text-center text-gray-600 my-7">
-						We Offer Best Services
+						Chúng tôi cung cấp dịch vụ tốt nhất
 					</h3>
 					<div className="row">
 						{extraInfo.map((extra) => {

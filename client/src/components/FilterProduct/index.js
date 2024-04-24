@@ -85,9 +85,16 @@ const FilterProduct = ({ location, navigate }) => {
 	}, [price, color, brand, categoryChecked]);
 
 	return (
-		<div className="w-full">
-			<div className="flex justify-between items-center">
-				<h3 className="text-[20px] font-semibold">Lọc sản phẩm theo</h3>
+		<div className="w-full px-4 py-2 mt-2 bg-white shadow-custom_1 rounded-lg">
+			<h3 className="text-[20px] font-semibold">Lọc sản phẩm theo</h3>
+
+			<div className="flex items-center justify-between">
+				<span>{`Lựa chọn: ${
+					brand.length +
+					color.length +
+					categoryChecked.length +
+					price.length
+				}`}</span>
 				<span
 					className="cursor-pointer hover:text-blue-500"
 					onClick={() => {
@@ -263,50 +270,58 @@ const FilterProduct = ({ location, navigate }) => {
 						</div>
 					</div>
 				</div>
-				<div className="border-b py-5">
-					<h3 className="text-[16px] uppercase font-semibold">
-						Hãng sản phẩm
-					</h3>
-					<div className="flex gap-3 flex-col justify-between w-full">
-						<div className="flex justify-between w-full">
-							<span>{`${brand.length} lựa chọn`}</span>
-							<span
-								className="cursor-pointer hover:text-blue-500"
-								onClick={() => setBrand([])}
-							>
-								Xóa
-							</span>
-						</div>
-						<div className="flex flex-col gap-2">
-							<div className="flex items-center gap-1">
-								<input
-									id="brand-1"
-									value="Apple"
-									onChange={(e) => handleCheckedBrand(e)}
-									className="w-[18px] h-[18px]"
-									type="checkbox"
-									checked={brand?.includes("Apple")}
-								/>
-								<label className="text-black" htmlFor="brand-1">
-									Apple
-								</label>
+				{!location.pathname.includes("brand") && (
+					<div className="border-b py-5">
+						<h3 className="text-[16px] uppercase font-semibold">
+							Hãng sản phẩm
+						</h3>
+						<div className="flex gap-3 flex-col justify-between w-full">
+							<div className="flex justify-between w-full">
+								<span>{`${brand.length} lựa chọn`}</span>
+								<span
+									className="cursor-pointer hover:text-blue-500"
+									onClick={() => setBrand([])}
+								>
+									Xóa
+								</span>
 							</div>
-							<div className="flex items-center gap-1">
-								<input
-									id="brand-2"
-									value="Samsung"
-									onChange={(e) => handleCheckedBrand(e)}
-									className="w-[18px] h-[18px]"
-									type="checkbox"
-									checked={brand?.includes("Samsung")}
-								/>
-								<label className="text-black" htmlFor="brand-2">
-									Samsung
-								</label>
+							<div className="flex flex-col gap-2">
+								<div className="flex items-center gap-1">
+									<input
+										id="brand-1"
+										value="Apple"
+										onChange={(e) => handleCheckedBrand(e)}
+										className="w-[18px] h-[18px]"
+										type="checkbox"
+										checked={brand?.includes("Apple")}
+									/>
+									<label
+										className="text-black"
+										htmlFor="brand-1"
+									>
+										Apple
+									</label>
+								</div>
+								<div className="flex items-center gap-1">
+									<input
+										id="brand-2"
+										value="Samsung"
+										onChange={(e) => handleCheckedBrand(e)}
+										className="w-[18px] h-[18px]"
+										type="checkbox"
+										checked={brand?.includes("Samsung")}
+									/>
+									<label
+										className="text-black"
+										htmlFor="brand-2"
+									>
+										Samsung
+									</label>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				)}
 				<div className="border-b py-5">
 					<h3 className="text-[16px] uppercase font-semibold">
 						Màu sắc

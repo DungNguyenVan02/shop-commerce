@@ -35,7 +35,7 @@ const BrandProduct = ({ category }) => {
 	}, [brandShow, categories]);
 
 	return (
-		<div className="max-w-main w-full mx-auto py-3">
+		<div className="max-w-main w-full mx-auto">
 			<div className="flex justify-between underline-heading border-b-2 border-main">
 				<h3 className="text-[28px] mb-4 text-gradient uppercase font-semibold">
 					{brandShow || category}

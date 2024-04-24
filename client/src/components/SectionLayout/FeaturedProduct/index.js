@@ -19,7 +19,7 @@ function FeaturedProduct() {
 	}, []);
 
 	return (
-		<>
+		<div className="shadow-custom_1 border p-4 rounded-lg">
 			<h3 className="text-[28px] mb-4 text-gradient uppercase font-semibold border-b-2 border-main">
 				Sản phẩm nổi bật
 			</h3>
@@ -30,29 +30,7 @@ function FeaturedProduct() {
 					})}
 				</div>
 			</div>
-			{/* <div className="grid grid-cols-4 grid-rows-2 gap-4">
-				<img loading="lazy"
-					className="w-full h-full col-span-2 row-span-2"
-					src={images.banner1Home}
-					alt="banner"
-				/>
-				<img loading="lazy"
-					className="w-full h-full col-span-1 row-span-1"
-					src={images.banner2Home}
-					alt="banner"
-				/>
-				<img loading="lazy"
-					className="w-full h-full col-span-1 row-span-2"
-					src={images.banner4Home}
-					alt="banner"
-				/>
-				<img loading="lazy"
-					className="w-full h-full col-span-1 row-span-1"
-					src={images.banner3Home}
-					alt="banner"
-				/>
-			</div> */}
-		</>
+		</div>
 	);
 }
 

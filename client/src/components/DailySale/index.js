@@ -103,10 +103,10 @@ function DailySale({ dispatch, navigate }) {
 	};
 
 	return (
-		<div className="border p-5 h-full">
+		<div className="border p-5 h-full shadow-custom_1 rounded-lg">
 			<div className="relative flex items-center justify-center text-[20px] font-semibold text-[#505050]">
 				<FaStar color="#d11" className="absolute left-0" />
-				<h3>DAILY DEALS</h3>
+				<h3>Sale mỗi ngày</h3>
 			</div>
 			<img
 				loading="lazy"

@@ -40,7 +40,7 @@ import {
 	FaAngleDown,
 	FaCheck,
 } from "react-icons/fa6";
-import { CiSearch } from "react-icons/ci";
+import { CiSearch, CiHeart } from "react-icons/ci";
 import {
 	IoMdArrowDropdown,
 	IoIosPhonePortrait,
@@ -122,6 +122,7 @@ const icons = {
 	FaFacebook,
 
 	CiSearch,
+	CiHeart,
 
 	IoMdArrowDropdown,
 	IoPhonePortraitOutline,

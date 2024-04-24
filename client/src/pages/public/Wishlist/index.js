@@ -8,7 +8,7 @@ const Wishlist = () => {
 	console.log(currentUser);
 
 	return (
-		<div className="px-[30px] pb-[24px] bg-white shadow-lg">
+		<div className="px-[30px] pb-[24px] bg-white shadow-custom_1 border rounded-md">
 			<div className="py-[18px] border-b mb-6">
 				<h3 className="text-[#222] font-medium text-[18px]">
 					Danh sách sản phẩm yêu thích

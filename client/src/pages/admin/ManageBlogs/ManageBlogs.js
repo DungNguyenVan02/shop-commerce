@@ -102,7 +102,7 @@ function ManageBlogs({ location, navigate }) {
 			)}
 			<div className="p-3 bg-white border rounded-lg shadow-custom_1 min-h-[600px]">
 				<h3 className="flex items-center text-black font-semibold text-[24px]">
-					Thêm sản phẩm
+					Danh sách bài viết
 				</h3>
 				<div className="flex h-[60px] items-center py-3 gap-5">
 					<div className="h-full flex items-center border rounded-md shadow-custom ">

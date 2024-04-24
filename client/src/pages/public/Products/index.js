@@ -37,6 +37,7 @@ function Products() {
 	useEffect(() => {
 		const queries = Object.fromEntries([...searchParams]);
 		fetchProducts(queries);
+		window.scrollTo(0, 0);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams]);
 

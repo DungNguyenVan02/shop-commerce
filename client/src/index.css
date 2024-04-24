@@ -141,8 +141,15 @@ div.swiper-pagination {
 .product-child {
 	display: none;
 }
+.product-parent {
+	position: relative;
+}
 .product-parent:hover .product-child {
 	display: flex;
+	justify-content: center;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
 }
 
 .cart {

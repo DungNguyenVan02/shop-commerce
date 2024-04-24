@@ -8,7 +8,7 @@ function CardProduct({ data }) {
 		<div className="col g-l-4 g-m-6 g-c-12 cursor-pointer">
 			<Link
 				to={`/${routes.detailProduct}/${data?.category}/${data?._id}/${data?.name}`}
-				className="flex items-center p-2 mb-4 gap-4 shadow-custom_1 rounded-md hover:translate-y-[-2px] transitionAll"
+				className="flex items-center p-2 mb-4 gap-4 shadow-custom_1 rounded border hover:translate-y-[-2px] transitionAll"
 			>
 				<img
 					loading="lazy"
@@ -16,7 +16,7 @@ function CardProduct({ data }) {
 					src={data?.thumb || images.defaultProduct}
 					alt={data?.name}
 				/>
-				<div className="flex flex-col">
+				<div className="flex flex-col gap-1">
 					<h3 className="capitalize text-[16px] line-clamp-1">
 						{data?.name}
 					</h3>
@@ -25,9 +25,16 @@ function CardProduct({ data }) {
 							<i key={i}>{star}</i>
 						))}
 					</div>
-					<span className="text-[13px]">
-						{formatMoney(data?.price)}
-					</span>
+					<div className="flex items-center flex-wrap ">
+						<span className="text-[14px] font-semibold text-main">
+							{formatMoney(
+								((100 - data?.discount) / 100) * data?.price
+							)}
+						</span>
+						<span className="text-[14px] font-semibold ml-2 line-through opacity-70">
+							{formatMoney(data?.price)}
+						</span>
+					</div>
 				</div>
 			</Link>
 		</div>

@@ -13,7 +13,7 @@ function Sidebar() {
 	const iconsTop = [IoPhonePortraitOutline, FaTabletAlt, TbDeviceAirpods];
 
 	return (
-		<aside className="w-full">
+		<aside className="w-full shadow-custom_1 rounded-lg overflow-hidden">
 			<div className="flex flex-col border">
 				<h3 className="flex items-center text-4 py-[10px] px-[20px] bg-main text-white font-semibold">
 					<i className="pr-2">

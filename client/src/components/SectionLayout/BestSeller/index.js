@@ -48,15 +48,15 @@ function BestSeller() {
 	];
 
 	return (
-		<div>
-			<ul className="m-0 pb-2 flex gap-6 border-b-2 border-main ">
+		<div className="border shadow-custom_1 h-full p-5 rounded-lg bg-red-500">
+			<ul className="m-0 pb-2 flex gap-6 border-b-2 border-white ">
 				{section.map((el, i) => {
 					return (
 						<li
 							key={el.id}
 							onClick={() => setActive(el.id)}
-							className={`text-[20px] pr-5 leading-none font-semibold text-black hover:text-main cursor-pointer 
-							${active === el.id ? "text-main" : "text-gray-800"}
+							className={`text-[20px] pr-5 leading-none font-semibold text-black hover:text-orange-300 cursor-pointer 
+							${active === el.id ? "text-orange-300" : "text-white"}
 
 							${i === section.length - 1 ? "" : "border-r"}`}
 						>

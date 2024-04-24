@@ -115,7 +115,7 @@ function Header() {
 							)}
 						</div>
 					</div>
-					<div className="max-w-main w-full h-[110px] flex justify-between items-center py-[35px] gap-[60px] ">
+					<div className="max-w-main w-full h-[110px] flex justify-between items-center py-[35px] gap-[60px]">
 						<Link to={routes.home}>
 							<Logo />
 						</Link>

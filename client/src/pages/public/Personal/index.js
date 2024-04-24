@@ -89,7 +89,7 @@ function Personal({ dispatch }) {
 					<Address onClose={setIsAddAddress} onReload={setIsRender} />
 				</div>
 			)}
-			<div className="px-[30px] mb-[24px] bg-white shadow-lg">
+			<div className="px-[30px] bg-white shadow-custom_1 border rounded-md">
 				<div className="py-[18px] border-b mb-6">
 					<h3 className="text-[#222] font-medium text-[18px]">
 						Profile
