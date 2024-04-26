@@ -73,6 +73,26 @@ const LineChart = ({ orders }) => {
 					title: "Giao hàng thành công",
 					data: labels.map(() => 0),
 				},
+				{
+					id: 2,
+					title: "Đang xử lý",
+					data: labels.map(() => 0),
+				},
+				{
+					id: 3,
+					title: "Hoàn trả đơn hàng",
+					data: labels.map(() => 0),
+				},
+				{
+					id: 4,
+					title: "Đang giao hàng",
+					data: labels.map(() => 0),
+				},
+				{
+					id: 5,
+					title: "Hủy đơn hàng",
+					data: labels.map(() => 0),
+				},
 			];
 
 			const filterOrderByYear = orders.filter(
@@ -94,6 +114,54 @@ const LineChart = ({ orders }) => {
 								item.data[position] + 1
 							);
 						}
+						if (
+							item.title === "Hoàn trả đơn hàng" &&
+							order.status === "Hoàn trả đơn hàng"
+						) {
+							const position =
+								+moment(order.createdAt).format("MM") - 1;
+							item.data.splice(
+								position,
+								1,
+								item.data[position] + 1
+							);
+						}
+						if (
+							item.title === "Đang xử lý" &&
+							order.status === "Đang xử lý"
+						) {
+							const position =
+								+moment(order.createdAt).format("MM") - 1;
+							item.data.splice(
+								position,
+								1,
+								item.data[position] + 1
+							);
+						}
+						if (
+							item.title === "Đang giao hàng" &&
+							order.status === "Đang giao hàng"
+						) {
+							const position =
+								+moment(order.createdAt).format("MM") - 1;
+							item.data.splice(
+								position,
+								1,
+								item.data[position] + 1
+							);
+						}
+						if (
+							item.title === "Hủy đơn hàng" &&
+							order.status === "Hủy đơn hàng"
+						) {
+							const position =
+								+moment(order.createdAt).format("MM") - 1;
+							item.data.splice(
+								position,
+								1,
+								item.data[position] + 1
+							);
+						}
 					});
 				});
 			}
@@ -101,10 +169,37 @@ const LineChart = ({ orders }) => {
 			const datasets = dataSetup.map((data) => ({
 				label: data.title,
 				data: data.data,
-				borderColor: "#51e05d",
+				borderColor:
+					data.title === "Giao hàng thành công"
+						? "#51e05d"
+						: data.title === "Hoàn trả đơn hàng"
+						? "#ffcc55"
+						: data.title === "Đang xử lý"
+						? "#36a3eb"
+						: data.title === "Đang giao hàng"
+						? "#ff9f41"
+						: "#ec3434",
 
-				pointBorderColor: "#51e05d",
-				pointBackgroundColor: "white",
+				pointBorderColor:
+					data.title === "Giao hàng thành công"
+						? "#51e05d"
+						: data.title === "Hoàn trả đơn hàng"
+						? "#ffcc55"
+						: data.title === "Đang xử lý"
+						? "#36a3eb"
+						: data.title === "Đang giao hàng"
+						? "#ff9f41"
+						: "#ec3434",
+				pointBackgroundColor:
+					data.title === "Giao hàng thành công"
+						? "#51e05d"
+						: data.title === "Hoàn trả đơn hàng"
+						? "#ffcc55"
+						: data.title === "Đang xử lý"
+						? "#36a3eb"
+						: data.title === "Đang giao hàng"
+						? "#ff9f41"
+						: "#ec3434",
 
 				pointHoverRadius: 5,
 				pointHoverBorderWidth: 3,
@@ -184,7 +279,14 @@ const LineChart = ({ orders }) => {
 			<div className="mt-3 shadow-custom_1 p-2 border rounded-md">
 				{orders.length > 0 && (
 					<span>
-						Tổng doanh thu: {getMoneyByTime(year, "YYYY", orders)}
+						Tổng doanh thu:{" "}
+						{getMoneyByTime(
+							year,
+							"YYYY",
+							orders.filter(
+								(od) => od.status === "Giao hàng thành công"
+							)
+						)}
 					</span>
 				)}
 			</div>

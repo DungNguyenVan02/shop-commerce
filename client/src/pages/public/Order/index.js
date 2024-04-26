@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { apiGetOrder, apiUpdateSold, apiUpdateStatusOrder } from "~/apis";
@@ -21,7 +21,7 @@ const Order = () => {
 
 	useEffect(() => {
 		const queries = Object.fromEntries([...query]);
-
+		queries.sort = "-createdAt";
 		fetchOrder(queries);
 		window.scrollTo(0, 0);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,6 +123,7 @@ const Order = () => {
 			}
 		});
 	};
+
 	return (
 		<div className="p-3 bg-white border rounded-lg shadow-custom_1 min-h-[600px]">
 			<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -156,7 +157,7 @@ const Order = () => {
 						return (
 							<tr
 								key={order?._id}
-								className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+								className=" odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
 							>
 								<td className="px-6 py-3">
 									{((+query.get("page") || 1) - 1) *
@@ -170,15 +171,19 @@ const Order = () => {
 											className="flex gap-[34px] items-center"
 											key={i}
 										>
-											<img
-												loading="lazy"
-												src={item?.thumbnail}
-												alt=""
-												className="w-[100px] object-cover mb-2"
-											/>
+											<Link
+												to={`/detail-product/${item.product.category}/${item.product._id}/${item.product.name}`}
+											>
+												<img
+													loading="lazy"
+													src={item?.thumbnail}
+													alt=""
+													className="w-[100px] object-cover mb-2"
+												/>
+											</Link>
 											<div className="text-[#333] text-[14px] flex flex-col">
 												<span className="text-[#000D] line-clamp-2">
-													{item?.product.name}
+													{item?.product?.name}
 												</span>
 												<span className="text-[#000D] line-clamp-2">
 													Số lượng: {item?.quantity}

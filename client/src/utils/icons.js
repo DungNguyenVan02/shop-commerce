@@ -30,6 +30,7 @@ import {
 	BsSortDownAlt,
 	BsCart3,
 	BsImages,
+	BsRobot,
 } from "react-icons/bs";
 
 import {
@@ -142,6 +143,7 @@ const icons = {
 	BsSortDown,
 	BsSortDownAlt,
 	BsImages,
+	BsRobot,
 
 	GiPositionMarker,
 

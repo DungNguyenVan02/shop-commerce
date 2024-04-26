@@ -197,7 +197,25 @@ function ListOrder({ location, navigate }) {
 										</td>
 
 										<td className="px-6 py-3">
-											{order?.status}
+											<div
+												className={`text-center p-1 rounded-md  text-white ${
+													order.status ===
+													"Giao hàng thành công"
+														? "bg-[#51e05d]"
+														: order.status ===
+														  "Hoàn trả đơn hàng"
+														? "bg-[#ffcc55]"
+														: order.status ===
+														  "Đang xử lý"
+														? "bg-[#36a3eb]"
+														: order.status ===
+														  "Đang giao hàng"
+														? "bg-[#f78f27]"
+														: "bg-[#ec3434]"
+												}`}
+											>
+												{order?.status}
+											</div>
 										</td>
 										<td className="px-2 py-3 ">
 											<div className="flex justify-center items-center h-full w-full">

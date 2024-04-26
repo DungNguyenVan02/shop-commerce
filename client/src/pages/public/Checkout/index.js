@@ -16,6 +16,7 @@ import { getCurrentUser } from "~/redux/asyncActions";
 import { checkouts as checkoutsSlice } from "~/redux/userSlice";
 import Swal from "sweetalert2";
 import moment from "moment";
+import routes from "~/config/routes";
 
 const Checkout = ({ dispatch, navigate, location }) => {
 	const { FaCheck, GiPositionMarker } = icons;
@@ -89,8 +90,8 @@ const Checkout = ({ dispatch, navigate, location }) => {
 				})),
 				state: 0,
 			};
-			await apiUpdateSold(data);
-
+			const rs = await apiUpdateSold(data);
+			console.log(rs);
 			if (checkouts[0]?.cid) {
 				const response = await apiRemoveCart({
 					arrProduct: productCheckout.map((item) => item._id),
@@ -140,7 +141,6 @@ const Checkout = ({ dispatch, navigate, location }) => {
 	const fetchCreateCheckoutOnline = async (data) => {
 		const response = await apiCreateOrder(data);
 		if (response?.success) {
-			console.log(data);
 			const dataUpdateSold = {
 				arrProduct: data?.products?.map((product) => ({
 					quantity: product?.quantity,
@@ -149,15 +149,16 @@ const Checkout = ({ dispatch, navigate, location }) => {
 				})),
 				state: 0,
 			};
-			await apiUpdateSold(dataUpdateSold);
+			const rs = await apiUpdateSold(dataUpdateSold);
+			console.log(rs);
 			setProductCheckout([]);
-
 			if (checkouts[0]?.cid) {
 				const response = await apiRemoveCart({
 					arrProduct: productCheckout.map((item) => item._id),
 				});
 				if (response?.success) {
 					setIsSuccess(true);
+					location.search = null;
 					dispatch(checkoutsSlice([]));
 					dispatch(getCurrentUser());
 					setTimeout(() => {
@@ -188,7 +189,7 @@ const Checkout = ({ dispatch, navigate, location }) => {
 			}
 		}
 	};
-	console.log(productCheckout);
+
 	useEffect(() => {
 		if (location?.search.length > 0 && productCheckout.length > 0) {
 			const filterInfoParam = location.search.split("?")[1].split("&");
@@ -230,21 +231,6 @@ const Checkout = ({ dispatch, navigate, location }) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [productCheckout.length > 0]);
-
-	// useEffect(() => {
-	// 	if(isUpdateSold) {
-
-	// const dataUpdateSold = {
-	// 	arrProduct: data?.products?.map((product) => ({
-	// 		quantity: product?.quantity,
-	// 		pid: product?.product?._id,
-	// 		sku: product?.sku,
-	// 	})),
-	// };
-	// await apiUpdateSold(dataUpdateSold);
-
-	// 	}
-	// }, [isUpdateSold])
 
 	return (
 		<>

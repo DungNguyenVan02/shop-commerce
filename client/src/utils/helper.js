@@ -91,10 +91,7 @@ export const generateRange = (start, end) => {
 export const getMoneyByTime = (time, type, orders) => {
 	const filterOrderByTime = orders.filter((order) => {
 		if (type === "YYYY") {
-			return (
-				+moment(order.createdAt).format(type) === time &&
-				order.status === "Giao hàng thành công"
-			);
+			return +moment(order.createdAt).format(type) === time;
 		} else {
 			return (
 				+moment(order.createdAt).format(type) ===

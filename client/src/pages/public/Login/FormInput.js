@@ -53,9 +53,7 @@ function FormInput() {
 				})
 			);
 			setTimeout(() => {
-				toast.info("Chào mừng bạn đã đến website của chúng tôi !", {
-					theme: "colored",
-				});
+				toast.info("Chào mừng bạn đã đến cửa hàng của chúng tôi!");
 				setIsAnimation(false);
 				navigate(
 					searchParams.get("redirect")
@@ -64,7 +62,11 @@ function FormInput() {
 				);
 			}, 1500);
 		} else {
-			Swal.fire("Oops!", response.mes, "error");
+			Swal.fire(
+				"Oops!",
+				"Tài khoản hoặc mật khẩu không chính xác!",
+				"error"
+			);
 			setIsAnimation(false);
 		}
 	};

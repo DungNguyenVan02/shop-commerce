@@ -120,7 +120,14 @@ const PieChart = ({ orders }) => {
 			<div className="mt-3 shadow-custom_1 p-2 border rounded-md">
 				{orders.length > 0 && (
 					<span>
-						Tổng doanh thu: {getMoneyByTime(day, "DD", orders)}
+						Tổng doanh thu:{" "}
+						{getMoneyByTime(
+							day,
+							"DD",
+							orders.filter(
+								(od) => od.status === "Giao hàng thành công"
+							)
+						)}
 					</span>
 				)}
 			</div>

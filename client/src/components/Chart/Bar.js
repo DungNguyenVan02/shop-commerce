@@ -115,6 +115,16 @@ const BarChart = ({ orders }) => {
 					title: "Hoàn trả đơn hàng",
 					data: labels.map(() => 0),
 				},
+				{
+					id: 4,
+					title: "Đang giao hàng",
+					data: labels.map(() => 0),
+				},
+				{
+					id: 5,
+					title: "Hủy đơn hàng",
+					data: labels.map(() => 0),
+				},
 			];
 
 			orders.forEach((order, index) => {
@@ -143,6 +153,22 @@ const BarChart = ({ orders }) => {
 							+moment(order.createdAt).format("MM") - 1;
 						item.data.splice(position, 1, item.data[position] + 1);
 					}
+					if (
+						item.title === "Đang giao hàng" &&
+						order.status === "Đang giao hàng"
+					) {
+						const position =
+							+moment(order.createdAt).format("MM") - 1;
+						item.data.splice(position, 1, item.data[position] + 1);
+					}
+					if (
+						item.title === "Hủy đơn hàng" &&
+						order.status === "Hủy đơn hàng"
+					) {
+						const position =
+							+moment(order.createdAt).format("MM") - 1;
+						item.data.splice(position, 1, item.data[position] + 1);
+					}
 				});
 			});
 
@@ -154,14 +180,22 @@ const BarChart = ({ orders }) => {
 					data.title === "Giao hàng thành công"
 						? "#51e05d"
 						: data.title === "Hoàn trả đơn hàng"
-						? "#e35050"
-						: "#4a90e2",
+						? "#ffcc55"
+						: data.title === "Đang xử lý"
+						? "#36a3eb"
+						: data.title === "Đang giao hàng"
+						? "#ff9f41"
+						: "#ec3434",
 				pointBorderColor:
 					data.title === "Giao hàng thành công"
 						? "#51e05d"
 						: data.title === "Hoàn trả đơn hàng"
-						? "#e35050"
-						: "#4a90e2",
+						? "#ffcc55"
+						: data.title === "Đang xử lý"
+						? "#36a3eb"
+						: data.title === "Đang giao hàng"
+						? "#ff9f41"
+						: "#ec3434",
 				pointBackgroundColor: "white",
 
 				pointHoverRadius: 5,
@@ -242,7 +276,14 @@ const BarChart = ({ orders }) => {
 			<div className="mt-3 shadow-custom_1 p-2 border rounded-md">
 				{orders.length > 0 && (
 					<span>
-						Tổng doanh thu: {getMoneyByTime(month, "MM", orders)}
+						Tổng doanh thu:{" "}
+						{getMoneyByTime(
+							month,
+							"MM",
+							orders.filter(
+								(od) => od.status === "Giao hàng thành công"
+							)
+						)}
 					</span>
 				)}
 			</div>
