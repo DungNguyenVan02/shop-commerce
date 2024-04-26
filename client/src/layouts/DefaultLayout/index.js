@@ -13,20 +13,14 @@ import withBaseComponent from "~/components/hocs/withBaseComponent";
 import routes from "~/config/routes";
 import { createSearchParams } from "react-router-dom";
 import { ChatBox } from "~/components/Chat";
-import { apiSendQuestion } from "~/apis/chatGPT";
-import ChatBoxAI from "~/components/Chat/ChatBoxAI";
 
 function DefaultLayout({ children, navigate, location }) {
 	const { LuMessagesSquare, IoCloseOutline, BsRobot } = icons;
 	const [isOpenChat, setIsOpenChat] = useState(false);
-	const [isOpenChatAI, setIsOpenChatAI] = useState(false);
 	const { currentUser } = useSelector(userSelector);
 
 	const [chat, setChat] = useState([]);
 
-	const [messageAI, setMessageAI] = useState([
-		{ sender: "AI", text: "Xin chào tôi có thể giúp gì cho bạn" },
-	]);
 	const [sendMessage, setSendMessage] = useState(null);
 	const [receiverMessage, setReceiverMessage] = useState(null);
 	const [onlineUsers, setOnlineUsers] = useState([]);
@@ -88,7 +82,6 @@ function DefaultLayout({ children, navigate, location }) {
 	}, [currentUser]);
 
 	const containerChatRef = useRef();
-	const containerChatAIRef = useRef();
 
 	const checkOnlineStatus = (chat) => {
 		const chatMembers = chat?.members?.find(
@@ -173,64 +166,6 @@ function DefaultLayout({ children, navigate, location }) {
 						className=" cursor-pointer w-[50px] h-[50px] bg-white shadow-custom_1 border rounded-full flex items-center justify-center"
 					>
 						<LuMessagesSquare />
-					</i>
-				</div>
-			)}
-			{!isOpenChat && (
-				<div
-					ref={containerChatAIRef}
-					className="fixed bottom-[40px]  right-[80px] z-[9999999]"
-				>
-					{isOpenChatAI && (
-						<div className="animate-slideTopLeft absolute bottom-0 right-0 w-[338px] h-[455px] bg-white shadow-custom_1 rounded-md border overflow-hidden">
-							<div className="z-[9999999] fixed top-0 left-0 right-0 h-[40px] px-3 bg-blue-500 flex items-center justify-between shadow-inner">
-								<div className="relative flex items-center gap-2">
-									<BsRobot size={26} color="white" />
-
-									<h3 className="text-white">Chatbot</h3>
-								</div>
-								<i
-									onClick={() => setIsOpenChatAI(false)}
-									className=" cursor-pointer p-2 hover:opacity-80"
-								>
-									<IoCloseOutline size={22} color="white" />
-								</i>
-							</div>
-
-							<ChatBoxAI
-								messageAI={messageAI}
-								setMessageAI={setMessageAI}
-							/>
-						</div>
-					)}
-					<i
-						onClick={() => {
-							if (currentUser) {
-								setIsOpenChatAI(true);
-							} else {
-								Swal.fire({
-									title: "Hệ thống thông báo!",
-									text: "Bạn cần đăng nhập vào hệ thống trước khi nhắn tin cho người bán",
-									icon: "warning",
-									showCancelButton: true,
-									confirmButtonText: "Đăng nhập",
-									cancelButtonText: "Thoát",
-									reverseButtons: true,
-								}).then((result) => {
-									if (result.isConfirmed) {
-										navigate({
-											pathname: routes.login,
-											search: createSearchParams({
-												redirect: location.pathname,
-											}).toString(),
-										});
-									}
-								});
-							}
-						}}
-						className=" cursor-pointer w-[50px] h-[50px] bg-white shadow-custom_1 border rounded-full flex items-center justify-center"
-					>
-						<BsRobot />
 					</i>
 				</div>
 			)}
