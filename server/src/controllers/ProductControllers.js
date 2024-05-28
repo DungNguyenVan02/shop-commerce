@@ -352,6 +352,7 @@ class ProductControllers {
 		const alreadyRating = productRating.ratings.find(
 			(el) => el.postedBy.toString() === _id
 		);
+
 		if (alreadyRating) {
 			// update star && comments
 			await Product.updateOne(

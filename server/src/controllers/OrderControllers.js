@@ -311,7 +311,7 @@ class OrderControllers {
 			path: "products",
 			populate: {
 				path: "product",
-				select: "name",
+				select: "name category _id",
 			},
 		});
 

@@ -9,6 +9,7 @@ const router = express.Router();
 router.get("/", productControllers.getAllProduct);
 router.get("/:pid", productControllers.getProduct);
 router.put("/ratings", verifyAccessToken, productControllers.ratings);
+router.put("/sold", verifyAccessToken, productControllers.updateSold);
 
 router.use(verifyAccessToken, isAdmin);
 router.post(
@@ -53,7 +54,6 @@ router.delete(
 	"/variants-delete/:pid/:sku",
 	productControllers.deleteVariantsProduct
 );
-router.put("/sold", productControllers.updateSold);
 router.put(
 	"/:pid",
 	uploader.fields([
